@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find SFML 
 set(SFML_DIR "${CMAKE_SOURCE_DIR}/external/SFML/lib/cmake/SFML")
-find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
+find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System Audio)
 
 # Include headers
 include_directories(include)
@@ -15,6 +15,7 @@ include_directories(include)
 file(GLOB SOURCES src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE TRUE)
 
 # Link SFML
 target_link_libraries(${PROJECT_NAME}
@@ -22,6 +23,7 @@ target_link_libraries(${PROJECT_NAME}
         SFML::Graphics
         SFML::Window
         SFML::System
+        SFML::Audio
 )
 
 # Copy assets
@@ -37,3 +39,4 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         "${CMAKE_SOURCE_DIR}/external/SFML/bin"
         "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
+
