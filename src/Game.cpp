@@ -13,7 +13,9 @@ void Game::handleEvent(){
     }
 }
 
-Game::Game() : window(sf::VideoMode({800, 600}), "GoGame") {}
+Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"), 
+               font("assets/fonts/Monocraft.ttc") 
+               {}
 
 void Game::run(){
     while (window.isOpen()){
