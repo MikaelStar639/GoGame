@@ -2,8 +2,30 @@
 
 Button::Button(const sf::Font &font) : text(font) {}
 
-void Button::update(Mouse &mouse){
+void Button::setPosition(sf::Vector2f _position){
+    position = _position;
+}
+
+void Button::setSize(sf::Vector2f _size){
+    size = _size;
+}
+
+void Button::setString(std::string _string){
+    string = _string;
+}
+
+void Button::setColor(std::array<sf::Color, 6> colorList){
+    sf::Color default_shape = colorList[0];
+    sf::Color default_text  = colorList[1];
     
+    sf::Color over_shape    = colorList[2];
+    sf::Color over_text     = colorList[3];
+
+    sf::Color pressed_shape = colorList[4];
+    sf::Color pressed_text  = colorList[5];
+}
+
+void Button::update(Mouse &mouse){
     //reset states
     onPress   = false;
     onRelease = false;
