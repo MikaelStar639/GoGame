@@ -1,28 +1,17 @@
 #include <Game.hpp>
-
-void Game::handleEvent(){
-    while (auto event = window.pollEvent()){
-        if (event->is<sf::Event::Closed>()){
-            window.close();
-            break;
-        }
-        if (event->is<sf::Event::Resized>()){
-            sf::View view(sf::FloatRect({0.f, 0.f}, sf::Vector2f(window.getSize())));
-            window.setView(view);
-        }
-    }
-}
+#include "Input/Mouse.hpp"
 
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"), 
-               font("assets/fonts/Monocraft.ttc") 
+               font("assets/fonts/Monocraft.ttc"),
+               state(gameState::Homescreen) 
                {}
 
 void Game::run(){
+    
     while (window.isOpen()){
-        handleEvent();
+        handleEvent(window);
         if (state == gameState::Homescreen){
             //TODO: Homescreen
-
             window.display();
             continue;
         }

@@ -1,14 +1,5 @@
 #include "UI/Button.hpp"
 
-void alignText(sf::Text &text, float horizontal, float vertical){
-    sf::FloatRect bounds = text.getLocalBounds();
-
-    float x = bounds.position.x + bounds.size.x * horizontal;
-    float y = text.getCharacterSize() * vertical;
-
-    text.setOrigin({x, y});
-}
-
 Button::Button(const sf::Font &font) : text(font) {}
 
 void Button::update(Mouse &mouse){

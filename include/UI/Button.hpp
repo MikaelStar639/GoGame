@@ -2,9 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Input/Mouse.hpp"
-
-//to edit text inside the button
-void alignText(sf::Text &text, float horizontal, float vertical);
+#include <Ultil.hpp>
 
 class Button {
 private:

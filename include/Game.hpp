@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Ultil.hpp"
 
 class Game{
 private:
@@ -19,6 +20,5 @@ public:
     sf::Font         font;
 
 
-    void handleEvent();
     void run();
 };
