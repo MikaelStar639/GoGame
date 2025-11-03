@@ -61,7 +61,7 @@ void Button::draw(sf::RenderWindow& window){
     text.setPosition(position);
     alignText(text, 0.5f, text_align_v);
 
-    //color
+    //color 
     if (isPressed){
         shape.setFillColor(pressed_shape);
         text.setFillColor(pressed_text);
