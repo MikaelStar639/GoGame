@@ -1,24 +1,25 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <Homescreen.hpp>
 #include "Ultil.hpp"
 
 class Game{
-private:
+public:
     enum class gameState{
         Homescreen,
         PlayOptions,
+        Resume,
+        Settings,
         GamePlay,
-        Settings
+        Exit
     };
 
-public:
     Game();
 
     gameState state;
 
     sf::RenderWindow window;
     sf::Font         font;
-
 
     void run();
 };

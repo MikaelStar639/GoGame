@@ -1,5 +1,5 @@
 #include <Game.hpp>
-#include "Input/Mouse.hpp"
+#include <iostream>
 
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"), 
                font("assets/fonts/Monocraft.ttc"),
@@ -10,22 +10,20 @@ void Game::run(){
     
     while (window.isOpen()){
         handleEvent(window);
+        
         if (state == gameState::Homescreen){
-            //TODO: Homescreen
-            window.display();
+            Homescreen homeScreen(font, window);
+            homeScreen.run();
+            state = homeScreen.nextState;
             continue;
         }
         if (state == gameState::PlayOptions){
             //TODO: Play Options
-
-            window.display();
-            continue;
+            break;
         }
         if (state == gameState::Settings){
             //TODO: Settings
-
-            window.display();
-            continue;
+            break;
         }
     }
 }
