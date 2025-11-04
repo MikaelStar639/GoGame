@@ -1,5 +1,7 @@
 #include <Game.hpp>
 #include <Game-State/Homescreen.hpp>
+#include <Game-State/PlayOptions.hpp>
+
 #include <iostream>
 
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"), 
@@ -36,7 +38,15 @@ void Game::run(){
         }
 
         if (state == gameState::PlayOptions){
-            //TODO: Play Options
+            PlayOptions playOptions(font, window);
+            playOptions.run();
+            state = playOptions.nextState;
+
+            if (state != gameState::Exit)
+                gameStateStack.push(state);
+            else
+                gameStateStack.pop();
+
             continue;
         }
 
