@@ -24,8 +24,10 @@ void Homescreen::updateButton(Mouse &mouse){
     exitButton.   setPosition({window_w/2, window_h * 4/5});
 
     //Buttons setSize
-    resumeButton. setSize({250.f, 100.f});
-    settingButton.setSize({300.f, 100.f});
+    playButton.   setSize({500.f, 100.f});
+    resumeButton. setSize({500.f, 100.f});
+    settingButton.setSize({500.f, 100.f});
+    exitButton.   setSize({500.f, 100.f});
 
     //buttons update
     playButton.   update(mouse);
