@@ -1,4 +1,4 @@
-#include "Game-State/Homescreen.hpp"
+#include "Window-State/Homescreen.hpp"
 
 Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window) : 
     playButton(font),
@@ -36,10 +36,10 @@ void Homescreen::updateButton(Mouse &mouse){
     exitButton.   update(mouse);
 
     //check if any button is clicked
-    if (playButton.onRelease)    nextState = Game::gameState::PlayOptions;
-    if (resumeButton.onRelease)  nextState = Game::gameState::Resume;
-    if (settingButton.onRelease) nextState = Game::gameState::Settings;
-    if (exitButton.onRelease)    nextState = Game::gameState::Exit;
+    if (playButton.onRelease)    nextState = Game::windowState::PlayOptions;
+    if (resumeButton.onRelease)  nextState = Game::windowState::Resume;
+    if (settingButton.onRelease) nextState = Game::windowState::Settings;
+    if (exitButton.onRelease)    nextState = Game::windowState::Exit;
 }
 
 void Homescreen::drawButton(){
@@ -92,7 +92,7 @@ void Homescreen::run(){
         window.display();
         
         //if the state is not homescreen (some button was clicked)
-        if (nextState != Game::gameState::Homescreen){
+        if (nextState != Game::windowState::Homescreen){
             break;
         }
     }

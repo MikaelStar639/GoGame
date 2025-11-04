@@ -1,14 +1,14 @@
 #include <Game.hpp>
-#include <Game-State/Homescreen.hpp>
-#include <Game-State/PlayOptions.hpp>
+#include <Window-State/Homescreen.hpp>
+#include <Window-State/PlayOptions.hpp>
 
 #include <iostream>
 
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"), 
                font("assets/fonts/Monocraft.ttc")
                {
-                    gameStateStack.push({gameState::Exit});
-                    gameStateStack.push({gameState::Homescreen});
+                    windowStateStack.push({windowState::Exit});
+                    windowStateStack.push({windowState::Homescreen});
                }
 
 void Game::run(){
@@ -16,41 +16,41 @@ void Game::run(){
     while (window.isOpen()){
         handleEvent(window);
 
-        assert(!gameStateStack.empty());
-        gameState state = gameStateStack.top();
+        assert(!windowStateStack.empty());
+        windowState state = windowStateStack.top();
 
-        if (state == gameState::Exit){
+        if (state == windowState::Exit){
             window.close();
             break;
         }
 
-        if (state == gameState::Homescreen){
+        if (state == windowState::Homescreen){
             Homescreen homeScreen(font, window);
             homeScreen.run();
             state = homeScreen.nextState;
 
-            if (state != gameState::Exit)
-                gameStateStack.push(state);
+            if (state != windowState::Exit)
+                windowStateStack.push(state);
             else
-                gameStateStack.pop();
+                windowStateStack.pop();
 
             continue;
         }
 
-        if (state == gameState::PlayOptions){
+        if (state == windowState::PlayOptions){
             PlayOptions playOptions(font, window);
             playOptions.run();
             state = playOptions.nextState;
 
-            if (state != gameState::Exit)
-                gameStateStack.push(state);
+            if (state != windowState::Exit)
+                windowStateStack.push(state);
             else
-                gameStateStack.pop();
+                windowStateStack.pop();
 
             continue;
         }
 
-        if (state == gameState::Settings){
+        if (state == windowState::Settings){
             //TODO: Settings
             continue;
         }

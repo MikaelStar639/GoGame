@@ -1,4 +1,4 @@
-#include "Game-State/PlayOptions.hpp"
+#include "Window-State/PlayOptions.hpp"
 
 
 PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window) : 
@@ -34,9 +34,9 @@ void PlayOptions::updateButton(Mouse &mouse){
     backButton.update(mouse);
 
     //check if any button is clicked
-    if (pvbButton.onRelease)  nextState = Game::gameState::GamePlay;
-    if (pvpButton.onRelease)  nextState = Game::gameState::GamePlay;
-    if (backButton.onRelease) nextState = Game::gameState::Exit;
+    if (pvbButton.onRelease)  nextState = Game::windowState::GamePlay;
+    if (pvpButton.onRelease)  nextState = Game::windowState::GamePlay;
+    if (backButton.onRelease) nextState = Game::windowState::Exit;
 }
 
 void PlayOptions::drawButton(){
@@ -88,7 +88,7 @@ void PlayOptions::run(){
         window.display();
         
         //if the state is not PlayOptions (some button was clicked)
-        if (nextState != Game::gameState::PlayOptions){
+        if (nextState != Game::windowState::PlayOptions){
             break;
         }
     }
