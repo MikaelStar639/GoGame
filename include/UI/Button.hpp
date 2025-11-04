@@ -1,11 +1,12 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
-#include <string>
 #include "Input/Mouse.hpp"
-#include <Ultil.hpp>
 #include "UI/RoundRectShape.hpp"
-#include <array>
+#include <Ultil.hpp>
+
 #include <string>
+#include <array>
 
 class Button {
 private:
@@ -21,17 +22,26 @@ public:
     float        radius       = 10.f;
 
     //state
-    bool isOver          = false;
-    bool isPressed       = false;
-    bool onPress         = false;
-    bool onRelease       = false;
+    bool isOver    = false;
+    bool isPressed = false;
+    bool onPress   = false;
+    bool onRelease = false;
 
-    sf::Color default_shape = sf::Color(0, 170, 255);
-    sf::Color default_text  = sf::Color::White;
-    sf::Color over_shape    = default_text;
-    sf::Color over_text     = default_shape;
-    sf::Color pressed_shape = sf::Color(64, 64, 127);
-    sf::Color pressed_text  = sf::Color::White;
+// --- PHƯƠNG ÁN: ĐEN & SÁNG DẦN (GLOW EFFECT) ---
+// Nền mặc định: Đen rất sẫm
+sf::Color default_shape = sf::Color(40, 40, 40); 
+// Chữ mặc định: Màu Trắng
+sf::Color default_text  = sf::Color(200, 200, 200); 
+
+// Khi "hover", nút sáng lên XÍU
+sf::Color over_shape    = sf::Color(60, 60, 60); 
+// Chữ vẫn giữ màu Trắng để nổi bật
+sf::Color over_text     = sf::Color(200, 200, 200); 
+
+// Khi "nhấn", nút sáng lên NỮA (rõ rệt)
+sf::Color pressed_shape = sf::Color(90, 90, 90);
+// Chữ vẫn giữ màu Trắng
+sf::Color pressed_text  = sf::Color(200, 200, 200); 
 
     Button(const sf::Font &font, sf::Vector2f _size, sf::Vector2f _position, float _radius);
     Button(const sf::Font &font);
