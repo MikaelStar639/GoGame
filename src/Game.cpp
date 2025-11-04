@@ -1,4 +1,5 @@
 #include <Game.hpp>
+#include <Homescreen.hpp>
 #include <iostream>
 
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"), 
@@ -15,6 +16,7 @@ void Game::run(){
             Homescreen homeScreen(font, window);
             homeScreen.run();
             state = homeScreen.nextState;
+            window.clear(sf::Color(60, 60, 60));
             continue;
         }
         if (state == gameState::PlayOptions){
@@ -23,7 +25,7 @@ void Game::run(){
         }
         if (state == gameState::Settings){
             //TODO: Settings
-            break;
+            continue;
         }
     }
 }

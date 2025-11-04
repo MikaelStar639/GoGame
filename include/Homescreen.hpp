@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Game.hpp"
 #include "UI/Button.hpp"
 
