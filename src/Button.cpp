@@ -1,5 +1,4 @@
 #include "UI/Button.hpp"
-#include "UI/RoundRectShape.hpp"
 
 Button::Button(const sf::Font &font) : text(font) {}
 
