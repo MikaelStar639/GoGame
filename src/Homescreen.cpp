@@ -79,23 +79,16 @@ void Homescreen::run(){
     while (window.isOpen()){
         handleEvent(window);
 
-        //window sizes
-        float window_w = window.getSize().x;
-        float window_h = window.getSize().y;
-
         //Background
         window.clear();
         setBackground(backgroundSprite);
 
         //mouse update
         mouse.update(window);
-
-        //update position and size
         updateButton(mouse);
 
         //just draw :v
         drawButton();
-        
         window.display();
         
         //if the state is not homescreen (some button was clicked)

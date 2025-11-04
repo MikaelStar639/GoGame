@@ -6,8 +6,8 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window) :
     pvpButton (font),
     backButton(font),
     window(_window){
-        pvbButton. setString("Two Player - One Device Mode");
-        pvpButton. setString("Player vs AI");
+        pvbButton. setString("Two Player - One Device");
+        pvpButton. setString("Player vs Bot  ");
         backButton.setString("Back");
     }
 
@@ -15,20 +15,18 @@ void PlayOptions::updateButton(Mouse &mouse){
     //window size
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
-    
-
 
     //Buttons setPosition
-    float space = 125.f;
+    float space = 75.f;
     
     pvbButton. setPosition({window_w/2, window_h/2 - space});
-    pvpButton. setPosition({window_w/2, window_h/2});
-    backButton.setPosition({window_w/2, window_h/2 + space});
+    pvpButton. setPosition({window_w/2, window_h/2 + space/2});
+    backButton.setPosition({105.f, 50.f});
 
     //Buttons setSize
-    pvbButton. setSize({725.f, 75.f});
-    pvpButton. setSize({725.f, 75.f});
-    backButton.setSize({725.f, 75.f});
+    pvbButton. setSize({650.f, 75.f});
+    pvpButton. setSize({650.f, 75.f});
+    backButton.setSize({200.f, 60.f});
 
     //buttons update
     pvbButton. update(mouse);
@@ -77,23 +75,16 @@ void PlayOptions::run(){
     while (window.isOpen()){
         handleEvent(window);
 
-        //window sizes
-        float window_w = window.getSize().x;
-        float window_h = window.getSize().y;
-
         //Background
         window.clear();
         setBackground(backgroundSprite);
 
-        //mouse update
+        //update
         mouse.update(window);
-
-        //update position and size
         updateButton(mouse);
 
         //just draw :v
         drawButton();
-        
         window.display();
         
         //if the state is not PlayOptions (some button was clicked)
