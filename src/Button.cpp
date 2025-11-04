@@ -1,4 +1,5 @@
 #include "UI/Button.hpp"
+#include "UI/RoundRectShape.hpp"
 
 Button::Button(const sf::Font &font) : text(font) {}
 
@@ -26,12 +27,12 @@ void Button::setColor(std::array<sf::Color, 6> colorList){
 }
 
 void Button::update(Mouse &mouse){
-    //reset states
+    // reset states
     onPress   = false;
     onRelease = false;
 
     //mouse
-    if (shape.getGlobalBounds().contains(mouse.position)){
+    if (shape.isContain(mouse.position)){
         if (mouse.onPress){
             //first click
             onPress   = true;
@@ -63,10 +64,9 @@ void Button::update(Mouse &mouse){
 void Button::draw(sf::RenderWindow& window){
 
     //shape
-    shape.setSize(size);
-    shape.setOrigin(shape.getGeometricCenter());
+    shape.setSize(size, radius);
     shape.setPosition(position);
-    window.draw(shape);
+    shape.draw(window);
 
     //text
     text.setString(string);
@@ -76,15 +76,15 @@ void Button::draw(sf::RenderWindow& window){
 
     //color 
     if (isPressed){
-        shape.setFillColor(pressed_shape);
+        shape.setColor(pressed_shape);
         text.setFillColor(pressed_text);
     }
     else if (isOver){
-        shape.setFillColor(over_shape);
+        shape.setColor(over_shape);
         text.setFillColor(over_text);
     }
     else{
-        shape.setFillColor(default_shape);
+        shape.setColor(default_shape);
         text.setFillColor(default_text);
     }
 
