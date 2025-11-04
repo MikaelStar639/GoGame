@@ -5,7 +5,7 @@ class RoundRectShape {
 private:
     sf::RectangleShape rect1;
     sf::RectangleShape rect2;
-    sf::CircleShape    circle[3];
+    sf::CircleShape    circle[4];
 
 public:
     sf::Vector2f size;

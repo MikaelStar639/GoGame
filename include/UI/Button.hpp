@@ -4,6 +4,8 @@
 #include "Input/Mouse.hpp"
 #include <Ultil.hpp>
 #include "UI/RoundRectShape.hpp"
+#include <array>
+#include <string>
 
 class Button {
 private:
