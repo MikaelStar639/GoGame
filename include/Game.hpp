@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Ultil.hpp"
+#include <stack>
 
 class Game{
 public:
@@ -15,7 +16,7 @@ public:
 
     Game();
 
-    gameState state;
+    std::stack<gameState> gameStateStack;
 
     sf::RenderWindow window;
     sf::Font         font;
