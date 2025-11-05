@@ -12,7 +12,7 @@ find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System Audio)
 include_directories(include)
 
 # Source files
-file(GLOB SOURCES src/*.cpp)
+file(GLOB_RECURSE SOURCES src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 set_property(TARGET ${PROJECT_NAME} PROPERTY WIN32_EXECUTABLE FALSE)

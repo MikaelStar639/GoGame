@@ -1,6 +1,7 @@
 #include <Game.hpp>
 #include <Window-State/Homescreen.hpp>
 #include <Window-State/PlayOptions.hpp>
+#include <Window-State/Gameplay.hpp>
 
 #include <iostream>
 
@@ -46,6 +47,19 @@ void Game::run(){
                 windowStateStack.push(state);
             else
                 windowStateStack.pop();
+
+            continue;
+        }
+
+        if (state == windowState::GamePlay){
+            // Gameplay gamePlay(font, window);
+            // gamePlay.run();
+            // state = gamePlay.nextState;
+
+            // if (state != windowState::Exit)
+            //     windowStateStack.push(state);
+            // else
+            //     windowStateStack.pop();
 
             continue;
         }
