@@ -78,7 +78,7 @@ void Homescreen::UpdateGamenamePosition(){
 
 void Homescreen::drawGamename(){
     Gamename.setCharacterSize(150);
-    Gamename.setFillColor(sf::Color(222, 184, 135));
+    Gamename.setFillColor(sf::Color(0, 128, 128));
     alignText(Gamename, 0.5f, 0.6f);
     Gamename.setOutlineColor(sf::Color(40,40,40));
     Gamename.setOutlineThickness(5.f);
