@@ -5,11 +5,13 @@ Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window) :
     resumeButton(font),
     settingButton(font),
     exitButton(font),
+    Gamename(font),
     window(_window){
         playButton.   setString("Play");
         resumeButton. setString("Resume");
         settingButton.setString("Setting");
         exitButton.   setString("Exit");
+        Gamename.     setString("Go Game");
     }
 
 void Homescreen::updateButton(Mouse &mouse){
@@ -18,10 +20,10 @@ void Homescreen::updateButton(Mouse &mouse){
     float window_h = window.getSize().y;
 
     //Buttons setPosition
-    playButton.   setPosition({window_w/2, window_h * 1/5});
-    resumeButton. setPosition({window_w/2, window_h * 2/5});
-    settingButton.setPosition({window_w/2, window_h * 3/5});
-    exitButton.   setPosition({window_w/2, window_h * 4/5});
+    playButton.   setPosition({window_w/2, window_h * 3/10});
+    resumeButton. setPosition({window_w/2, window_h * 5/10});
+    settingButton.setPosition({window_w/2, window_h * 7/10});
+    exitButton.   setPosition({window_w/2, window_h * 9/10});
 
     //Buttons setSize
     playButton.   setSize({500.f, 100.f});
@@ -67,6 +69,22 @@ void Homescreen::setBackground(sf::Sprite &backgroundSprite){
     window.draw(backgroundSprite);
 }
 
+void Homescreen::UpdateGamenamePosition(){
+    float window_w = window.getSize().x;
+    float window_h = window.getSize().y;
+
+    Gamename.setPosition({window_w/2, window_h * 1/10});
+}
+
+void Homescreen::drawGamename(){
+    Gamename.setCharacterSize(150);
+    Gamename.setFillColor(sf::Color(222, 184, 135));
+    alignText(Gamename, 0.5f, 0.6f);
+    Gamename.setOutlineColor(sf::Color(40,40,40));
+    Gamename.setOutlineThickness(5.f);
+    window.draw(Gamename);
+}
+
 void Homescreen::run(){
 
     //mouse
@@ -82,6 +100,7 @@ void Homescreen::run(){
         //Background
         window.clear();
         setBackground(backgroundSprite);
+        UpdateGamenamePosition();
 
         //mouse update
         mouse.update(window);
@@ -89,6 +108,7 @@ void Homescreen::run(){
 
         //just draw :v
         drawButton();
+        drawGamename();
         window.display();
         
         //if the state is not homescreen (some button was clicked)
