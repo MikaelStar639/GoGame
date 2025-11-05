@@ -1,8 +1,7 @@
-class gameState{
+#include <UI/Game-Elements/Stone.hpp>
+
+class GameState{
 public:
-    enum class stoneColor{
-        black, 
-        white,
-        empty
-    };
+    Stone::stoneState grid[19][19];
+    GameState();
 };
