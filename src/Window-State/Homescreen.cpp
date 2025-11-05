@@ -21,15 +21,15 @@ void Homescreen::updateButton(Mouse &mouse){
 
     //Buttons setPosition
     playButton.   setPosition({window_w/2, window_h * 3/10});
-    resumeButton. setPosition({window_w/2, window_h * 5/10});
-    settingButton.setPosition({window_w/2, window_h * 7/10});
-    exitButton.   setPosition({window_w/2, window_h * 9/10});
+    resumeButton. setPosition({window_w/2, window_h * 9/20});
+    settingButton.setPosition({window_w/2, window_h * 12/20});
+    exitButton.   setPosition({window_w/2, window_h * 15/20});
 
     //Buttons setSize
-    playButton.   setSize({500.f, 100.f});
-    resumeButton. setSize({500.f, 100.f});
-    settingButton.setSize({500.f, 100.f});
-    exitButton.   setSize({500.f, 100.f});
+    playButton.   setSize({300.f, 100.f});
+    resumeButton. setSize({300.f, 100.f});
+    settingButton.setSize({300.f, 100.f});
+    exitButton.   setSize({300.f, 100.f});
 
     //buttons update
     playButton.   update(mouse);
@@ -78,7 +78,7 @@ void Homescreen::UpdateGamenamePosition(){
 
 void Homescreen::drawGamename(){
     Gamename.setCharacterSize(150);
-    Gamename.setFillColor(sf::Color(0, 128, 128));
+    Gamename.setFillColor(sf::Color(143, 150, 179));
     alignText(Gamename, 0.5f, 0.6f);
     Gamename.setOutlineColor(sf::Color(40,40,40));
     Gamename.setOutlineThickness(5.f);
