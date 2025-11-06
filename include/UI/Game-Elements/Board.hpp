@@ -20,7 +20,7 @@ public:
     int gridNum;
     float Gridx[20];
     float Gridy[20];
-    // constructor
+    // constructor 
     Board(const sf::Font &font);
     // set position of the board
     void setPosition(sf::Vector2f _position);
