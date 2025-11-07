@@ -1,12 +1,6 @@
 #include "UI/Game-Elements/Board.hpp"
-#include <string>
-#include <SFML/Graphics.hpp>
-#include <Ultil.hpp>
-
-
 
 // default constructor
-
 Board::Board(const sf::Font &font) :
     gridNum(19),
     thickness(2.f),

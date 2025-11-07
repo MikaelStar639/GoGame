@@ -1,4 +1,5 @@
-//TODO: Implement here
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include "Ultil.hpp"
 

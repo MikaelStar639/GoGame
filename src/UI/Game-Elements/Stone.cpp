@@ -1,6 +1,4 @@
 #include "UI/Game-Elements/Stone.hpp"
-#include <SFML/Graphics.hpp>
-
 
 Stone::Stone(sf::Sprite &_BlackstoneSprite, sf::Sprite &_WhitestoneSprite, sf::Vector2f _pos) : 
     BlackstoneSprite(_BlackstoneSprite),
