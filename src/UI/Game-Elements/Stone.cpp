@@ -30,16 +30,29 @@ void Stone::setState(stoneState _nextState)
     state = _nextState;
 }
 
-void Stone::draw(sf::RenderWindow &window)
+void Stone::draw(sf::RenderWindow &window, color col, bool isTransparent)
 {
-    if (state == Stone::stoneState::black) window.draw(BlackStoneSprite);
-    if (state == Stone::stoneState::white) window.draw(WhiteStoneSprite); 
+    if (isTransparent)
+    {
+        BlackStoneSprite.setColor(sf::Color(255, 255, 255, 128));
+        WhiteStoneSprite.setColor(sf::Color(255, 255, 255, 128));
+    }
+
+    if (state == Stone::stoneState::black || col == Stone::color::black) window.draw(BlackStoneSprite);
+    if (state == Stone::stoneState::white || col == Stone::color::white) window.draw(WhiteStoneSprite);
+
+    if (isTransparent)
+    {
+        BlackStoneSprite.setColor(sf::Color(255, 255, 255, 255));
+        WhiteStoneSprite.setColor(sf::Color(255, 255, 255, 255));
+    }
 }
 
 
-bool Stone::isContain(sf::Vector2f point){
+bool Stone::isContain(sf::Vector2f point)
+{
     sf::FloatRect bounds;
-    
+
     if (state == stoneState::black){
         bounds = BlackStoneSprite.getGlobalBounds();
     }
