@@ -7,34 +7,55 @@
 #include "UI/Game-Elements/Stone.hpp"
 
 #include "Game-Play-Logic/GameState.hpp"
+#include <cmath>
+#include <vector>
 
-
-class Gameplay{
+class GameScreen{
 private:
+    //Feature Button
     Button backButton;
+
+    //Game Button
     Button redoButton;
     Button undoButton;
     Button passButton;
     Button resignButton;
 
+    //Game Elements
+    Board board;
+    GameState gameState;
+    std::vector<std::vector<Stone>> grid;
+
+    //window
     sf::RenderWindow &window;
 
-public:
-    Gameplay(sf::Font &font, sf::RenderWindow &window);
+    void drawBoard();
+    void drawButton();
+    void drawStone();
 
-    Game::windowState nextState = Game::windowState::GamePlay;
+    //Cordinate of the Stone on the Board
+    struct Cordinate{
+        int y, x;
+    };
+
+    Cordinate to_cord(sf::Vector2f position);
+
+    bool newTurn = false;
+
+public:
+    GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
+                sf::Texture &BlackTexture, sf::Texture &WhiteTexture);
+
+    Game::windowState nextState = Game::windowState::GameScreen;
 
     void setBackground(sf::Sprite &backgroundSprite);
-    void setBoard(sf::Sprite &boardSprite);
-    void drawBoard();
+    void setBoard(Board &board);
 
-    void updateButton(Mouse &mouse);
-    void drawButton();
+    void updateFeatureButton(Mouse &mouse);
+    void updateGameButton(Mouse &mouse);
+    void updateStone(Mouse &mouse);
     
     void updateGameState();
-    void updateStone();
-
-    void drawStone();
     
     void run();
 };

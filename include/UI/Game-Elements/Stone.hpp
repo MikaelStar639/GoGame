@@ -1,34 +1,43 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
+#include <Input/Mouse.hpp>
 class Stone{    
 
 private:
     sf::Sprite BlackStoneSprite;
     sf::Sprite WhiteStoneSprite;
-    sf::Texture whitestone;
-    sf::Texture blackstone;
 
 public:
-    enum class stoneState{
+    enum class State{
         empty,
         black,
-        white
+        white 
     };
-
-    enum class color{
+    enum class Color{
         black,
         white
     };
 
-    // board info
-    stoneState state = stoneState::empty;
-    Stone(sf::Vector2f _pos);
-    void setPosition(sf::Vector2f pos);
-    bool isContain(sf::Vector2f point);
+    State state = State::empty;
+    Color color = Color::black;
     
+    //empty state:
+    bool isOver    = false;
+    bool isPressed = false;
+    bool onPress   = false;
+    bool onRelease = false;
+
+    bool isContain(sf::Vector2f _position);
+    void update(Mouse &mouse);
+
+    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture, 
+          sf::Vector2f _position);
+
+    
+    void setPosition(sf::Vector2f pos);
+
     // visual info
     sf::Vector2f position;
-    void setState(stoneState state);
-    void draw(sf::RenderWindow &window, color col, bool isTransparent = false);
+    void setState(State state);
+    void draw(sf::RenderWindow &window);
 };

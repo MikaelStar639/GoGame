@@ -10,7 +10,7 @@ public:
         PlayOptions,
         Resume,
         Settings,
-        GamePlay,
+        GameScreen,
         Exit
     };
 

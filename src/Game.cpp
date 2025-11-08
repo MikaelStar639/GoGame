@@ -1,7 +1,10 @@
 #include <Game.hpp>
 #include <Window-State/Homescreen.hpp>
 #include <Window-State/PlayOptions.hpp>
-#include <Window-State/Gameplay.hpp>
+#include <Window-State/GameScreen.hpp>
+
+#include "UI/Game-Elements/Board.hpp"
+#include "UI/Game-Elements/Stone.hpp"
 
 #include <iostream>
 
@@ -14,8 +17,15 @@ Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"),
 
 void Game::run(){
     
+
+    
+    sf::Texture blackStoneTexture("assets/images/BlackStone.png");
+    sf::Texture whiteStoneTexture("assets/images/WhiteStone.png");
+    GameScreen gameScreen(font, window, blackStoneTexture, whiteStoneTexture);
     while (window.isOpen()){
         handleEvent(window);
+
+        window.clear();
 
         assert(!windowStateStack.empty());
         windowState state = windowStateStack.top();
@@ -51,15 +61,15 @@ void Game::run(){
             continue;
         }
 
-        if (state == windowState::GamePlay){
-            // Gameplay gamePlay(font, window);
-            // gamePlay.run();
-            // state = gamePlay.nextState;
+        if (state == windowState::GameScreen){
+            gameScreen.nextState = windowState::GameScreen;
+            gameScreen.run();
+            state = gameScreen.nextState;
 
-            // if (state != windowState::Exit)
-            //     windowStateStack.push(state);
-            // else
-            //     windowStateStack.pop();
+            if (state != windowState::Exit)
+                windowStateStack.push(state);
+            else
+                windowStateStack.pop();
 
             continue;
         }

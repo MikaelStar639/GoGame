@@ -19,8 +19,8 @@ public:
     float thickness;
     float gap;
     int gridNum;
-    float Gridx[20];
-    float Gridy[20];
+    float gridX[20];
+    float gridY[20];
     // constructor 
     Board(const sf::Font &font);
     // set position of the board

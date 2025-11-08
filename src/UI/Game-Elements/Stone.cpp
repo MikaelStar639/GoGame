@@ -1,14 +1,10 @@
 #include "UI/Game-Elements/Stone.hpp"
 
-Stone::Stone(sf::Vector2f _pos) : 
-    position(_pos),
-    whitestone("assets/images/WhiteStone.png"),
-    blackstone("assets/images/BlackStone.png"),
-    WhiteStoneSprite(whitestone),
-    BlackStoneSprite(blackstone)
+Stone::Stone(sf::Texture &_BlackstoneTexture, sf::Texture &_WhitestoneTexture, sf::Vector2f _pos) : 
+    BlackStoneSprite(_BlackstoneTexture),
+    WhiteStoneSprite(_WhitestoneTexture),
+    position(_pos)
 {
-    whitestone.setSmooth(true);
-    blackstone.setSmooth(true);
     sf::FloatRect bounds = BlackStoneSprite.getLocalBounds();
     BlackStoneSprite.setOrigin(bounds.size.componentWiseMul({0.5f, 0.5f}));
     bounds = WhiteStoneSprite.getLocalBounds();
@@ -19,48 +15,83 @@ Stone::Stone(sf::Vector2f _pos) :
     WhiteStoneSprite.setScale({0.04f, 0.04f});
 }
 
-void Stone::setPosition(sf::Vector2f pos){
-    position = pos;
+void Stone::setPosition(sf::Vector2f _position){
+    position = _position;
     BlackStoneSprite.setPosition(position);
     WhiteStoneSprite.setPosition(position);
 }
 
-void Stone::setState(stoneState _nextState)
+bool Stone::isContain(sf::Vector2f _position){
+    sf::Vector2f diff = position - _position;
+    float dist2 = diff.x * diff.x + diff.y * diff.y;
+
+    float radius = 750.f/36.f - 1.f;
+    return dist2 <= radius * radius;
+}
+
+void Stone::update(Mouse &mouse){
+        // reset states
+    onPress   = false;
+    onRelease = false;
+
+    //mouse
+    if (isContain(mouse.position)){
+        if (mouse.onPress){
+            //first click
+            onPress   = true;
+            isPressed = true;
+        }
+        if (mouse.onRelease && isPressed){
+            //first release
+            onRelease = true;
+        }
+
+        if (mouse.isPressed && isPressed){
+            //if already clicked inside the button
+            isPressed = true;
+        }
+
+        isOver = true;
+    }
+    else{
+        isOver    = false;
+        isPressed = false;
+    }
+    
+    if (!mouse.isPressed){
+        isPressed = false;
+    }
+}
+
+void Stone::setState(State _nextState)
 {
     state = _nextState;
 }
 
-void Stone::draw(sf::RenderWindow &window, color col, bool isTransparent)
-{
-    if (isTransparent)
-    {
+void Stone::draw(sf::RenderWindow &window){
+    if (state != State::empty){
+        if (state == State::black){
+            window.draw(BlackStoneSprite);
+        }
+        else{
+            window.draw(WhiteStoneSprite);
+        }
+        return;
+    }
+
+    if (isOver == false) return;
+    
+    //it should be at the update but this one is easier to maintain
+    isOver = false;
+    
+    if (color == Color::black){
         BlackStoneSprite.setColor(sf::Color(255, 255, 255, 128));
-        WhiteStoneSprite.setColor(sf::Color(255, 255, 255, 128));
-    }
-
-    if (state == Stone::stoneState::black || col == Stone::color::black) window.draw(BlackStoneSprite);
-    if (state == Stone::stoneState::white || col == Stone::color::white) window.draw(WhiteStoneSprite);
-
-    if (isTransparent)
-    {
+        window.draw(BlackStoneSprite);
         BlackStoneSprite.setColor(sf::Color(255, 255, 255, 255));
-        WhiteStoneSprite.setColor(sf::Color(255, 255, 255, 255));
-    }
-}
-
-
-bool Stone::isContain(sf::Vector2f point)
-{
-    sf::FloatRect bounds;
-
-    if (state == stoneState::black){
-        bounds = BlackStoneSprite.getGlobalBounds();
-    }
-    else if (state == stoneState::white){
-        bounds = WhiteStoneSprite.getGlobalBounds();
     }
     else{
-        return false;
+        WhiteStoneSprite.setColor(sf::Color(255, 255, 255, 128));
+        window.draw(WhiteStoneSprite);
+        WhiteStoneSprite.setColor(sf::Color(255, 255, 255, 255));
     }
-    return bounds.contains(point);
 }

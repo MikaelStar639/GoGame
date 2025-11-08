@@ -30,8 +30,8 @@ Board::Board(const sf::Font &font) :
 
     for (int i = 0; i<=19; i++)
     {
-        Gridx[i] = position.x + i * gap;
-        Gridy[i] = position.y + i * gap;
+        gridX[i] = position.x + i * gap;
+        gridY[i] = position.y + i * gap;
     }
 
     // initialize labels
@@ -91,10 +91,10 @@ void Board::draw(sf::RenderWindow &window) {
     // draw labels
     for (int i = 0; i < gridNum; ++i) {
         // number labels (left side)
-        labelchar[i].setPosition({Gridx[i], Gridy[0] - 28.f});
+        labelchar[i].setPosition({gridX[i], gridY[0] - 28.f});
         window.draw(labelchar[i]);
         // character labels (top side)
-        labelnum[i].setPosition({Gridx[0] - 28.f, Gridy[gridNum - i - 1]});
+        labelnum[i].setPosition({gridX[0] - 28.f, gridY[gridNum - i - 1]});
         window.draw(labelnum[i]);
     }
 

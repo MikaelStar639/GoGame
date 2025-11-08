@@ -34,8 +34,8 @@ void PlayOptions::updateButton(Mouse &mouse){
     backButton.update(mouse);
 
     //check if any button is clicked
-    if (pvbButton.onRelease)  nextState = Game::windowState::GamePlay;
-    if (pvpButton.onRelease)  nextState = Game::windowState::GamePlay;
+    if (pvbButton .onRelease) nextState = Game::windowState::GameScreen;
+    if (pvpButton .onRelease) nextState = Game::windowState::GameScreen;
     if (backButton.onRelease) nextState = Game::windowState::Exit;
 }
 
