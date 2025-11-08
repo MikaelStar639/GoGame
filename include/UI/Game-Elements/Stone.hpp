@@ -4,8 +4,10 @@
 class Stone{    
 
 private:
-    sf::Sprite BlackstoneSprite;
-    sf::Sprite WhitestoneSprite;
+    sf::Sprite BlackStoneSprite;
+    sf::Sprite WhiteStoneSprite;
+    sf::Texture whitestone;
+    sf::Texture blackstone;
 
 public:
     enum class stoneState{
@@ -13,9 +15,10 @@ public:
         black,
         white
     };
+
     // board info
     stoneState state = stoneState::empty;
-    Stone(sf::Sprite &_BlackstoneSprite, sf::Sprite &_WhitestoneSprite, sf::Vector2f _pos);
+    Stone(sf::Vector2f _pos);
     void setPosition(sf::Vector2f pos);
     
     // visual info
