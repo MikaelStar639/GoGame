@@ -35,3 +35,19 @@ void Stone::draw(sf::RenderWindow &window)
     if (state == Stone::stoneState::black) window.draw(BlackStoneSprite);
     if (state == Stone::stoneState::white) window.draw(WhiteStoneSprite); 
 }
+
+
+bool Stone::isContain(sf::Vector2f point){
+    sf::FloatRect bounds;
+    
+    if (state == stoneState::black){
+        bounds = BlackStoneSprite.getGlobalBounds();
+    }
+    else if (state == stoneState::white){
+        bounds = WhiteStoneSprite.getGlobalBounds();
+    }
+    else{
+        return false;
+    }
+    return bounds.contains(point);
+}

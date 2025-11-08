@@ -20,9 +20,11 @@ public:
     stoneState state = stoneState::empty;
     Stone(sf::Vector2f _pos);
     void setPosition(sf::Vector2f pos);
+    bool isContain(sf::Vector2f point);
     
     // visual info
     sf::Vector2f position;
     void setState(stoneState state);
     void draw(sf::RenderWindow &window);
+    
 };
