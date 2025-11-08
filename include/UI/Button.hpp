@@ -27,21 +27,14 @@ public:
     bool onPress   = false;
     bool onRelease = false;
 
-// --- PHƯƠNG ÁN: ĐEN & SÁNG DẦN (GLOW EFFECT) ---
-// Nền mặc định: Đen rất sẫm
-sf::Color default_shape = sf::Color(40, 40, 40); 
-// Chữ mặc định: Màu Trắng
-sf::Color default_text  = sf::Color(200, 200, 200); 
+    sf::Color default_shape = sf::Color(40, 40, 40); 
+    sf::Color default_text  = sf::Color(200, 200, 200); 
 
-// Khi "hover", nút sáng lên XÍU
-sf::Color over_shape    = sf::Color(60, 60, 60); 
-// Chữ vẫn giữ màu Trắng để nổi bật
-sf::Color over_text     = sf::Color(200, 200, 200); 
+    sf::Color over_shape    = sf::Color(60, 60, 60); 
+    sf::Color over_text     = sf::Color(200, 200, 200); 
 
-// Khi "nhấn", nút sáng lên NỮA (rõ rệt)
-sf::Color pressed_shape = sf::Color(90, 90, 90);
-// Chữ vẫn giữ màu Trắng
-sf::Color pressed_text  = sf::Color(200, 200, 200); 
+    sf::Color pressed_shape = sf::Color(90, 90, 90);
+    sf::Color pressed_text  = sf::Color(200, 200, 200); 
 
     Button(const sf::Font &font, sf::Vector2f _size, sf::Vector2f _position, float _radius);
     Button(const sf::Font &font);
