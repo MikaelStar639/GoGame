@@ -1,10 +1,11 @@
 #include "Window-State/PlayOptions.hpp"
 
 
-PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window) : 
+PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, sf::Texture &BackgroundTexture) : 
     pvbButton (font),
     pvpButton (font),
     backButton(font),
+    BackgroundSprite(BackgroundTexture),
     window(_window){
         pvbButton. setString("Two Player - One Device");
         pvpButton. setString("Player vs Bot  ");
@@ -68,16 +69,12 @@ void PlayOptions::run(){
     //mouse
     Mouse mouse;
 
-    //background
-    sf::Texture backgroundTexture("assets/images/homescreenBackground.png");
-    sf::Sprite backgroundSprite(backgroundTexture);
-
     while (window.isOpen()){
         handleEvent(window);
 
         //Background
         window.clear();
-        setBackground(backgroundSprite);
+        setBackground(BackgroundSprite);
 
         //update
         mouse.update(window);

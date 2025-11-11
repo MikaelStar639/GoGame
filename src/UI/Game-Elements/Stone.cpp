@@ -25,7 +25,7 @@ bool Stone::isContain(sf::Vector2f _position){
     sf::Vector2f diff = position - _position;
     float dist2 = diff.x * diff.x + diff.y * diff.y;
 
-    float radius = 750.f/36.f - 1.f;
+    float radius = 750.f/36.f;
     return dist2 <= radius * radius;
 }
 

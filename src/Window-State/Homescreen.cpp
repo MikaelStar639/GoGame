@@ -1,11 +1,12 @@
 #include "Window-State/Homescreen.hpp"
 
-Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window) : 
+Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window, sf::Texture &BackgroundTexture) : 
     playButton(font),
     resumeButton(font),
     settingButton(font),
     exitButton(font),
     Gamename(font),
+    BackgroundSprite(BackgroundTexture),
     window(_window){
         playButton.   setString("Play");
         resumeButton. setString("Resume");
@@ -26,10 +27,10 @@ void Homescreen::updateButton(Mouse &mouse){
     exitButton.   setPosition({window_w/2, window_h * 15/20});
 
     //Buttons setSize
-    playButton.   setSize({300.f, 100.f});
-    resumeButton. setSize({300.f, 100.f});
-    settingButton.setSize({300.f, 100.f});
-    exitButton.   setSize({300.f, 100.f});
+    playButton.   setSize({500.f, 100.f});
+    resumeButton. setSize({500.f, 100.f});
+    settingButton.setSize({500.f, 100.f});
+    exitButton.   setSize({500.f, 100.f});
 
     //buttons update
     playButton.   update(mouse);
@@ -90,16 +91,12 @@ void Homescreen::run(){
     //mouse
     Mouse mouse;
 
-    //background
-    sf::Texture backgroundTexture("assets/images/homescreenBackground.png");
-    sf::Sprite backgroundSprite(backgroundTexture);
-
     while (window.isOpen()){
         handleEvent(window);
 
         //Background
         window.clear();
-        setBackground(backgroundSprite);
+        setBackground(BackgroundSprite);
         UpdateGamenamePosition();
 
         //mouse update

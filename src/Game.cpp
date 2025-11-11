@@ -9,19 +9,24 @@
 #include <iostream>
 
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"), 
-               font("assets/fonts/Monocraft.ttc")
-               {
-                    windowStateStack.push({windowState::Exit});
-                    windowStateStack.push({windowState::Homescreen});
-               }
+               font("assets/fonts/Monocraft.ttc"){
+
+    windowStateStack.push({windowState::Exit});
+    windowStateStack.push({windowState::Homescreen});
+
+    
+}
 
 void Game::run(){
     
-
-    
+    sf::Texture backgroundTexture("assets/images/Background.png");
     sf::Texture blackStoneTexture("assets/images/BlackStone.png");
     sf::Texture whiteStoneTexture("assets/images/WhiteStone.png");
-    GameScreen gameScreen(font, window, blackStoneTexture, whiteStoneTexture);
+
+    Homescreen homeScreen(font, window, backgroundTexture);
+    PlayOptions playOptions(font, window, backgroundTexture);
+    GameScreen gameScreen(font, window, blackStoneTexture, whiteStoneTexture, backgroundTexture);
+
     while (window.isOpen()){
         handleEvent(window);
 
@@ -36,7 +41,7 @@ void Game::run(){
         }
 
         if (state == windowState::Homescreen){
-            Homescreen homeScreen(font, window);
+            homeScreen.nextState = windowState::Homescreen;
             homeScreen.run();
             state = homeScreen.nextState;
 
@@ -49,7 +54,7 @@ void Game::run(){
         }
 
         if (state == windowState::PlayOptions){
-            PlayOptions playOptions(font, window);
+            playOptions.nextState = windowState::PlayOptions;
             playOptions.run();
             state = playOptions.nextState;
 

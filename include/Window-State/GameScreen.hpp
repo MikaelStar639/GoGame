@@ -26,6 +26,9 @@ private:
     GameState gameState;
     std::vector<std::vector<Stone>> grid;
 
+    //Sprite
+    sf::Sprite BackgroundSprite;
+
     //window
     sf::RenderWindow &window;
 
@@ -44,7 +47,8 @@ private:
 
 public:
     GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
-                sf::Texture &BlackTexture, sf::Texture &WhiteTexture);
+                sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
+                sf::Texture &BackgroundTexture);
 
     Game::windowState nextState = Game::windowState::GameScreen;
 

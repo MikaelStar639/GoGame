@@ -2,7 +2,8 @@
 // #include <iostream>
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
-                sf::Texture &BlackTexture, sf::Texture &WhiteTexture) : 
+                sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
+                sf::Texture &BackgroundTexture) : 
 
     backButton  (_font),
     redoButton  (_font),
@@ -10,7 +11,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     passButton  (_font),
     resignButton(_font),
     window      (_window),
-    board       (_font)
+    board       (_font),
+    BackgroundSprite(BackgroundTexture)
     {
 
     //Button String
@@ -124,7 +126,7 @@ GameScreen::Cordinate GameScreen::to_cord(sf::Vector2f position){
     sf::Vector2f diff = position - sf::Vector2f(px, py);
     float dist2 = diff.x * diff.x + diff.y * diff.y;
 
-    float radius = board.gap/2 - 1.f;
+    float radius = board.gap/2;
     if (dist2 <= radius * radius){
         return {18 - j, i};
     }
@@ -201,16 +203,12 @@ void GameScreen::run(){
     //mouse
     Mouse mouse;
 
-    //background
-    sf::Texture backgroundTexture("assets/images/homescreenBackground.png");
-    sf::Sprite backgroundSprite(backgroundTexture);
-
     while (window.isOpen()){
         handleEvent(window);
 
         //background
         window.clear(sf::Color(64, 64, 64));
-        setBackground(backgroundSprite);
+        setBackground(BackgroundSprite);
 
         //mouse
         mouse.update(window);
