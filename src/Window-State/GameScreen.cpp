@@ -155,14 +155,17 @@ void GameScreen::updateStone(Mouse &mouse){
     }
     else{
         if (overStone.state == Stone::State::empty){
+            if (gameState.isIllegal(cy, cx, gameState.turn)){
+                return;
+            }
             if (gameState.turn == GameState::Turn::black){
                 overStone.setState(Stone::State::black);
             }
             else{
                 overStone.setState(Stone::State::white);
             }
-
             gameState.addStone(cy, cx);
+            gameState.RemoveCapturedStones(grid);
             newTurn = true;
         }
     }
