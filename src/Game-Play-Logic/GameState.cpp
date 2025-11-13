@@ -26,10 +26,11 @@ void GameState::addStoneMove(int y, int x){
     // truncate history if we are not at the end
     if (HistoryIndex + 1 == static_cast<int>(history.size()))
     {
-        HistoryState emptyState(HistoryState::Turn::black, 0, 0, {});
-        history.push_back(emptyState);
+        std::vector<std::pair<int, int>> emptyCaptured;
+        emptyCaptured.resize(0);
+        HistoryState emptyState(HistoryState::Turn::black, 0, 0, emptyCaptured);
+        history.emplace_back(emptyState);
     }
-    
     
     // push new info state into HistoryIndex + 1
     ++HistoryIndex;
@@ -41,10 +42,8 @@ void GameState::addStoneMove(int y, int x){
     history[HistoryIndex].y_newStone = y;
     history[HistoryIndex].x_newStone = x;
     RemoveCapturedStones(history[HistoryIndex]);
-    if (HistoryIndex - 1 >= 0)
-    {
-        history[HistoryIndex - 1].canredo = false;
-    }
+    undoCount = 0;
+
 }
 
 void GameState::deleteStone(int y, int x){
@@ -137,12 +136,13 @@ void GameState::undo() {
         }
         turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
         --HistoryIndex;
-        history[HistoryIndex].canredo = true;
+        undoCount++;
     }
 }
 
 void GameState::redo() {
-    if (HistoryIndex + 1 < static_cast<int>(history.size()) && history[HistoryIndex].canredo) {
+
+    if (HistoryIndex + 1 < static_cast<int>(history.size()) && undoCount > 0) {
         ++HistoryIndex;
         HistoryState &state = history[HistoryIndex];
         addStone(state.y_newStone, state.x_newStone, 
@@ -151,5 +151,6 @@ void GameState::redo() {
             deleteStone(y, x);
         }
         turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
+        undoCount--;
     }
 }

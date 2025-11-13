@@ -20,6 +20,7 @@ public:
     Stone::State grid[19][19];
     std::vector<HistoryState> history;
     int HistoryIndex = -1;
+    int undoCount = 0;
     bool lastMovePass = false;
 
     void addStone(int y, int x, Turn _turn);
