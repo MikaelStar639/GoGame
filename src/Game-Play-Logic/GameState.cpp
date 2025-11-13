@@ -1,4 +1,5 @@
 #include "Game-Play-Logic/GameState.hpp"
+// #include "Game-Play-Logic/HistoryState.hpp"
 #include <iostream>
 
 GameState::GameState() {
@@ -9,12 +10,40 @@ GameState::GameState() {
     }
 }
 
-void GameState::addStone(int y, int x){
-    if (turn == Turn::black){
+void GameState::addStone(int y, int x, Turn _turn){
+    if (_turn == Turn::black){
         grid[y][x] = Stone::State::black;
     }
     else{
         grid[y][x] = Stone::State::white;
+    }
+}
+
+void GameState::addStoneMove(int y, int x){
+    addStone(y, x, turn);
+    // modify historyState here
+    
+    // truncate history if we are not at the end
+    if (HistoryIndex + 1 == static_cast<int>(history.size()))
+    {
+        HistoryState emptyState(HistoryState::Turn::black, 0, 0, {});
+        history.push_back(emptyState);
+    }
+    
+    
+    // push new info state into HistoryIndex + 1
+    ++HistoryIndex;
+    if (turn == Turn::black)
+    history[HistoryIndex].turn = HistoryState::Turn::black;
+    else
+    history[HistoryIndex].turn = HistoryState::Turn::white;
+    
+    history[HistoryIndex].y_newStone = y;
+    history[HistoryIndex].x_newStone = x;
+    RemoveCapturedStones(history[HistoryIndex]);
+    if (HistoryIndex - 1 >= 0)
+    {
+        history[HistoryIndex - 1].canredo = false;
     }
 }
 
@@ -63,21 +92,28 @@ bool GameState::canCapture(GameState::Turn turn) {
     return false;
 }
 
-bool GameState::isIllegal(int y, int x, GameState::Turn turn) {
+bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
     // Placeholder for illegal move logic
-    addStone(y, x);
+    addStone(y, x, _turn);
     int currentLiberties = LibertiesCount(y, x);
-    if (currentLiberties > 0) return false;
-    else if (canCapture(turn)) return false;
-    deleteStone(y, x);
+    if (currentLiberties > 0)
+    {
+        deleteStone(y, x); // revert the move
+        return false;
+    }
+    else if (canCapture(_turn))
+    {
+        deleteStone(y, x); // revert the move
+        return false;
+    }
+    deleteStone(y, x); // revert the move
     return true; 
 }
 
-void GameState::RemoveCapturedStones(std::vector<std::vector<Stone>> &stoneGrid) {
-    // Placeholder for removing captured stones
+void GameState::RemoveCapturedStones(HistoryState& historyState) {
+    // also construct captured stones list for history state
     Stone::State opponent = (turn == Turn::black) ? Stone::State::white : Stone::State::black;
     std::vector<std::pair<int, int>> toDelete;
-    // std::cout<<"Y "<<'\n';
     for (int y = 0; y < 19; ++y) {
         for (int x = 0; x < 19; ++x){
             if (grid[y][x] != opponent) continue;
@@ -87,7 +123,33 @@ void GameState::RemoveCapturedStones(std::vector<std::vector<Stone>> &stoneGrid)
         }
     }
     for (auto &[y, x] : toDelete) {
-        stoneGrid[y][x].setState(Stone::State::empty);
+        historyState.capturedStones.push_back({y, x});
         grid[y][x] = Stone::State::empty;
+    }
+}
+
+void GameState::undo() {
+    if (HistoryIndex >= 0) {
+        HistoryState &state = history[HistoryIndex];
+        deleteStone(state.y_newStone, state.x_newStone);
+        for (auto &[y, x] : state.capturedStones) {
+            addStone(y, x, (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black);
+        }
+        turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
+        --HistoryIndex;
+        history[HistoryIndex].canredo = true;
+    }
+}
+
+void GameState::redo() {
+    if (HistoryIndex + 1 < static_cast<int>(history.size()) && history[HistoryIndex].canredo) {
+        ++HistoryIndex;
+        HistoryState &state = history[HistoryIndex];
+        addStone(state.y_newStone, state.x_newStone, 
+                  (state.turn == HistoryState::Turn::black) ? Turn::black : Turn::white);
+        for (auto &[y, x] : state.capturedStones) {
+            deleteStone(y, x);
+        }
+        turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
     }
 }

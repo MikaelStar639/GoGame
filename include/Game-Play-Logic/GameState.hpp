@@ -1,6 +1,7 @@
 #pragma once
 
 #include <UI/Game-Elements/Stone.hpp>
+#include <Game-Play-Logic/HistoryState.hpp>
 #include <algorithm>
 #include <vector>
 #include <queue>
@@ -15,18 +16,26 @@ public:
 
     GameState();
 
-    Stone::State grid[19][19];
     Turn turn = Turn::black;
+    Stone::State grid[19][19];
+    std::vector<HistoryState> history;
+    int HistoryIndex = -1;
+    bool lastMovePass = false;
 
-    void addStone(int y, int x);
+    void addStone(int y, int x, Turn _turn);
     void deleteStone(int y, int x);
 
     // illegal move check
     bool isIllegal(int y, int x, GameState::Turn turn);
     bool canCapture(GameState::Turn turn);
     int LibertiesCount(int y, int x);
+
+    // redo and undo
+    void redo();
+    void undo();
     
-    void RemoveCapturedStones(std::vector<std::vector<Stone>> &stoneGrid);
+    void addStoneMove(int y, int x);
+    void RemoveCapturedStones(HistoryState &historyState);
 
     void update();
 }; 

@@ -103,9 +103,21 @@ void GameScreen::updateGameButton(Mouse &mouse){
     resignButton.update(mouse);
 
     //check button state
-    if (redoButton  .onRelease);
-    if (undoButton  .onRelease);
-    if (passButton  .onRelease);
+    if (redoButton  .onRelease) {
+        gameState.redo();
+        newTurn = true;
+    }
+    if (undoButton  .onRelease){
+        gameState.undo();
+        newTurn = true;
+    }
+    if (passButton  .onRelease) {
+        if (gameState.lastMovePass == true && gameState.turn == GameState::Turn::black) {
+            nextState = Game::windowState::Exit;
+        }
+        gameState.lastMovePass = true;
+        newTurn = true;
+    }
     if (resignButton.onRelease);
 }
 
@@ -158,14 +170,14 @@ void GameScreen::updateStone(Mouse &mouse){
             if (gameState.isIllegal(cy, cx, gameState.turn)){
                 return;
             }
+            gameState.lastMovePass = false;
             if (gameState.turn == GameState::Turn::black){
                 overStone.setState(Stone::State::black);
             }
             else{
                 overStone.setState(Stone::State::white);
             }
-            gameState.addStone(cy, cx);
-            gameState.RemoveCapturedStones(grid);
+            gameState.addStoneMove(cy, cx);
             newTurn = true;
         }
     }
@@ -201,6 +213,16 @@ void GameScreen::drawStone(){
     }
 }
 
+void GameScreen::SyncStoneWithGameState(){
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            if (gameState.grid[y][x] != grid[y][x].state){
+                grid[y][x].setState(gameState.grid[y][x]);
+            }
+        }
+    }
+}
+
 void GameScreen::run(){
 
     //mouse
@@ -220,6 +242,7 @@ void GameScreen::run(){
         updateFeatureButton(mouse);
         updateGameButton(mouse);
         updateStone(mouse);
+        SyncStoneWithGameState();
         updateGameState();
 
         //draw

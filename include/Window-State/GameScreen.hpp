@@ -61,5 +61,6 @@ public:
     
     void updateGameState();
     
+    void SyncStoneWithGameState();
     void run();
 };
