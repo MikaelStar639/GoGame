@@ -48,7 +48,7 @@ private:
 public:
     GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
-                sf::Texture &BackgroundTexture);
+                sf::Texture &BackgroundTexture, sf::Sound &stoneSound);
 
     Game::windowState nextState = Game::windowState::GameScreen;
 
