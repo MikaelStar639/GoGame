@@ -1,11 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
 #include <Input/Mouse.hpp>
 class Stone{    
 
 private:
     sf::Sprite BlackStoneSprite;
     sf::Sprite WhiteStoneSprite;
+    sf::Sound  &stoneSound;
 
 public:
     enum class State{
@@ -30,7 +33,8 @@ public:
     bool isContain(sf::Vector2f _position);
     void update(Mouse &mouse);
 
-    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture, 
+    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture,
+          sf::Sound &_stoneSound, 
           sf::Vector2f _position);
 
     

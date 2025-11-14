@@ -13,13 +13,17 @@ private:
     Slider musicSlider;
 
     sf::Sprite BackgroundSprite;
+    sf::Sound &BackgroundMusic;
+    sf::Sound &stoneSound;
 
     sf::RenderWindow &window;
     
     const float space = 75.f;
 
 public:
-    Settings(sf::Font &font, sf::RenderWindow &window, sf::Texture &BackgroundTexture);
+    Settings(sf::Font &font, sf::RenderWindow &window, 
+             sf::Texture &BackgroundTexture,
+             sf::Sound &BackgroundMusic, sf::Sound &stoneSound);
     
     Game::windowState nextState = Game::windowState::Settings;
     

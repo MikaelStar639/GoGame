@@ -12,6 +12,7 @@ Slider::Slider(sf::Font &font) : track(thumb), text(font){}
 void Slider::update(Mouse &mouse){
     thumb.update(mouse);
     track.update(thumb);
+    value = 100.f * thumb.value/thumb.maxValue;
 }
 
 void Slider::setPosition(sf::Vector2f _position){

@@ -24,6 +24,8 @@ public:
     float text_align_v = 0.6f;
     float radius       = 10.f;
 
+    float value; //0 -> 100
+
     Slider(sf::Font &font);
     Slider(std::string _str, sf::Font &font, sf::Vector2f _size, sf::Vector2f _position);
     

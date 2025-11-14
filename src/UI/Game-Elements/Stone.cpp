@@ -1,9 +1,11 @@
 #include "UI/Game-Elements/Stone.hpp"
 
-Stone::Stone(sf::Texture &_BlackstoneTexture, sf::Texture &_WhitestoneTexture, sf::Vector2f _pos) : 
+Stone::Stone(sf::Texture &_BlackstoneTexture, sf::Texture &_WhitestoneTexture, 
+             sf::Sound &_stoneSound, sf::Vector2f _pos) : 
     BlackStoneSprite(_BlackstoneTexture),
     WhiteStoneSprite(_WhitestoneTexture),
-    position(_pos)
+    position(_pos),
+    stoneSound(_stoneSound)
 {
     sf::FloatRect bounds = BlackStoneSprite.getLocalBounds();
     BlackStoneSprite.setOrigin(bounds.size.componentWiseMul({0.5f, 0.5f}));
@@ -44,6 +46,7 @@ void Stone::update(Mouse &mouse){
         if (mouse.onRelease && isPressed){
             //first release
             onRelease = true;
+            if (state == State::empty) stoneSound.play();
         }
 
         if (mouse.isPressed && isPressed){

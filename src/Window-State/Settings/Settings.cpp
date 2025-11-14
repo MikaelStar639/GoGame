@@ -4,15 +4,19 @@
 Settings::Settings(
     sf::Font &_font, 
     sf::RenderWindow &_window, 
-    sf::Texture &_BackgroundTexture):
+    sf::Texture &_BackgroundTexture,
+    sf::Sound &_BackgroundMusic,
+    sf::Sound &_stoneSound):
     
     backButton      (_font),
     stoneStyleButton(_font),
     boardStyleButton(_font),
     window(_window),
     BackgroundSprite(_BackgroundTexture),
+    BackgroundMusic(_BackgroundMusic),
     soundSlider(_font),
-    musicSlider(_font)
+    musicSlider(_font),
+    stoneSound(_stoneSound)
     {}
 
 
@@ -84,6 +88,10 @@ void Settings::updateSlider(Mouse &mouse){
     //update
     soundSlider.update(mouse);
     musicSlider.update(mouse);
+
+    //update sounds
+    BackgroundMusic.setVolume(musicSlider.value);
+    stoneSound     .setVolume(soundSlider.value);
 }
 
 void Settings::draw(){
