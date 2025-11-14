@@ -7,6 +7,7 @@
 #include "UI/Game-Elements/Stone.hpp"
 
 #include "Game-Play-Logic/GameState.hpp"
+
 #include <cmath>
 #include <vector>
 
@@ -51,7 +52,9 @@ private:
 public:
     GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
-                sf::Texture &BackgroundTexture, sf::Sound &stoneSound);
+                sf::Texture &BackgroundTexture, 
+                sf::Sound &stoneSound,
+                sf::Sound &stoneCaptureSound);
 
     Game::windowState nextState = Game::windowState::GameScreen;
 

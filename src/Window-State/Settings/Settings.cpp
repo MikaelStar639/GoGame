@@ -6,7 +6,8 @@ Settings::Settings(
     sf::RenderWindow &_window, 
     sf::Texture &_BackgroundTexture,
     sf::Sound &_BackgroundMusic,
-    sf::Sound &_stoneSound):
+    sf::Sound &_stoneSound,
+    sf::Sound &_stoneCaptureSound):
     
     backButton      (_font),
     stoneStyleButton(_font),
@@ -16,7 +17,8 @@ Settings::Settings(
     BackgroundMusic(_BackgroundMusic),
     soundSlider(_font),
     musicSlider(_font),
-    stoneSound(_stoneSound)
+    stoneSound(_stoneSound),
+    stoneCaptureSound(_stoneCaptureSound)
     {}
 
 

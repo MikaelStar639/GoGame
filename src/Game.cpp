@@ -22,17 +22,20 @@ void Game::run(){
     
     sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
     sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
-
+    sf::SoundBuffer stoneCapturedBuffer  ("assets/sounds/boom.mp3");
+    
     sf::Sound backgroundMusic(backgroundMusicBuffer);
     sf::Sound stoneSound(stoneSoundBuffer);
+    sf::Sound stoneCaptureSound(stoneCapturedBuffer);
 
     Homescreen  homeScreen (font, window, backgroundTexture);
     PlayOptions playOptions(font, window, backgroundTexture);
-    GameScreen  gameScreen (font, window, blackStoneTexture, whiteStoneTexture, backgroundTexture, stoneSound);
-    Settings    settings   (font, window, backgroundTexture, backgroundMusic, stoneSound);
+    GameScreen  gameScreen (font, window, blackStoneTexture, whiteStoneTexture, backgroundTexture, stoneSound, stoneCaptureSound);
+    Settings    settings   (font, window, backgroundTexture, backgroundMusic, stoneSound, stoneCaptureSound);
 
     backgroundMusic.setLooping(true);
     backgroundMusic.play();
+
     while (window.isOpen()){
         handleEvent(window);
         assert(!windowStateStack.empty());

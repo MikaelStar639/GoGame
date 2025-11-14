@@ -3,8 +3,9 @@
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
-                sf::Texture &BackgroundTexture, sf::Sound &_stoneSound) : 
-
+                sf::Texture &BackgroundTexture, 
+                sf::Sound &_stoneSound,
+                sf::Sound &_stoneCaptureSound) : 
     backButton  (_font),
     redoButton  (_font),
     undoButton  (_font),
@@ -13,7 +14,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     window      (_window),
     board       (_font),
     BackgroundSprite(BackgroundTexture),
-    stoneSound(_stoneSound)
+    stoneSound(_stoneSound),
+    gameState(_stoneCaptureSound)
     {
 
     //Button String
