@@ -29,6 +29,9 @@ private:
     //Sprite
     sf::Sprite BackgroundSprite;
 
+    //Sound
+    sf::Sound &stoneSound;
+
     //window
     sf::RenderWindow &window;
 
