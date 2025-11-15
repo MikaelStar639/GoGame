@@ -1,10 +1,9 @@
 #include <Game.hpp>
+
 #include <Window-State/Homescreen.hpp>
 #include <Window-State/PlayOptions.hpp>
 #include <Window-State/GameScreen.hpp>
-
-#include "UI/Game-Elements/Board.hpp"
-#include "UI/Game-Elements/Stone.hpp"
+#include <Window-State/Settings/Settings.hpp>
 
 #include <iostream>
 
@@ -13,8 +12,6 @@ Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"),
 
     windowStateStack.push({windowState::Exit});
     windowStateStack.push({windowState::Homescreen});
-
-    
 }
 
 void Game::run(){
@@ -22,16 +19,25 @@ void Game::run(){
     sf::Texture backgroundTexture("assets/images/Background.png");
     sf::Texture blackStoneTexture("assets/images/BlackStone.png");
     sf::Texture whiteStoneTexture("assets/images/WhiteStone.png");
+    
+    sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
+    sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
+    sf::SoundBuffer stoneCapturedBuffer  ("assets/sounds/boom.mp3");
+    
+    sf::Sound backgroundMusic(backgroundMusicBuffer);
+    sf::Sound stoneSound(stoneSoundBuffer);
+    sf::Sound stoneCaptureSound(stoneCapturedBuffer);
 
-    Homescreen homeScreen(font, window, backgroundTexture);
+    Homescreen  homeScreen (font, window, backgroundTexture);
     PlayOptions playOptions(font, window, backgroundTexture);
-    GameScreen gameScreen(font, window, blackStoneTexture, whiteStoneTexture, backgroundTexture);
+    GameScreen  gameScreen (font, window, blackStoneTexture, whiteStoneTexture, backgroundTexture, stoneSound, stoneCaptureSound);
+    Settings    settings   (font, window, backgroundTexture, backgroundMusic, stoneSound, stoneCaptureSound);
+
+    backgroundMusic.setLooping(true);
+    backgroundMusic.play();
 
     while (window.isOpen()){
         handleEvent(window);
-
-        window.clear();
-
         assert(!windowStateStack.empty());
         windowState state = windowStateStack.top();
 
@@ -80,7 +86,15 @@ void Game::run(){
         }
 
         if (state == windowState::Settings){
-            //TODO: Settings
+            settings.nextState = windowState::Settings;
+            settings.run();
+            state = settings.nextState;
+
+            if (state != windowState::Exit)
+                windowStateStack.push(state);
+            else
+                windowStateStack.pop();
+
             continue;
         }
     }

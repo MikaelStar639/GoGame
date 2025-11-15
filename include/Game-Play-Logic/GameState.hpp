@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Audio.hpp>
 #include <UI/Game-Elements/Stone.hpp>
 #include <Game-Play-Logic/HistoryState.hpp>
 #include <algorithm>
@@ -8,13 +9,16 @@
 #include <vector>
 
 class GameState{
+private:
+    sf::Sound &stoneCaptureSound;
+
 public:
     enum class Turn{
         black,
         white
     };
 
-    GameState();
+    GameState(sf::Sound &stoneCaptureSound);
 
     Turn turn = Turn::black;
     Stone::State grid[19][19];

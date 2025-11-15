@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+
 #include <Input/Mouse.hpp>
 class Stone{    
 
@@ -30,7 +31,7 @@ public:
     bool isContain(sf::Vector2f _position);
     void update(Mouse &mouse);
 
-    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture, 
+    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture,
           sf::Vector2f _position);
 
     

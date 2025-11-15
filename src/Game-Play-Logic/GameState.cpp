@@ -1,8 +1,9 @@
 #include "Game-Play-Logic/GameState.hpp"
 // #include "Game-Play-Logic/HistoryState.hpp"
 #include <iostream>
+#include <SFML/Audio.hpp>
 
-GameState::GameState() {
+GameState::GameState(sf::Sound &_stoneCaptureSound) : stoneCaptureSound(_stoneCaptureSound) {
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
             grid[y][x] = Stone::State::empty;
@@ -121,6 +122,12 @@ void GameState::RemoveCapturedStones(HistoryState& historyState) {
             }
         }
     }
+
+    if (!toDelete.empty()){
+        stoneCaptureSound.play();
+        std::cout << "boom\n";
+    }
+
     for (auto &[y, x] : toDelete) {
         historyState.capturedStones.push_back({y, x});
         grid[y][x] = Stone::State::empty;

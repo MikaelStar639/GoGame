@@ -77,7 +77,18 @@ void RoundRectShape::draw(sf::RenderWindow &window)
 
 bool RoundRectShape::isContain(sf::Vector2f pos)
 {
-    bool flag = rect1.getGlobalBounds().contains(pos) || rect2.getGlobalBounds().contains(pos);
-    for (int i = 0; i<=3; i++) flag = flag || circle[i].getGlobalBounds().contains(pos);
-    return flag;
+    if (rect1.getGlobalBounds().contains(pos))
+        return true;
+    
+    if (rect2.getGlobalBounds().contains(pos))
+        return true;
+    
+    for (int i = 0; i <= 3; ++i){
+        if (circle[i].getGlobalBounds().contains(pos)){
+            return true;
+        }
+    }
+
+    return false;
 }
+

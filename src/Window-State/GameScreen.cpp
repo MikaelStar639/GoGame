@@ -3,8 +3,9 @@
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
-                sf::Texture &BackgroundTexture) : 
-
+                sf::Texture &BackgroundTexture, 
+                sf::Sound &_stoneSound,
+                sf::Sound &_stoneCaptureSound) : 
     backButton  (_font),
     redoButton  (_font),
     undoButton  (_font),
@@ -12,7 +13,9 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     resignButton(_font),
     window      (_window),
     board       (_font),
-    BackgroundSprite(BackgroundTexture)
+    BackgroundSprite(BackgroundTexture),
+    stoneSound(_stoneSound),
+    gameState(_stoneCaptureSound)
     {
 
     //Button String
@@ -28,7 +31,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     for (int y = 0; y < 19; ++y){
         grid[y].reserve(19);
         for (int x = 0; x < 19; ++x){
-            grid[y].emplace_back(BlackTexture, WhiteTexture, 
+            grid[y].emplace_back(BlackTexture, WhiteTexture,
                 sf::Vector2f(board.gridX[x], board.gridY[18 - y]));
         }
     }
@@ -178,6 +181,7 @@ void GameScreen::updateStone(Mouse &mouse){
                 overStone.setState(Stone::State::white);
             }
             gameState.addStoneMove(cy, cx);
+            stoneSound.play();
             newTurn = true;
         }
     }
