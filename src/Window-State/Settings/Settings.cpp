@@ -92,8 +92,9 @@ void Settings::updateSlider(Mouse &mouse){
     musicSlider.update(mouse);
 
     //update sounds
-    BackgroundMusic.setVolume(musicSlider.value);
-    stoneSound     .setVolume(soundSlider.value);
+    BackgroundMusic  .setVolume(musicSlider.value);
+    stoneCaptureSound.setVolume(soundSlider.value);
+    stoneSound       .setVolume(soundSlider.value);
 }
 
 void Settings::draw(){
