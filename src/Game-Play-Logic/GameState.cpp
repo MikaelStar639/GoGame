@@ -1,4 +1,5 @@
 #include "Game-Play-Logic/GameState.hpp"
+#include <iostream>
 
 GameState::GameState(sf::Sound &_stoneCaptureSound) : stoneCaptureSound(_stoneCaptureSound) {
     for (int y = 0; y < 19; ++y){
@@ -22,7 +23,7 @@ void GameState::addStoneMove(int y, int x){
     // modify historyState here
     
     // truncate history if we are not at the end
-    if (HistoryIndex + 1 == static_cast<int>(history.size()))
+    if (history.index + 1 == static_cast<int>(history.size()))
     {
         std::vector<std::pair<int, int>> emptyCaptured;
         emptyCaptured.resize(0);
@@ -30,17 +31,17 @@ void GameState::addStoneMove(int y, int x){
         history.data.emplace_back(emptyState);
     }
     
-    // push new info state into HistoryIndex + 1
-    ++HistoryIndex;
+    // push new info state into history.index + 1
+    ++history.index;
     if (turn == Turn::black)
-        history[HistoryIndex].turn = HistoryState::Turn::black;
+        history[history.index].turn = HistoryState::Turn::black;
     else
-        history[HistoryIndex].turn = HistoryState::Turn::white;
+        history[history.index].turn = HistoryState::Turn::white;
     
-    history[HistoryIndex].y_newStone = y;
-    history[HistoryIndex].x_newStone = x;
-    RemoveCapturedStones(history[HistoryIndex]);
-    undoCount = 0;
+    history[history.index].y_newStone = y;
+    history[history.index].x_newStone = x;
+    RemoveCapturedStones(history[history.index]);
+    history.undoCount = 0;
 
 }
 
@@ -106,17 +107,6 @@ void GameState::RemoveCapturedStones(HistoryState& historyState) {
         stoneCaptureSound.play();
     }
 
-    //checkKO
-    if (toDelete.size() == 1){
-        KO = true;
-        KO_turn = turn;
-        KO_x = toDelete[0].second;
-        KO_y = toDelete[0].first;
-    }
-    else{
-        KO = false;
-    }
-
     for (auto &[y, x] : toDelete) {
         historyState.capturedStones.push_back({y, x});
         grid[y][x] = Stone::State::empty;
@@ -126,8 +116,8 @@ void GameState::RemoveCapturedStones(HistoryState& historyState) {
 bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
 
     //KO rule
-    if (HistoryIndex >= 0 && history[HistoryIndex].capturedStones.size() == 1){
-        auto currentState = history[HistoryIndex];
+    if (history.index >= 0 && history[history.index].capturedStones.size() == 1){
+        auto currentState = history[history.index];
         auto [_y, _x] = currentState.capturedStones[0];
         if (y == _y && _x == x){
             if (static_cast<int>(_turn) != static_cast<int>(currentState.turn)){
@@ -153,32 +143,97 @@ bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
     return true; 
 }
 
-
-
 void GameState::undo() {
-    if (HistoryIndex >= 0) {
-        HistoryState &state = history[HistoryIndex];
+    if (history.index >= 0) {
+        HistoryState &state = history[history.index];
         deleteStone(state.y_newStone, state.x_newStone);
         for (auto &[y, x] : state.capturedStones) {
             addStone(y, x, (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black);
         }
         turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
-        --HistoryIndex;
-        undoCount++;
+        --history.index;
+        history.undoCount++;
     }
 }
 
 void GameState::redo() {
 
-    if (HistoryIndex + 1 < static_cast<int>(history.size()) && undoCount > 0) {
-        ++HistoryIndex;
-        HistoryState &state = history[HistoryIndex];
+    if (history.index + 1 < static_cast<int>(history.size()) && history.undoCount > 0) {
+        ++history.index;
+        HistoryState &state = history[history.index];
         addStone(state.y_newStone, state.x_newStone, 
                   (state.turn == HistoryState::Turn::black) ? Turn::black : Turn::white);
         for (auto &[y, x] : state.capturedStones) {
             deleteStone(y, x);
         }
         turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
-        undoCount--;
+        history.undoCount--;
     }
+}
+
+void GameState::load(std::string _address){
+    std::ifstream fin;
+    fin.open(_address);
+
+    if (fin.peek() == std::ifstream::traits_type::eof()){
+        isFileEmpty = true;
+        return;
+    }
+    isFileEmpty = false;
+
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            grid[y][x] = Stone::State::empty;
+        }
+    }
+
+    int black_num, white_num;
+    fin >> black_num;
+    for (int i = 0; i < black_num; ++i){
+        int y, x; fin >> y >> x;
+        grid[y][x] = Stone::State::black; 
+    }
+
+    fin >> white_num;
+    for (int i = 0; i < black_num; ++i){
+        int y, x; fin >> y >> x;
+        grid[y][x] = Stone::State::white; 
+    }
+
+    if (black_num == 0 && white_num == 0) isFileEmpty = true;
+    fin.close();
+}
+
+void GameState::save(std::string _address){
+    std::ofstream fout(_address);
+
+    int black_num, white_num;
+    std::vector<std::pair<int, int>> temp;
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            if (grid[y][x] == Stone::State::black){
+                temp.push_back({y, x});
+            }
+        }
+    }
+
+    fout << temp.size() << ' ';
+    for (auto [y, x]: temp) fout << y << ' ' << x << ' ';
+    fout << '\n';
+    temp.clear();
+
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            if (grid[y][x] == Stone::State::white){
+                temp.push_back({y, x});
+            }
+        }
+    }
+
+    fout << temp.size() << ' ';
+    for (auto [y, x]: temp) fout << y << ' ' << x << ' ';
+    fout << '\n';
+    temp.clear();
+
+    fout.close();
 }

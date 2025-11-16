@@ -30,12 +30,11 @@ void Game::run(){
 
     Homescreen  homeScreen (font, window, backgroundTexture);
     PlayOptions playOptions(font, window, backgroundTexture);
-    GameScreen  gameScreen (font, window, blackStoneTexture, whiteStoneTexture, backgroundTexture, stoneSound, stoneCaptureSound);
     Settings    settings   (font, window, backgroundTexture, backgroundMusic, stoneSound, stoneCaptureSound);
 
     backgroundMusic.setLooping(true);
     backgroundMusic.play();
-
+    
     while (window.isOpen()){
         handleEvent(window);
         assert(!windowStateStack.empty());
@@ -73,10 +72,36 @@ void Game::run(){
         }
 
         if (state == windowState::GameScreen){
+            GameScreen gameScreen (font, window, blackStoneTexture, whiteStoneTexture, 
+                                   backgroundTexture, stoneSound, stoneCaptureSound);
             gameScreen.nextState = windowState::GameScreen;
             gameScreen.run();
+            gameScreen.saveGame("game.saves");
+            
             state = gameScreen.nextState;
+            if (state != windowState::Exit)
+                windowStateStack.push(state);
+            else
+                windowStateStack.pop();
 
+            continue;
+        }
+
+        if (state == windowState::Resume){
+            GameScreen resume (font, window, blackStoneTexture, whiteStoneTexture, 
+                                backgroundTexture, stoneSound, stoneCaptureSound);
+
+            resume.loadGame("game.saves");
+            if (resume.canNotLoad){
+                windowStateStack.pop();
+                state = windowStateStack.top();
+                continue;
+            }
+            resume.nextState = windowState::GameScreen;
+            resume.run();
+            resume.saveGame("game.saves");
+            
+            state = resume.nextState;
             if (state != windowState::Exit)
                 windowStateStack.push(state);
             else

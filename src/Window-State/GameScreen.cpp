@@ -1,5 +1,4 @@
 #include "Window-State/GameScreen.hpp"
-// #include <iostream>
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
@@ -260,4 +259,14 @@ void GameScreen::run(){
             break;
         }
     }
+}
+
+void GameScreen::loadGame(std::string _address){
+    gameState.load(_address);
+    canNotLoad = gameState.isFileEmpty;
+    SyncStoneWithGameState();
+}
+
+void GameScreen::saveGame(std::string _address){
+    gameState.save(_address);
 }

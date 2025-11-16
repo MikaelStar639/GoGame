@@ -14,7 +14,6 @@ public:
     Turn turn;
     int y_newStone, x_newStone;
     std::vector<std::pair<int, int>> capturedStones;
-    bool canredo = false;
 
     HistoryState(Turn _turn, int y, int x,
                  const std::vector<std::pair<int, int>> &_capturedStones)
@@ -24,10 +23,11 @@ public:
 
 class History{
 public:
+
+    int index = -1;
+    int undoCount = 0;
+
     std::vector<HistoryState> data;
     HistoryState& operator [] (int id);
     int size();
-    
-    void save(std::string _address);
-    void load(std::string _address);
 };
