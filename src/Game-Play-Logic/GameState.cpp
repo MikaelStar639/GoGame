@@ -1,7 +1,4 @@
 #include "Game-Play-Logic/GameState.hpp"
-// #include "Game-Play-Logic/HistoryState.hpp"
-#include <iostream>
-#include <SFML/Audio.hpp>
 
 GameState::GameState(sf::Sound &_stoneCaptureSound) : stoneCaptureSound(_stoneCaptureSound) {
     for (int y = 0; y < 19; ++y){
@@ -30,15 +27,15 @@ void GameState::addStoneMove(int y, int x){
         std::vector<std::pair<int, int>> emptyCaptured;
         emptyCaptured.resize(0);
         HistoryState emptyState(HistoryState::Turn::black, 0, 0, emptyCaptured);
-        history.emplace_back(emptyState);
+        history.data.emplace_back(emptyState);
     }
     
     // push new info state into HistoryIndex + 1
     ++HistoryIndex;
     if (turn == Turn::black)
-    history[HistoryIndex].turn = HistoryState::Turn::black;
+        history[HistoryIndex].turn = HistoryState::Turn::black;
     else
-    history[HistoryIndex].turn = HistoryState::Turn::white;
+        history[HistoryIndex].turn = HistoryState::Turn::white;
     
     history[HistoryIndex].y_newStone = y;
     history[HistoryIndex].x_newStone = x;
@@ -92,7 +89,53 @@ bool GameState::canCapture(GameState::Turn turn) {
     return false;
 }
 
+void GameState::RemoveCapturedStones(HistoryState& historyState) {
+    // also construct captured stones list for history state
+    Stone::State opponent = (turn == Turn::black) ? Stone::State::white : Stone::State::black;
+    std::vector<std::pair<int, int>> toDelete;
+    for (int y = 0; y < 19; ++y) {
+        for (int x = 0; x < 19; ++x){
+            if (grid[y][x] != opponent) continue;
+            if (LibertiesCount(y, x) == 0) {
+                toDelete.push_back({y, x});
+            }
+        }
+    }
+
+    if (!toDelete.empty()){
+        stoneCaptureSound.play();
+    }
+
+    //checkKO
+    if (toDelete.size() == 1){
+        KO = true;
+        KO_turn = turn;
+        KO_x = toDelete[0].second;
+        KO_y = toDelete[0].first;
+    }
+    else{
+        KO = false;
+    }
+
+    for (auto &[y, x] : toDelete) {
+        historyState.capturedStones.push_back({y, x});
+        grid[y][x] = Stone::State::empty;
+    }
+}
+
 bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
+
+    //KO rule
+    if (HistoryIndex >= 0 && history[HistoryIndex].capturedStones.size() == 1){
+        auto currentState = history[HistoryIndex];
+        auto [_y, _x] = currentState.capturedStones[0];
+        if (y == _y && _x == x){
+            if (static_cast<int>(_turn) != static_cast<int>(currentState.turn)){
+                return true;
+            }
+        }
+    }
+
     // Placeholder for illegal move logic
     addStone(y, x, _turn);
     int currentLiberties = LibertiesCount(y, x);
@@ -110,29 +153,7 @@ bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
     return true; 
 }
 
-void GameState::RemoveCapturedStones(HistoryState& historyState) {
-    // also construct captured stones list for history state
-    Stone::State opponent = (turn == Turn::black) ? Stone::State::white : Stone::State::black;
-    std::vector<std::pair<int, int>> toDelete;
-    for (int y = 0; y < 19; ++y) {
-        for (int x = 0; x < 19; ++x){
-            if (grid[y][x] != opponent) continue;
-            if (LibertiesCount(y, x) == 0) {
-                toDelete.push_back({y, x});
-            }
-        }
-    }
 
-    if (!toDelete.empty()){
-        stoneCaptureSound.play();
-        std::cout << "boom\n";
-    }
-
-    for (auto &[y, x] : toDelete) {
-        historyState.capturedStones.push_back({y, x});
-        grid[y][x] = Stone::State::empty;
-    }
-}
 
 void GameState::undo() {
     if (HistoryIndex >= 0) {

@@ -22,7 +22,7 @@ public:
 
     Turn turn = Turn::black;
     Stone::State grid[19][19];
-    std::vector<HistoryState> history;
+    History history;
     int HistoryIndex = -1;
     int undoCount = 0;
     bool lastMovePass = false;
@@ -31,9 +31,14 @@ public:
     void deleteStone(int y, int x);
 
     // illegal move check
+    bool KO = false;
+    int KO_x = -1;
+    int KO_y = -1;
+    Turn KO_turn;
+
     bool isIllegal(int y, int x, GameState::Turn turn);
     bool canCapture(GameState::Turn turn);
-    int LibertiesCount(int y, int x);
+    int  LibertiesCount(int y, int x);
 
     // redo and undo
     void redo();
@@ -41,7 +46,5 @@ public:
     
     void addStoneMove(int y, int x);
     void RemoveCapturedStones(HistoryState &historyState);
-
-    void update();
 }; 
 
