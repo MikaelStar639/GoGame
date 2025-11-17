@@ -237,3 +237,13 @@ void GameState::save(std::string _address){
 
     fout.close();
 }
+
+void GameState::copyTo(GameState &_gameState){
+    _gameState.turn = turn;
+    for (int y = 0; y < 19; ++y)
+        for (int x = 0; x < 19; ++x)
+            _gameState.grid[y][x] = grid[y][x];
+    
+    _gameState.history = history;
+    _gameState.lastMovePass = lastMovePass;
+}

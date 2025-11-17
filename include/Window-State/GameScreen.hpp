@@ -73,4 +73,5 @@ public:
 
     void SyncStoneWithGameState();
     void run();
+    void copyTo(GameScreen &gameScreen);
 };

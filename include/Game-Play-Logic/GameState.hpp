@@ -42,5 +42,6 @@ public:
 
     void addStoneMove(int y, int x);
     void RemoveCapturedStones(HistoryState &historyState);
+    void copyTo(GameState &_gameState);
 }; 
 

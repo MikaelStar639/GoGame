@@ -270,3 +270,10 @@ void GameScreen::loadGame(std::string _address){
 void GameScreen::saveGame(std::string _address){
     gameState.save(_address);
 }
+
+void GameScreen::copyTo(GameScreen &_gameScreen){
+    _gameScreen.grid = grid;
+    gameState.copyTo(_gameScreen.gameState);
+    _gameScreen.canNotLoad = false;
+
+}

@@ -35,6 +35,11 @@ void Game::run(){
     backgroundMusic.setLooping(true);
     backgroundMusic.play();
     
+
+    GameScreen resume (font, window, blackStoneTexture, whiteStoneTexture, 
+                                backgroundTexture, stoneSound, stoneCaptureSound);
+
+    resume.loadGame("game.saves");
     while (window.isOpen()){
         handleEvent(window);
         assert(!windowStateStack.empty());
@@ -76,8 +81,9 @@ void Game::run(){
                                    backgroundTexture, stoneSound, stoneCaptureSound);
             gameScreen.nextState = windowState::GameScreen;
             gameScreen.run();
-            gameScreen.saveGame("game.saves");
             
+            gameScreen.copyTo(resume);
+
             state = gameScreen.nextState;
             if (state != windowState::Exit)
                 windowStateStack.push(state);
@@ -88,15 +94,12 @@ void Game::run(){
         }
 
         if (state == windowState::Resume){
-            GameScreen resume (font, window, blackStoneTexture, whiteStoneTexture, 
-                                backgroundTexture, stoneSound, stoneCaptureSound);
-
-            resume.loadGame("game.saves");
             if (resume.canNotLoad){
                 windowStateStack.pop();
                 state = windowStateStack.top();
                 continue;
             }
+            
             resume.nextState = windowState::GameScreen;
             resume.run();
             resume.saveGame("game.saves");
@@ -123,4 +126,6 @@ void Game::run(){
             continue;
         }
     }
+
+    resume.saveGame("game.saves");
 }
