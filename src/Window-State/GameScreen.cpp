@@ -105,15 +105,15 @@ void GameScreen::updateGameButton(Mouse &mouse){
     resignButton.update(mouse);
 
     //check button state
-    if (redoButton  .onRelease) {
+    if (redoButton.onRelease) {
         gameState.redo();
         newTurn = true;
     }
-    if (undoButton  .onRelease){
+    if (undoButton.onRelease){
         gameState.undo();
         newTurn = true;
     }
-    if (passButton  .onRelease) {
+    if (passButton.onRelease) {
         if (gameState.lastMovePass == true && gameState.turn == GameState::Turn::black) {
             nextState = Game::windowState::Exit;
         }
@@ -255,6 +255,7 @@ void GameScreen::run(){
 
         window.display();
 
+        gameState.getScore();
         if (nextState != Game::windowState::GameScreen){
             break;
         }

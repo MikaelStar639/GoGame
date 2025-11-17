@@ -27,26 +27,23 @@ private:
     GameState gameState;
     std::vector<std::vector<Stone>> grid;
 
-    //Sprite
+    //Sprite & Sound
     sf::Sprite BackgroundSprite;
-
-    //Sound
     sf::Sound &stoneSound;
-
-    //window
-    sf::RenderWindow &window;
-
+    
+    //UI
     void drawBoard();
     void drawButton();
     void drawStone();
+    
+    //window
+    sf::RenderWindow &window;
 
     //Cordinate of the Stone on the Board
     struct Cordinate{
         int y, x;
     };
-
     Cordinate to_cord(sf::Vector2f position);
-
     bool newTurn = false;
 
 public:
@@ -58,20 +55,25 @@ public:
 
     Game::windowState nextState = Game::windowState::GameScreen;
 
+    //* UI
     void setBackground(sf::Sprite &backgroundSprite);
     void setBoard(Board &board);
-
     void updateFeatureButton(Mouse &mouse);
     void updateGameButton(Mouse &mouse);
     void updateStone(Mouse &mouse);
     
+    //* Game State
     void updateGameState();
+    void SyncStoneWithGameState();
     
+    //* Load/save Game
     bool canNotLoad = true;
     void loadGame(std::string _address);
     void saveGame(std::string _address);
-
-    void SyncStoneWithGameState();
+    
+    //* Run 
     void run();
+
+    //* Copy to the other gameScreen
     void copyTo(GameScreen &gameScreen);
 };

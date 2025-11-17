@@ -9,6 +9,7 @@ GameState::GameState(sf::Sound &_stoneCaptureSound) : stoneCaptureSound(_stoneCa
     }
 }
 
+//*  Game Management
 void GameState::addStone(int y, int x, Turn _turn){
     if (_turn == Turn::black){
         grid[y][x] = Stone::State::black;
@@ -143,6 +144,73 @@ bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
     return true; 
 }
 
+//*  end game
+void GameState::getScore(){
+
+    blackScore = 0;
+    whiteScore = 6; //komi = 6.5
+
+    //* using DFS for easier implementation
+    bool visited[19][19] = {false};
+    const int dy[4] = {-1, 1, 0, 0};
+    const int dx[4] = {0, 0, -1, 1};
+
+    //* lambda
+    auto dfs = 
+    [&](auto& self, int y, int x, bool &blackAdj, bool &whiteAdj, bool &reachOutside, int &count) -> void {
+        visited[y][x] = true;
+        ++count;
+        for (int t = 0;  t < 4; ++t){
+            int nx = x + dx[t], ny = y + dy[t];
+            if (ny < 0 || ny >= 19 || nx < 0 || nx >= 19){
+                reachOutside = true;
+                continue;
+            }
+
+            if (grid[ny][nx] == Stone::State::empty){
+                if (!visited[ny][nx]){
+                    self(self, ny, nx, blackAdj, whiteAdj, reachOutside, count);
+                }
+            }
+            else{
+                if (grid[ny][nx] == Stone::State::black){
+                    blackAdj = true;
+                }
+                else{
+                    whiteAdj = true;
+                }
+            }
+        }
+    };
+
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            if (grid[y][x] == Stone::State::black) ++blackScore;
+            if (grid[y][x] == Stone::State::white) ++whiteScore;
+            if (grid[y][x] == Stone::State::empty){
+                if (!visited[y][x]){
+                    int count = 0;
+                    bool blackAdj = false, whiteAdj = false;
+                    bool reachOutside = false;
+
+                    dfs(dfs, y, x, blackAdj, whiteAdj, reachOutside, count);
+                    if (reachOutside) continue;
+                    if (blackAdj && !whiteAdj){
+                        blackScore += count;
+                    }
+                    if (!blackAdj && whiteAdj){
+                        whiteScore += count;
+                    }
+                }
+            }
+        }
+    }
+
+    // std::cout << "Black: " << blackScore << ", White: " << whiteScore << ".5\n";
+}
+
+
+//*  undo/redo
 void GameState::undo() {
     if (history.index >= 0) {
         HistoryState &state = history[history.index];
@@ -171,6 +239,8 @@ void GameState::redo() {
     }
 }
 
+
+//*  load/save game
 void GameState::load(std::string _address){
     std::ifstream fin;
     fin.open(_address);
@@ -238,6 +308,8 @@ void GameState::save(std::string _address){
     fout.close();
 }
 
+
+//*  copy to other gameState
 void GameState::copyTo(GameState &_gameState){
     _gameState.turn = turn;
     for (int y = 0; y < 19; ++y)
