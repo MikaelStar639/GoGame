@@ -4,6 +4,7 @@
 #include <Window-State/PlayOptions.hpp>
 #include <Window-State/GameScreen.hpp>
 #include <Window-State/Settings/Settings.hpp>
+#include <Window-State/Settings/SelectBoard.hpp>
 
 #include <iostream>
 
@@ -19,7 +20,9 @@ void Game::run(){
     sf::Texture backgroundTexture("assets/images/Background.png");
     sf::Texture blackStoneTexture("assets/images/BlackStone.png");
     sf::Texture whiteStoneTexture("assets/images/WhiteStone.png");
-    
+    sf::Texture BlackBoard       ("assets/images/DarkWood.png");
+    sf::Texture LightBoard       ("assets/images/LightWood.png");
+
     sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
     sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
     sf::SoundBuffer stoneCapturedBuffer  ("assets/sounds/boom.mp3");
@@ -28,16 +31,19 @@ void Game::run(){
     sf::Sound stoneSound(stoneSoundBuffer);
     sf::Sound stoneCaptureSound(stoneCapturedBuffer);
 
+    Board board(font, LightBoard, BlackBoard);
+
     Homescreen  homeScreen (font, window, backgroundTexture);
     PlayOptions playOptions(font, window, backgroundTexture);
     Settings    settings   (font, window, backgroundTexture, backgroundMusic, stoneSound, stoneCaptureSound);
+    SelectBoard selectBoard(font, window, board, backgroundTexture, backgroundMusic);
 
     backgroundMusic.setLooping(true);
     backgroundMusic.play();
     
 
     GameScreen resume (font, window, blackStoneTexture, whiteStoneTexture, 
-                                backgroundTexture, stoneSound, stoneCaptureSound);
+                                backgroundTexture, board  , stoneSound, stoneCaptureSound);
 
     resume.loadGame("game.saves");
     while (window.isOpen()){
@@ -78,7 +84,7 @@ void Game::run(){
 
         if (state == windowState::GameScreen){
             GameScreen gameScreen (font, window, blackStoneTexture, whiteStoneTexture, 
-                                   backgroundTexture, stoneSound, stoneCaptureSound);
+                                   backgroundTexture, board, stoneSound, stoneCaptureSound);
             gameScreen.nextState = windowState::GameScreen;
             gameScreen.run();
             
@@ -117,6 +123,19 @@ void Game::run(){
             settings.nextState = windowState::Settings;
             settings.run();
             state = settings.nextState;
+
+            if (state != windowState::Exit)
+                windowStateStack.push(state);
+            else
+                windowStateStack.pop();
+
+            continue;
+        }
+
+        if (state == windowState::SelectBoard){
+            selectBoard.nextState = windowState::SelectBoard;
+            selectBoard.run();
+            state = selectBoard.nextState;
 
             if (state != windowState::Exit)
                 windowStateStack.push(state);

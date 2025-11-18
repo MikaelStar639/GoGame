@@ -2,7 +2,8 @@
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
-                sf::Texture &BackgroundTexture, 
+                sf::Texture &BackgroundTexture,
+                Board &_board,
                 sf::Sound &_stoneSound,
                 sf::Sound &_stoneCaptureSound) : 
     backButton  (_font),
@@ -11,7 +12,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     passButton  (_font),
     resignButton(_font),
     window      (_window),
-    board       (_font),
+    board       (_board),
     turnIndicator(_font),
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),

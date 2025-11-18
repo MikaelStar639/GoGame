@@ -1,33 +1,32 @@
 #include "UI/Game-Elements/Board.hpp"
 
 // default constructor
-Board::Board(const sf::Font &font) :
+Board::Board(const sf::Font &font,sf::Texture &LightTexture, sf::Texture &DarkTexture) :
     gridNum(19),
     thickness(2.f),
     position({50.f, 100.f}),
+    boardSprite(LightTexture),
+    LightWoodSprite(LightTexture),
+    DarkWoodSprite(DarkTexture),
     size({750.f, 750.f})
 {
     // intialize shapes
-    boardShape.     setSize(size);
     verticalLines.  setSize({thickness, size.y});
     horizontalLines.setSize({size.x, thickness});
     intersections.  setSize({10.f, 10.f});
 
-    boardShape.     setPosition(position);
-    boardShape.     setOutlineThickness(40.f);
-    
-    boardShape.     setFillColor(sf::Color(216, 159, 107));
-    verticalLines  .setFillColor(sf::Color::Black);
+    boardSprite.    setPosition({10.f, 60.f});
+
+    verticalLines.  setFillColor(sf::Color::Black);
     horizontalLines.setFillColor(sf::Color::Black);
     intersections.  setFillColor(sf::Color::Black);
-    boardShape.     setOutlineColor(sf::Color(216, 159, 107));
 
     intersections.  setOrigin(intersections.getGeometricCenter());
 
     
     // initialize grid coordinates
     gap = size.x / (gridNum - 1);
-
+    
     for (int i = 0; i<=19; i++)
     {
         gridX[i] = position.x + i * gap;
@@ -57,15 +56,15 @@ Board::Board(const sf::Font &font) :
 
 // set position of the board (top-left corner not including )
 void Board::setPosition(sf::Vector2f _position) {
+    _position.x-=40.f;
+    _position.y-=40.f;
     position = _position;
-    position.x += 40.f; // account for outline thickness
-    position.y += 40.f; 
-    boardShape.setPosition(position);
+    boardSprite.setPosition(position);
 }
 
 // draw the board
 void Board::draw(sf::RenderWindow &window) {
-    window.draw(boardShape);
+    window.draw(boardSprite);
 
     // draw vertical lines
     for (int i = 0; i < gridNum; ++i) {
@@ -98,4 +97,39 @@ void Board::draw(sf::RenderWindow &window) {
         window.draw(labelnum[i]);
     }
 
+}
+
+void Board::ChangeStyle(BoardStyle _state)
+{
+    if (_state == BoardStyle::LightWood)
+    {
+        boardSprite = LightWoodSprite;
+        boardSprite.setPosition({10.f, 60.f});
+        verticalLines.  setFillColor(sf::Color::Black);
+        horizontalLines.setFillColor(sf::Color::Black);
+        intersections.  setFillColor(sf::Color::Black);
+        for (int i = 0; i<19; i++)
+        {
+            // std::cout<<i<<'\n';
+            labelchar[i].setFillColor(sf::Color::Black);
+            labelnum[i]. setFillColor(sf::Color::Black);
+        }
+        
+    }
+    if (_state == BoardStyle::DarkWood)
+    {
+        sf::Color _color = sf::Color(139, 100, 17);
+        boardSprite = DarkWoodSprite;
+        boardSprite.setPosition({10.f, 60.f});
+        verticalLines.  setFillColor(_color);
+        horizontalLines.setFillColor(_color);
+        intersections.  setFillColor(_color);
+        for (int i = 0; i<19; i++)
+        {
+            // std::cout<<i<<'\n';
+            labelchar[i].setFillColor(_color);
+            labelnum[i]. setFillColor(_color);
+        }
+        
+    }
 }

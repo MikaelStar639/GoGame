@@ -12,6 +12,8 @@ public:
         PlayOptions,
         Resume,
         Settings,
+        SelectBoard,
+        SelectStone,
         GameScreen,
         Exit
     };

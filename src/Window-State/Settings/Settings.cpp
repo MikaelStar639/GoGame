@@ -66,7 +66,7 @@ void Settings::updateButton(Mouse &mouse){
 
     //check if any button is clicked
     if (stoneStyleButton.onRelease) nextState = Game::windowState::Exit;
-    if (boardStyleButton.onRelease) nextState = Game::windowState::Exit;
+    if (boardStyleButton.onRelease) nextState = Game::windowState::SelectBoard;
     if (backButton.onRelease)       nextState = Game::windowState::Exit;
 }
 

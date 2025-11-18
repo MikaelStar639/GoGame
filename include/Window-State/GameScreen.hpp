@@ -31,7 +31,7 @@ private:
     ScoreBoard whiteScoreBoard;
 
     //Game Elements
-    Board board;
+    Board &board;
     GameState gameState;
     std::vector<std::vector<Stone>> grid;
 
@@ -57,9 +57,10 @@ private:
     bool newTurn = false;
 
 public:
-    GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
+    GameScreen(sf::Font &_font, sf::RenderWindow &_window,
                 sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
                 sf::Texture &BackgroundTexture, 
+                Board &_board,
                 sf::Sound &stoneSound,
                 sf::Sound &stoneCaptureSound);
 
