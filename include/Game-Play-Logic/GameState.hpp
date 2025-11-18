@@ -44,7 +44,7 @@ public:
 
     //*  redo and undo
     void redo();
-    void undo();
+    bool undo();
 
     //* load/save game
     bool isFileEmpty = true;

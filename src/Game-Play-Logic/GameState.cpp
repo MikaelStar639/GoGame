@@ -211,7 +211,7 @@ void GameState::getScore(){
 
 
 //*  undo/redo
-void GameState::undo() {
+bool GameState::undo() {
     if (history.index >= 0) {
         HistoryState &state = history[history.index];
         deleteStone(state.y_newStone, state.x_newStone);
@@ -221,7 +221,9 @@ void GameState::undo() {
         turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
         --history.index;
         history.undoCount++;
+        return true;
     }
+    return false;
 }
 
 void GameState::redo() {
