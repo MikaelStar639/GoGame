@@ -13,6 +13,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     window      (_window),
     board       (_font),
     turnIndicator(_font),
+    blackScoreBoard(_font, ScoreBoard::Player::black),
+    whiteScoreBoard(_font, ScoreBoard::Player::white),
     BackgroundSprite(BackgroundTexture),
     stoneSound(_stoneSound),
     gameState(_stoneCaptureSound)
@@ -85,13 +87,13 @@ void GameScreen::updateGameButton(Mouse &mouse){
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
 
-    float space = 80.f;
+    float space = 40.f + 75.f;
 
     //Buttons setPosition
-    passButton  .setPosition({window_w * 6/7, window_h/2 - space - 75.f});
-    undoButton  .setPosition({window_w * 6/7, window_h/2});
-    redoButton  .setPosition({window_w * 6/7, window_h/2 + space + 75.f});  
-    resignButton.setPosition({window_w * 6/7, window_h/2 + 2 * space + 2 * 75.f});
+    passButton  .setPosition({window_w * 6/7, window_h/2});
+    undoButton  .setPosition({window_w * 6/7, window_h/2 + space});
+    redoButton  .setPosition({window_w * 6/7, window_h/2 + 2 * space});  
+    resignButton.setPosition({window_w * 6/7, window_h/2 + 3 * space});
     
     //Buttons setSize
     redoButton  .setSize({300.f, 75.f});
@@ -220,14 +222,45 @@ void GameScreen::drawStone(){
 void GameScreen::updateIndicator(){
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
-    float space = 80.f;
+    float space = 40.f + 75.f;
     turnIndicator.setSize({300.f, 75.f});
-    turnIndicator.setPosition({window_w * 6/7, window_h/2 - 2 * space - 2 * 75.f});
+    turnIndicator.setPosition({window_w * 6/7, window_h/2 - 3 * space});
     turnIndicator.updateTurn(gameState);
 }
 
 void GameScreen::drawIndicator(){
     turnIndicator.draw(window);
+}
+
+void GameScreen::updateScoreBoard(){
+
+    float window_w = window.getSize().x;
+    float window_h = window.getSize().y;
+    float space = 40.f + 75.f;
+
+    blackScoreBoard.setSize({300.f, 75.f});
+    whiteScoreBoard.setSize({300.f, 75.f});
+
+    blackScoreBoard.setPosition({window_w * 6/7, window_h/2 - 2 * space});
+    whiteScoreBoard.setPosition({window_w * 6/7, window_h/2 - space});
+
+    gameState.getScore();
+    blackScoreBoard.getScore(gameState);
+    whiteScoreBoard.getScore(gameState);
+
+    if (gameState.blackScore > gameState.whiteScore){
+        blackScoreBoard.isWin = true;
+        whiteScoreBoard.isWin = false;
+    }
+    else{
+        blackScoreBoard.isWin = false;
+        whiteScoreBoard.isWin = true;
+    }
+}
+
+void GameScreen::drawScoreBoard(){
+    blackScoreBoard.draw(window);
+    whiteScoreBoard.draw(window);
 }
 
 void GameScreen::SyncStoneWithGameState(){
@@ -262,16 +295,17 @@ void GameScreen::run(){
         SyncStoneWithGameState();
         updateGameState();
         updateIndicator();
+        updateScoreBoard();
 
         //draw
         drawBoard();
         drawButton();
         drawStone();
         drawIndicator();
+        drawScoreBoard();
 
         window.display();
 
-        gameState.getScore();
         if (nextState != Game::windowState::GameScreen){
             break;
         }
