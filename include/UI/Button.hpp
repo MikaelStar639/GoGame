@@ -34,9 +34,13 @@ public:
     sf::Color over_text     = sf::Color(200, 200, 200); 
 
     sf::Color pressed_shape = sf::Color(90, 90, 90);
-    sf::Color pressed_text  = sf::Color(200, 200, 200); 
+    sf::Color pressed_text  = sf::Color(200, 200, 200);
+    
+    sf::Color invalid_shape = sf::Color(30, 30, 30);
+    sf::Color invalid_text = sf::Color(150, 150, 150);
 
-    Button(const sf::Font &font, sf::Vector2f _size, sf::Vector2f _position, float _radius);
+    bool isInvalid = false;
+
     Button(const sf::Font &font);
 
     void update(Mouse &mouse);

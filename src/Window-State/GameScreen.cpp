@@ -18,7 +18,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     whiteScoreBoard(_font, ScoreBoard::Player::white),
     BackgroundSprite(BackgroundTexture),
     stoneSound(_stoneSound),
-    gameState(_stoneCaptureSound)
+    gameState(_stoneCaptureSound),
+    endGame(_font)
     {
 
     //Button String
@@ -83,7 +84,7 @@ void GameScreen::updateFeatureButton(Mouse &mouse){
     if (backButton.onRelease) nextState = Game::windowState::Exit;
 }
 
-void GameScreen::updateGameButton(Mouse &mouse){
+void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
     //window size
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -108,7 +109,19 @@ void GameScreen::updateGameButton(Mouse &mouse){
     passButton  .update(mouse);  
     resignButton.update(mouse);
 
-    //check button state
+    if (!isEndGame){
+        if (passButton.onRelease) {
+            if (gameState.lastMovePass == true) {
+                gameState.isEnd = true;
+            }
+            gameState.lastMovePass = true;
+            newTurn = true;
+        }
+    }
+    else{
+        passButton.isInvalid = true;
+    }
+
     if (redoButton.onRelease) {
         gameState.redo();
     }
@@ -117,13 +130,7 @@ void GameScreen::updateGameButton(Mouse &mouse){
             newTurn = true;
         }
     }
-    if (passButton.onRelease) {
-        if (gameState.lastMovePass == true) {
-            nextState = Game::windowState::Exit;
-        }
-        gameState.lastMovePass = true;
-        newTurn = true;
-    }
+    
     if (resignButton.onRelease);
 }
 
@@ -274,6 +281,10 @@ void GameScreen::SyncStoneWithGameState(){
     }
 }
 
+void GameScreen::reset(){
+    
+}
+
 void GameScreen::run(){
 
     //mouse
@@ -289,14 +300,26 @@ void GameScreen::run(){
         //mouse
         mouse.update(window);
         
-        //update elements
-        updateFeatureButton(mouse);
-        updateGameButton(mouse);
-        updateStone(mouse);
-        SyncStoneWithGameState();
-        updateGameState();
-        updateIndicator();
-        updateScoreBoard();
+        if (!gameState.isEnd){
+            //update elements
+            updateFeatureButton(mouse);
+            updateGameButton(mouse, false);
+            updateStone(mouse);
+            SyncStoneWithGameState();
+            updateGameState();
+            updateIndicator();
+            updateScoreBoard();
+        }
+        else{
+            if (endGame.isClosed){
+                updateFeatureButton(mouse);
+                updateGameButton(mouse, true);
+                SyncStoneWithGameState();
+                updateGameState();
+                updateIndicator();
+                updateScoreBoard();
+            }
+        }
 
         //draw
         drawBoard();
@@ -304,6 +327,12 @@ void GameScreen::run(){
         drawStone();
         drawIndicator();
         drawScoreBoard();
+
+        if (gameState.isEnd && !endGame.isClosed){
+            endGame.update(gameState);
+            endGame.run(window, mouse);
+        }
+
 
         window.display();
 

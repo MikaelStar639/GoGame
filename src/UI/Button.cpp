@@ -74,7 +74,11 @@ void Button::draw(sf::RenderWindow& window){
     alignText(text, 0.5f, text_align_v);
 
     //color 
-    if (isPressed){
+    if (isInvalid){
+        shape.setColor(invalid_shape);
+        text.setFillColor(invalid_text);
+    }
+    else if (isPressed){
         shape.setColor(pressed_shape);
         text.setFillColor(pressed_text);
     }

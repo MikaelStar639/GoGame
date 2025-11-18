@@ -3,11 +3,13 @@
 #include "Game.hpp"
 
 #include "UI/Button.hpp"
+#include "UI/Blur.hpp"
 #include "UI/Game-Elements/Board.hpp"
 #include "UI/Game-Elements/Stone.hpp"
 #include "UI/Game-Elements/TurnIndicator.hpp"
 #include "UI/Game-Elements/ScoreBoard.hpp"
 
+#include "Window-State/EndGame.hpp"
 #include "Game-Play-Logic/GameState.hpp"
 
 
@@ -56,6 +58,9 @@ private:
     Cordinate to_cord(sf::Vector2f position);
     bool newTurn = false;
 
+    //EndGame
+    EndGameWindow endGame;
+
 public:
     GameScreen(sf::Font &_font, sf::RenderWindow &_window,
                 sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
@@ -70,7 +75,7 @@ public:
     void setBackground(sf::Sprite &backgroundSprite);
     void setBoard(Board &board);
     void updateFeatureButton(Mouse &mouse);
-    void updateGameButton(Mouse &mouse);
+    void updateGameButton(Mouse &mouse, bool isEndGame);
     void updateStone(Mouse &mouse);
     void updateIndicator();
     void updateScoreBoard();
@@ -84,6 +89,9 @@ public:
     void loadGame(std::string _address);
     void saveGame(std::string _address);
     
+    //* Reset
+    void reset();
+
     //* Run 
     void run();
 
