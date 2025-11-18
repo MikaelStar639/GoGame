@@ -5,8 +5,10 @@
 #include "UI/Button.hpp"
 #include "UI/Game-Elements/Board.hpp"
 #include "UI/Game-Elements/Stone.hpp"
+#include "UI/Game-Elements/TurnIndicator.hpp"
 
 #include "Game-Play-Logic/GameState.hpp"
+
 
 #include <cmath>
 #include <vector>
@@ -22,6 +24,9 @@ private:
     Button passButton;
     Button resignButton;
 
+    //Game indicator:
+    TurnIndicator turnIndicator;
+
     //Game Elements
     Board board;
     GameState gameState;
@@ -35,6 +40,7 @@ private:
     void drawBoard();
     void drawButton();
     void drawStone();
+    void drawIndicator();
     
     //window
     sf::RenderWindow &window;
@@ -61,6 +67,7 @@ public:
     void updateFeatureButton(Mouse &mouse);
     void updateGameButton(Mouse &mouse);
     void updateStone(Mouse &mouse);
+    void updateIndicator();
     
     //* Game State
     void updateGameState();

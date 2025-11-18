@@ -12,6 +12,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     resignButton(_font),
     window      (_window),
     board       (_font),
+    turnIndicator(_font),
     BackgroundSprite(BackgroundTexture),
     stoneSound(_stoneSound),
     gameState(_stoneCaptureSound)
@@ -87,10 +88,10 @@ void GameScreen::updateGameButton(Mouse &mouse){
     float space = 80.f;
 
     //Buttons setPosition
-    redoButton  .setPosition({window_w * 6/7, window_h/2 - 2 * space - 75.f});
-    undoButton  .setPosition({window_w * 6/7, window_h/2 - space});
-    passButton  .setPosition({window_w * 6/7, window_h/2 + space});  
-    resignButton.setPosition({window_w * 6/7, window_h/2 + 2 * space + 75.f});
+    passButton  .setPosition({window_w * 6/7, window_h/2 - space - 75.f});
+    undoButton  .setPosition({window_w * 6/7, window_h/2});
+    redoButton  .setPosition({window_w * 6/7, window_h/2 + space + 75.f});  
+    resignButton.setPosition({window_w * 6/7, window_h/2 + 2 * space + 2 * 75.f});
     
     //Buttons setSize
     redoButton  .setSize({300.f, 75.f});
@@ -107,14 +108,14 @@ void GameScreen::updateGameButton(Mouse &mouse){
     //check button state
     if (redoButton.onRelease) {
         gameState.redo();
-        newTurn = true;
     }
     if (undoButton.onRelease){
-        gameState.undo();
-        newTurn = true;
+        if (gameState.undo()){
+            newTurn = true;
+        }
     }
     if (passButton.onRelease) {
-        if (gameState.lastMovePass == true && gameState.turn == GameState::Turn::black) {
+        if (gameState.lastMovePass == true) {
             nextState = Game::windowState::Exit;
         }
         gameState.lastMovePass = true;
@@ -216,6 +217,19 @@ void GameScreen::drawStone(){
     }
 }
 
+void GameScreen::updateIndicator(){
+    float window_w = window.getSize().x;
+    float window_h = window.getSize().y;
+    float space = 80.f;
+    turnIndicator.setSize({300.f, 75.f});
+    turnIndicator.setPosition({window_w * 6/7, window_h/2 - 2 * space - 2 * 75.f});
+    turnIndicator.updateTurn(gameState);
+}
+
+void GameScreen::drawIndicator(){
+    turnIndicator.draw(window);
+}
+
 void GameScreen::SyncStoneWithGameState(){
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
@@ -247,11 +261,13 @@ void GameScreen::run(){
         updateStone(mouse);
         SyncStoneWithGameState();
         updateGameState();
+        updateIndicator();
 
         //draw
         drawBoard();
         drawButton();
         drawStone();
+        drawIndicator();
 
         window.display();
 
