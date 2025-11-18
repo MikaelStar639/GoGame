@@ -9,6 +9,7 @@ private:
     Button backButton;
     Button LightWoodButton;
     Button DarkWoodButton;
+    Button PlainWoodButton;
 
     Board &board;
 

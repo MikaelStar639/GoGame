@@ -1,13 +1,14 @@
 #include "UI/Game-Elements/Board.hpp"
 
 // default constructor
-Board::Board(const sf::Font &font,sf::Texture &LightTexture, sf::Texture &DarkTexture) :
+Board::Board(const sf::Font &font,sf::Texture &LightTexture, sf::Texture &DarkTexture, sf::Texture &PlainTexture) :
     gridNum(19),
     thickness(2.f),
     position({50.f, 100.f}),
-    boardSprite(LightTexture),
+    boardSprite(PlainTexture),
     LightWoodSprite(LightTexture),
     DarkWoodSprite(DarkTexture),
+    PlainWoodSprite(PlainTexture),
     size({750.f, 750.f})
 {
     // intialize shapes
@@ -101,26 +102,25 @@ void Board::draw(sf::RenderWindow &window) {
 
 void Board::ChangeStyle(BoardStyle _state)
 {
+    sf::Color _color;
     if (_state == BoardStyle::LightWood)
     {
         boardSprite = LightWoodSprite;
-        boardSprite.setPosition({10.f, 60.f});
-        verticalLines.  setFillColor(sf::Color::Black);
-        horizontalLines.setFillColor(sf::Color::Black);
-        intersections.  setFillColor(sf::Color::Black);
-        for (int i = 0; i<19; i++)
-        {
-            // std::cout<<i<<'\n';
-            labelchar[i].setFillColor(sf::Color::Black);
-            labelnum[i]. setFillColor(sf::Color::Black);
-        }
+        _color = sf::Color::Black;
         
     }
     if (_state == BoardStyle::DarkWood)
     {
-        sf::Color _color = sf::Color(139, 100, 17);
         boardSprite = DarkWoodSprite;
-        boardSprite.setPosition({10.f, 60.f});
+        _color = sf::Color(139, 100, 17);
+    }
+
+    if (_state == BoardStyle::PlainWood)
+    {
+        boardSprite = PlainWoodSprite;
+        _color = sf::Color::Black;
+    }
+    boardSprite.setPosition({10.f, 60.f});
         verticalLines.  setFillColor(_color);
         horizontalLines.setFillColor(_color);
         intersections.  setFillColor(_color);
@@ -130,6 +130,4 @@ void Board::ChangeStyle(BoardStyle _state)
             labelchar[i].setFillColor(_color);
             labelnum[i]. setFillColor(_color);
         }
-        
-    }
 }

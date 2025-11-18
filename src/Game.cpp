@@ -22,6 +22,7 @@ void Game::run(){
     sf::Texture whiteStoneTexture("assets/images/WhiteStone.png");
     sf::Texture BlackBoard       ("assets/images/DarkWood.png");
     sf::Texture LightBoard       ("assets/images/LightWood.png");
+    sf::Texture PlainBoard       ("assets/images/PlainWood.png");
 
     sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
     sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
@@ -31,7 +32,7 @@ void Game::run(){
     sf::Sound stoneSound(stoneSoundBuffer);
     sf::Sound stoneCaptureSound(stoneCapturedBuffer);
 
-    Board board(font, LightBoard, BlackBoard);
+    Board board(font, LightBoard, BlackBoard, PlainBoard);
 
     Homescreen  homeScreen (font, window, backgroundTexture);
     PlayOptions playOptions(font, window, backgroundTexture);
