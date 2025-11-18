@@ -253,6 +253,8 @@ void GameState::load(std::string _address){
     }
     isFileEmpty = false;
 
+    int t; fin >> t >> lastMovePass;
+    turn = static_cast<Turn>(t);
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
             grid[y][x] = Stone::State::empty;
@@ -279,6 +281,7 @@ void GameState::load(std::string _address){
 void GameState::save(std::string _address){
     std::ofstream fout(_address);
 
+    fout << static_cast<int>(turn) << ' ' << lastMovePass << '\n';
     int black_num, white_num;
     std::vector<std::pair<int, int>> temp;
     for (int y = 0; y < 19; ++y){
