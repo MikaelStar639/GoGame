@@ -49,4 +49,6 @@ public:
     void setString(std::string _string);
     void setSize(sf::Vector2f _size);
     void setPosition(sf::Vector2f _position);
+    void setDefaultColor();
+    void setChosen();
 };

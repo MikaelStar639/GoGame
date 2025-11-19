@@ -18,7 +18,7 @@ SelectBoard::SelectBoard(
     BackgroundSprite(_BackgroundTexture),
     BackgroundMusic(_BackgroundMusic)
     {
-        PlainWoodButton.default_text = sf::Color::Yellow;
+        PlainWoodButton.setChosen();
     }
 
 
@@ -73,23 +73,23 @@ void SelectBoard::updateButton(Mouse &mouse){
     if (DarkWoodButton.onRelease)
     {
         board.ChangeStyle(Board::BoardStyle::DarkWood);
-        DarkWoodButton.default_text = sf::Color::Yellow;
-        LightWoodButton.default_text = sf::Color(200, 200, 200);
-        PlainWoodButton.default_text = sf::Color(200, 200, 200);
+        DarkWoodButton.setChosen();        
+        LightWoodButton.setDefaultColor();
+        PlainWoodButton.setDefaultColor();
     }
     if (LightWoodButton.onRelease)
     {
         board.ChangeStyle(Board::BoardStyle::LightWood);
-        DarkWoodButton.default_text = sf::Color(200, 200, 200);
-        LightWoodButton.default_text = sf::Color::Yellow;
-        PlainWoodButton.default_text = sf::Color(200, 200, 200);
+        DarkWoodButton.setDefaultColor();        
+        LightWoodButton.setChosen();
+        PlainWoodButton.setDefaultColor();
     }
     if (PlainWoodButton.onRelease)
     {
         board.ChangeStyle(Board::BoardStyle::PlainWood);
-        DarkWoodButton.default_text = sf::Color(200, 200, 200);
-        LightWoodButton.default_text = sf::Color(200, 200, 200);
-        PlainWoodButton.default_text = sf::Color::Yellow;
+        DarkWoodButton.setDefaultColor();        
+        LightWoodButton.setDefaultColor();
+        PlainWoodButton.setChosen();
     }
     if (backButton.onRelease)     nextState = Game::windowState::Exit;
 }

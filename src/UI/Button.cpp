@@ -93,3 +93,15 @@ void Button::draw(sf::RenderWindow& window){
 
     window.draw(text);
 }
+
+void Button::setDefaultColor()
+{
+    default_text = sf::Color(200, 200, 200);
+    over_text = sf::Color(200, 200, 200);
+}
+
+void Button::setChosen()
+{
+    default_text = sf::Color::Yellow;
+    over_text = sf::Color::Yellow;
+}
