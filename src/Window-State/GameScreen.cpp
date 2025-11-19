@@ -10,7 +10,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     redoButton  (_font),
     undoButton  (_font),
     passButton  (_font),
-    resignButton(_font),
+    resetButton(_font),
     window      (_window),
     board       (_board),
     turnIndicator(_font),
@@ -27,7 +27,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     redoButton.  setString("Redo");
     undoButton.  setString("Undo");
     passButton.  setString("Pass");
-    resignButton.setString("Resign");
+    resetButton.setString("Reset Game");
 
     //vector:
     
@@ -95,19 +95,19 @@ void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
     passButton  .setPosition({window_w * 6/7, window_h/2});
     undoButton  .setPosition({window_w * 6/7, window_h/2 + space});
     redoButton  .setPosition({window_w * 6/7, window_h/2 + 2 * space});  
-    resignButton.setPosition({window_w * 6/7, window_h/2 + 3 * space});
+    resetButton.setPosition({window_w * 6/7, window_h/2 + 3 * space});
     
     //Buttons setSize
     redoButton  .setSize({300.f, 75.f});
     undoButton  .setSize({300.f, 75.f});
     passButton  .setSize({300.f, 75.f});
-    resignButton.setSize({300.f, 75.f});
+    resetButton.setSize({300.f, 75.f});
 
     //Buttons update
     redoButton  .update(mouse);
     undoButton  .update(mouse);
     passButton  .update(mouse);  
-    resignButton.update(mouse);
+    resetButton.update(mouse);
 
     if (!isEndGame){
         if (passButton.onRelease) {
@@ -131,7 +131,9 @@ void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
         }
     }
     
-    if (resignButton.onRelease);
+    if (resetButton.onRelease){
+        reset();
+    }
 }
 
 GameScreen::Cordinate GameScreen::to_cord(sf::Vector2f position){
@@ -216,7 +218,7 @@ void GameScreen::drawButton(){
     redoButton  .draw(window);
     undoButton  .draw(window);
     passButton  .draw(window);  
-    resignButton.draw(window);
+    resetButton.draw(window);
 }
 
 void GameScreen::drawStone(){
@@ -282,7 +284,9 @@ void GameScreen::SyncStoneWithGameState(){
 }
 
 void GameScreen::reset(){
-    
+    gameState.reset();
+    endGame.isClosed = endGame.isReset = false;
+    passButton.isInvalid = false;
 }
 
 void GameScreen::run(){
@@ -311,6 +315,10 @@ void GameScreen::run(){
             updateScoreBoard();
         }
         else{
+            if (endGame.isReset){
+                reset();
+                continue;
+            }
             if (endGame.isClosed){
                 updateFeatureButton(mouse);
                 updateGameButton(mouse, true);

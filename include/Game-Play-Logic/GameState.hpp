@@ -41,6 +41,7 @@ public:
     int blackScore = 0;
     int whiteScore = 0;
     void getScore();
+    void reset();
 
     //*  redo and undo
     void redo();

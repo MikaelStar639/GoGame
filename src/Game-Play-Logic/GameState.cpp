@@ -209,6 +209,18 @@ void GameState::getScore(){
     // std::cout << "Black: " << blackScore << ", White: " << whiteScore << ".5\n";
 }
 
+//* reset
+void GameState::reset(){
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            grid[y][x] = Stone::State::empty;
+        }
+    }
+    lastMovePass = false;
+    turn = Turn::black;
+    history.reset();
+    isEnd = false;
+}
 
 //*  undo/redo
 bool GameState::undo() {

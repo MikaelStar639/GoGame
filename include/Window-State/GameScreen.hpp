@@ -25,7 +25,7 @@ private:
     Button redoButton;
     Button undoButton;
     Button passButton;
-    Button resignButton;
+    Button resetButton;
 
     //Game indicator & Score Board:
     TurnIndicator turnIndicator;

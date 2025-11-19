@@ -30,4 +30,6 @@ public:
     std::vector<HistoryState> data;
     HistoryState& operator [] (int id);
     int size();
+
+    void reset();
 };

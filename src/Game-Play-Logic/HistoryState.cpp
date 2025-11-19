@@ -9,4 +9,7 @@ int History::size(){
     return data.size();
 }
 
-
+void History::reset(){
+    index = -1;
+    undoCount = 0;
+}
