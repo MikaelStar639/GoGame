@@ -77,9 +77,16 @@ void Game::run(){
         if (state == windowState::GameMenu){
             GameMenu.nextState = windowState::GameMenu;
             GameMenu.run();
-            if (GameMenu.loadGame == true) resume.loadGame("game.saves");
-            if (GameMenu.saveGame == true) resume.saveGame("game.saves");
-            GameMenu.loadGame = false;
+
+            if (GameMenu.loadGame == true){
+                GameMenu.loadGame = false;
+                resume.loadGame("game.saves");
+            }
+            if (GameMenu.saveGame == true){
+                resume.saveGame("game.saves");
+                GameMenu.saveGame = false;
+                GameMenu.nextState = windowState::GameMenu;
+            }
 
             state = GameMenu.nextState;
 
