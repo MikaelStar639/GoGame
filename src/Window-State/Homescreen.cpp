@@ -2,14 +2,12 @@
 
 Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window, sf::Texture &BackgroundTexture) : 
     playButton(font),
-    resumeButton(font),
     settingButton(font),
     exitButton(font),
     Gamename(font),
     BackgroundSprite(BackgroundTexture),
     window(_window){
         playButton.   setString("Play");
-        resumeButton. setString("Resume");
         settingButton.setString("Setting");
         exitButton.   setString("Exit");
         Gamename.     setString("Go Game");
@@ -21,33 +19,28 @@ void Homescreen::updateButton(Mouse &mouse){
     float window_h = window.getSize().y;
 
     //Buttons setPosition
-    playButton.   setPosition({window_w/2, window_h * 3/10});
-    resumeButton. setPosition({window_w/2, window_h * 9/20});
-    settingButton.setPosition({window_w/2, window_h * 12/20});
-    exitButton.   setPosition({window_w/2, window_h * 15/20});
+    playButton.   setPosition({window_w/2, window_h * 13/30});
+    settingButton.setPosition({window_w/2, window_h * 18/30});
+    exitButton.   setPosition({window_w/2, window_h * 23/30});
 
     //Buttons setSize
     playButton.   setSize({500.f, 100.f});
-    resumeButton. setSize({500.f, 100.f});
     settingButton.setSize({500.f, 100.f});
     exitButton.   setSize({500.f, 100.f});
 
     //buttons update
     playButton.   update(mouse);
-    resumeButton. update(mouse);
     settingButton.update(mouse);
     exitButton.   update(mouse);
 
     //check if any button is clicked
-    if (playButton.onRelease)    nextState = Game::windowState::PlayOptions;
-    if (resumeButton.onRelease)  nextState = Game::windowState::Resume;
+    if (playButton.onRelease)    nextState = Game::windowState::GameMenu;
     if (settingButton.onRelease) nextState = Game::windowState::Settings;
     if (exitButton.onRelease)    nextState = Game::windowState::Exit;
 }
 
 void Homescreen::drawButton(){
     playButton.   draw(window);
-    resumeButton. draw(window);
     settingButton.draw(window);
     exitButton.   draw(window);
 }
@@ -74,7 +67,7 @@ void Homescreen::UpdateGamenamePosition(){
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
 
-    Gamename.setPosition({window_w/2, window_h * 1/10});
+    Gamename.setPosition({window_w/2, window_h * 2/10});
 }
 
 void Homescreen::drawGamename(){

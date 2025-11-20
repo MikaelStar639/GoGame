@@ -1,7 +1,7 @@
 #include <Game.hpp>
 
 #include <Window-State/Homescreen.hpp>
-#include <Window-State/PlayOptions.hpp>
+#include <Window-State/GameMenu.hpp>
 #include <Window-State/GameScreen.hpp>
 #include <Window-State/Settings/Settings.hpp>
 #include <Window-State/Settings/SelectBoard.hpp>
@@ -35,18 +35,18 @@ void Game::run(){
     Board board(font, LightBoard, BlackBoard, PlainBoard);
 
     Homescreen  homeScreen (font, window, backgroundTexture);
-    PlayOptions playOptions(font, window, backgroundTexture);
+    GameMenu    GameMenu(font, window, backgroundTexture);
     Settings    settings   (font, window, backgroundTexture, backgroundMusic, stoneSound, stoneCaptureSound);
     SelectBoard selectBoard(font, window, board, backgroundTexture, backgroundMusic);
 
     backgroundMusic.setLooping(true);
-    backgroundMusic.play();
+    // backgroundMusic.play();
     
 
-    GameScreen resume (font, window, blackStoneTexture, whiteStoneTexture, 
-                                backgroundTexture, board  , stoneSound, stoneCaptureSound);
+    GameScreen resume(font, window, blackStoneTexture, whiteStoneTexture, 
+                                backgroundTexture, board, stoneSound, stoneCaptureSound);
 
-    resume.loadGame("game.saves");
+    
     while (window.isOpen()){
         handleEvent(window);
         assert(!windowStateStack.empty());
@@ -70,10 +70,14 @@ void Game::run(){
             continue;
         }
 
-        if (state == windowState::PlayOptions){
-            playOptions.nextState = windowState::PlayOptions;
-            playOptions.run();
-            state = playOptions.nextState;
+        if (state == windowState::GameMenu){
+            GameMenu.nextState = windowState::GameMenu;
+            GameMenu.run();
+            if (GameMenu.loadGame == true) resume.loadGame("game.saves");
+            if (GameMenu.saveGame == true) resume.saveGame("game.saves");
+            GameMenu.loadGame = false;
+
+            state = GameMenu.nextState;
 
             if (state != windowState::Exit)
                 windowStateStack.push(state);
@@ -109,7 +113,6 @@ void Game::run(){
             
             resume.nextState = windowState::GameScreen;
             resume.run();
-            resume.saveGame("game.saves");
             
             state = resume.nextState;
             if (state != windowState::Exit)
@@ -146,6 +149,4 @@ void Game::run(){
             continue;
         }
     }
-
-    resume.saveGame("game.saves");
 }

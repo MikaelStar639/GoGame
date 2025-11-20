@@ -5,7 +5,6 @@
 class Homescreen{
 private:
     Button playButton;
-    Button resumeButton;
     Button settingButton;
     Button exitButton;
 

@@ -9,6 +9,7 @@ class Game{
 public:
     enum class windowState{
         Homescreen,
+        GameMenu,
         PlayOptions,
         Resume,
         Settings,
