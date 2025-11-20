@@ -362,6 +362,7 @@ void GameScreen::saveGame(std::string _address){
 
 void GameScreen::copyTo(GameScreen &_gameScreen){
     _gameScreen.grid = grid;
+    _gameScreen.endGame.isClosed = endGame.isClosed;
     gameState.copyTo(_gameScreen.gameState);
     _gameScreen.canNotLoad = false;
 

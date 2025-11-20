@@ -329,6 +329,7 @@ void GameState::save(std::string _address){
 //*  copy to other gameState
 void GameState::copyTo(GameState &_gameState){
     _gameState.turn = turn;
+    _gameState.isEnd = isEnd;
     for (int y = 0; y < 19; ++y)
         for (int x = 0; x < 19; ++x)
             _gameState.grid[y][x] = grid[y][x];
