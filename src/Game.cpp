@@ -24,6 +24,9 @@ void Game::run(){
     sf::Texture LightBoard       ("assets/images/LightWood.png");
     sf::Texture PlainBoard       ("assets/images/PlainWood.png");
 
+    sf::Sprite BlackStoneSprite(blackStoneTexture);
+    sf::Sprite WhiteStoneSprite(whiteStoneTexture);
+
     sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
     sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
     sf::SoundBuffer stoneCapturedBuffer  ("assets/sounds/boom.mp3");
@@ -43,7 +46,7 @@ void Game::run(){
     // backgroundMusic.play();
     
 
-    GameScreen resume(font, window, blackStoneTexture, whiteStoneTexture, 
+    GameScreen resume(font, window, BlackStoneSprite, WhiteStoneSprite, 
                                 backgroundTexture, board, stoneSound, stoneCaptureSound);
 
     
@@ -95,7 +98,7 @@ void Game::run(){
         }
 
         if (state == windowState::GameScreen){
-            GameScreen gameScreen (font, window, blackStoneTexture, whiteStoneTexture, 
+            GameScreen gameScreen (font, window,BlackStoneSprite , WhiteStoneSprite, 
                                    backgroundTexture, board, stoneSound, stoneCaptureSound);
             gameScreen.nextState = windowState::GameScreen;
             gameScreen.run();

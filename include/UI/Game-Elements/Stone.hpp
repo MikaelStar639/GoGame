@@ -5,8 +5,8 @@
 class Stone{    
 
 private:
-    sf::Sprite BlackStoneSprite;
-    sf::Sprite WhiteStoneSprite;
+    sf::Sprite &BlackStoneSprite;
+    sf::Sprite &WhiteStoneSprite;
 
 public:
     enum class State{
@@ -31,7 +31,7 @@ public:
     bool isContain(sf::Vector2f _position);
     void update(Mouse &mouse);
 
-    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture,
+    Stone(sf::Sprite &_blackStoneTexture, sf::Sprite &_whiteStoneTexture,
           sf::Vector2f _position);
 
     

@@ -1,6 +1,6 @@
 #include "UI/Game-Elements/Stone.hpp"
 
-Stone::Stone(sf::Texture &_BlackstoneTexture, sf::Texture &_WhitestoneTexture, sf::Vector2f _pos) : 
+Stone::Stone(sf::Sprite &_BlackstoneTexture, sf::Sprite &_WhitestoneTexture, sf::Vector2f _pos) : 
     BlackStoneSprite(_BlackstoneTexture),
     WhiteStoneSprite(_WhitestoneTexture),
     position(_pos)
@@ -69,6 +69,8 @@ void Stone::setState(State _nextState)
 }
 
 void Stone::draw(sf::RenderWindow &window){
+    BlackStoneSprite.setPosition(position);
+    WhiteStoneSprite.setPosition(position);
     if (state != State::empty){
         if (state == State::black){
             window.draw(BlackStoneSprite);
