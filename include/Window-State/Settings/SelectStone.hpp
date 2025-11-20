@@ -1,17 +1,16 @@
 #pragma once
 
 #include "Game.hpp"
-#include "UI/Game-Elements/Board.hpp"
 #include "UI/Button.hpp"
+#include "Window-State/GameScreen.hpp"
 
-class SelectBoard{
+class SelectStone{
 private:
     Button backButton;
-    Button LightWoodButton;
-    Button DarkWoodButton;
-    Button PlainWoodButton;
+    Button ClassicButton;
+    Button CartoonButton;
 
-    Board &board;
+    GameScreen &gamescreen;
 
     sf::Sprite &BackgroundSprite;
     sf::Sound &BackgroundMusic;
@@ -21,11 +20,16 @@ private:
     const float space = 75.f;
 
 public:
-    SelectBoard(sf::Font &font, sf::RenderWindow &window, Board &board,
+    enum class SelectStoneState{
+        Classic,
+        Cartoon,
+    };
+
+    SelectStone(sf::Font &font, sf::RenderWindow &window, GameScreen &_gamescreen,
              sf::Sprite &BackgroundSprite,
              sf::Sound &BackgroundMusic);
     
-    Game::windowState nextState = Game::windowState::SelectBoard;
+    Game::windowState nextState = Game::windowState::SelectStone;
     
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);

@@ -1,7 +1,9 @@
 #include "Window-State/GameScreen.hpp"
+#include <iostream>
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
-                sf::Sprite &BlackTexture, sf::Sprite &WhiteTexture,
+                sf::Sprite &ClassicBlackTexture, sf::Sprite &ClassicWhiteTexture,
+                sf::Sprite &CartoonBlackTexture, sf::Sprite &CartoonWhiteTexture,
                 sf::Sprite &BackgroundTexture,
                 Board &_board,
                 sf::Sound &_stoneSound,
@@ -14,6 +16,10 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     window      (_window),
     board       (_board),
     turnIndicator(_font),
+    ClassicBlack(ClassicBlackTexture),
+    ClassicWhite(ClassicWhiteTexture),
+    CartoonBlack(CartoonBlackTexture),
+    CartoonWhite(CartoonWhiteTexture),
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),
     BackgroundSprite(BackgroundTexture),
@@ -35,7 +41,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     for (int y = 0; y < 19; ++y){
         grid[y].reserve(19);
         for (int x = 0; x < 19; ++x){
-            grid[y].emplace_back(BlackTexture, WhiteTexture,
+            grid[y].emplace_back(ClassicBlack, ClassicWhite,
                 sf::Vector2f(board.gridX[x], board.gridY[18 - y]));
         }
     }
@@ -367,4 +373,19 @@ void GameScreen::copyTo(GameScreen &_gameScreen){
     _gameScreen.endGame.isClosed = endGame.isClosed;
     gameState.copyTo(_gameScreen.gameState);
     _gameScreen.canNotLoad = false;
+}
+
+void GameScreen::ChangeStoneStyle(StoneStyle style)
+{
+    for (int y = 0; y<19; y++)
+    {
+        for (int x = 0; x<19; x++)
+        {
+            if (style == StoneStyle::Classic)
+                grid[y][x].ChangeSprite(ClassicBlack, ClassicWhite);
+
+            if (style == StoneStyle::Cartoon) 
+                grid[y][x].ChangeSprite(CartoonBlack, CartoonWhite);
+        }
+    }
 }

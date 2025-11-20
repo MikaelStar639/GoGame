@@ -39,6 +39,11 @@ private:
 
     //Sprite & Sound
     sf::Sprite &BackgroundSprite;
+    sf::Sprite &ClassicBlack;
+    sf::Sprite &ClassicWhite;
+    sf::Sprite &CartoonBlack;
+    sf::Sprite &CartoonWhite;
+    
     sf::Sound &stoneSound;
     
     //UI
@@ -62,8 +67,14 @@ private:
     EndGameWindow endGame;
 
 public:
+
+    enum class StoneStyle{
+        Classic,
+        Cartoon
+    };
     GameScreen(sf::Font &_font, sf::RenderWindow &_window,
-                sf::Sprite &BlackTexture, sf::Sprite &WhiteTexture,
+                sf::Sprite &ClassicBlackTexture, sf::Sprite &ClassicWhiteTexture,
+                sf::Sprite &CartoonBlackTexture, sf::Sprite &CartoonWhiteTexture,
                 sf::Sprite &BackgroundSprite, 
                 Board &_board,
                 sf::Sound &stoneSound,
@@ -79,6 +90,7 @@ public:
     void updateStone(Mouse &mouse);
     void updateIndicator();
     void updateScoreBoard();
+    void ChangeStoneStyle(StoneStyle style);
     
     //* Game State
     void updateGameState();

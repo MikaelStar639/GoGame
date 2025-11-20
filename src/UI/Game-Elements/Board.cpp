@@ -112,7 +112,8 @@ void Board::ChangeStyle(BoardStyle _state)
     if (_state == BoardStyle::DarkWood)
     {
         boardSprite = DarkWoodSprite;
-        _color = sf::Color(139, 100, 17);
+        _color = sf::Color(163,152,24);
+        // _color = sf::Color::Yellow;
     }
 
     if (_state == BoardStyle::PlainWood)

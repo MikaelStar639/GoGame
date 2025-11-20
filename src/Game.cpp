@@ -5,6 +5,7 @@
 #include <Window-State/GameScreen.hpp>
 #include <Window-State/Settings/Settings.hpp>
 #include <Window-State/Settings/SelectBoard.hpp>
+#include <Window-State/Settings/SelectStone.hpp>
 
 #include <iostream>
 
@@ -18,14 +19,19 @@ Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"),
 void Game::run(){
     
     sf::Texture backgroundTexture("assets/images/Background.png");
-    sf::Texture blackStoneTexture("assets/images/BlackStone.png");
-    sf::Texture whiteStoneTexture("assets/images/WhiteStone.png");
     sf::Texture BlackBoard       ("assets/images/DarkWood.png");
     sf::Texture LightBoard       ("assets/images/LightWood.png");
     sf::Texture PlainBoard       ("assets/images/PlainWood.png");
-
-    sf::Sprite BlackStoneSprite(blackStoneTexture);
-    sf::Sprite WhiteStoneSprite(whiteStoneTexture);
+    
+    sf::Texture ClassicblackStoneTexture("assets/images/BlackStone.png");
+    sf::Texture ClassicwhiteStoneTexture("assets/images/WhiteStone.png");
+    sf::Texture CartoonBlackStoneTexture("assets/images/PixelatedBlackStone.png");
+    sf::Texture CartoonWhiteStoneTexture("assets/images/PixelatedWhiteStone.png");
+    
+    sf::Sprite ClassicBlackStoneSprite(ClassicblackStoneTexture);
+    sf::Sprite ClassicWhiteStoneSprite(ClassicwhiteStoneTexture);
+    sf::Sprite CartoonBlackStoneSprite(CartoonBlackStoneTexture);
+    sf::Sprite CartoonWhiteStoneSprite(CartoonWhiteStoneTexture);
     sf::Sprite backgroundSprite(backgroundTexture);
 
     sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
@@ -44,11 +50,15 @@ void Game::run(){
     SelectBoard selectBoard(font, window, board, backgroundSprite, backgroundMusic);
 
     backgroundMusic.setLooping(true);
-    backgroundMusic.play();
+    // backgroundMusic.play();
     
-    GameScreen gameScreen(font, window, BlackStoneSprite, WhiteStoneSprite, 
-                                backgroundSprite, board, stoneSound, stoneCaptureSound);
+    GameScreen gameScreen(font, window,
+         ClassicBlackStoneSprite, ClassicWhiteStoneSprite,
+        CartoonBlackStoneSprite, CartoonWhiteStoneSprite,
+                                    backgroundSprite, board, stoneSound, stoneCaptureSound);
 
+    SelectStone selectStone(font, window, gameScreen, backgroundSprite, backgroundMusic);
+    
     
     while (window.isOpen()){
         handleEvent(window);
@@ -156,5 +166,19 @@ void Game::run(){
 
             continue;
         }
+
+        if (state == windowState::SelectStone){
+            selectStone.nextState = windowState::SelectStone;
+            selectStone.run();
+            state = selectStone.nextState;
+
+            if (state != windowState::Exit)
+                windowStateStack.push(state);
+            else
+                windowStateStack.pop();
+
+            continue;
+        }
+        
     }
 }

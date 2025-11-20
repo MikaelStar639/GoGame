@@ -5,8 +5,8 @@
 class Stone{    
 
 private:
-    sf::Sprite &BlackStoneSprite;
-    sf::Sprite &WhiteStoneSprite;
+    sf::Sprite BlackStoneSprite;
+    sf::Sprite WhiteStoneSprite;
 
 public:
     enum class State{
@@ -41,4 +41,5 @@ public:
     sf::Vector2f position;
     void setState(State state);
     void draw(sf::RenderWindow &window);
+    void ChangeSprite(sf::Sprite &newSpriteBlack, sf::Sprite &newSpriteWhite);
 };
