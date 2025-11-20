@@ -1,7 +1,7 @@
 #include "Window-State/GameScreen.hpp"
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
-                sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
+                sf::Sprite &BlackTexture, sf::Sprite &WhiteTexture,
                 sf::Texture &BackgroundTexture,
                 Board &_board,
                 sf::Sound &_stoneSound,
@@ -361,7 +361,7 @@ void GameScreen::saveGame(std::string _address){
 }
 
 void GameScreen::copyTo(GameScreen &_gameScreen){
-    _gameScreen.grid = grid;
+    // _gameScreen.grid = grid;
     _gameScreen.endGame.isClosed = endGame.isClosed;
     gameState.copyTo(_gameScreen.gameState);
     _gameScreen.canNotLoad = false;

@@ -63,7 +63,7 @@ private:
 
 public:
     GameScreen(sf::Font &_font, sf::RenderWindow &_window,
-                sf::Texture &BlackTexture, sf::Texture &WhiteTexture,
+                sf::Sprite &BlackTexture, sf::Sprite &WhiteTexture,
                 sf::Texture &BackgroundTexture, 
                 Board &_board,
                 sf::Sound &stoneSound,
