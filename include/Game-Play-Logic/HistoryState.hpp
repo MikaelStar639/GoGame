@@ -13,6 +13,7 @@ public:
 
     Turn turn;
     int y_newStone, x_newStone;
+    bool isPassed = false;
     std::vector<std::pair<int, int>> capturedStones;
 
     HistoryState(Turn _turn, int y, int x,

@@ -19,6 +19,28 @@ void GameState::addStone(int y, int x, Turn _turn){
     }
 }
 
+void GameState::pass(){
+    
+    if (history.index + 1 == static_cast<int>(history.size()))
+    {
+        std::vector<std::pair<int, int>> emptyCaptured;
+        emptyCaptured.resize(0);
+        HistoryState emptyState(HistoryState::Turn::black, 0, 0, emptyCaptured);
+        history.data.emplace_back(emptyState);
+    }
+    
+    ++history.index;
+    if (turn == Turn::black)
+        history[history.index].turn = HistoryState::Turn::black;
+    else
+        history[history.index].turn = HistoryState::Turn::white;
+    
+    history[history.index].isPassed = true;
+        
+    RemoveCapturedStones(history[history.index]);
+    history.undoCount = 0;
+}
+
 void GameState::addStoneMove(int y, int x){
     addStone(y, x, turn);
     // modify historyState here
@@ -226,10 +248,14 @@ void GameState::reset(){
 bool GameState::undo() {
     if (history.index >= 0) {
         HistoryState &state = history[history.index];
-        deleteStone(state.y_newStone, state.x_newStone);
+        if (!state.isPassed){
+            deleteStone(state.y_newStone, state.x_newStone);
+        }
+
         for (auto &[y, x] : state.capturedStones) {
             addStone(y, x, (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black);
         }
+
         turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
         --history.index;
         history.undoCount++;
@@ -239,12 +265,13 @@ bool GameState::undo() {
 }
 
 void GameState::redo() {
-
     if (history.index + 1 < static_cast<int>(history.size()) && history.undoCount > 0) {
         ++history.index;
         HistoryState &state = history[history.index];
-        addStone(state.y_newStone, state.x_newStone, 
-                  (state.turn == HistoryState::Turn::black) ? Turn::black : Turn::white);
+        if (!state.isPassed){
+            addStone(state.y_newStone, state.x_newStone, 
+                      (state.turn == HistoryState::Turn::black) ? Turn::black : Turn::white);
+        }
         for (auto &[y, x] : state.capturedStones) {
             deleteStone(y, x);
         }

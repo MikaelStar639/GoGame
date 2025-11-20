@@ -33,6 +33,7 @@ public:
     bool canCapture(GameState::Turn turn);
     int  LibertiesCount(int y, int x);
     void addStoneMove(int y, int x);
+    void pass();
     void RemoveCapturedStones(HistoryState &historyState);
 
 

@@ -23,7 +23,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     {
 
     //Button String
-    backButton.  setString("Back");
+    backButton.  setString("Menu");
     redoButton.  setString("Redo");
     undoButton.  setString("Undo");
     passButton.  setString("Pass");
@@ -113,6 +113,9 @@ void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
         if (passButton.onRelease) {
             if (gameState.lastMovePass == true) {
                 gameState.isEnd = true;
+            }
+            else{
+                gameState.pass();
             }
             gameState.lastMovePass = true;
             newTurn = true;
@@ -361,9 +364,7 @@ void GameScreen::saveGame(std::string _address){
 }
 
 void GameScreen::copyTo(GameScreen &_gameScreen){
-    // _gameScreen.grid = grid;
     _gameScreen.endGame.isClosed = endGame.isClosed;
     gameState.copyTo(_gameScreen.gameState);
     _gameScreen.canNotLoad = false;
-
 }
