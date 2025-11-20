@@ -23,10 +23,7 @@ void GameState::pass(){
     
     if (history.index + 1 == static_cast<int>(history.size()))
     {
-        std::vector<std::pair<int, int>> emptyCaptured;
-        emptyCaptured.resize(0);
-        HistoryState emptyState(HistoryState::Turn::black, 0, 0, emptyCaptured);
-        history.data.emplace_back(emptyState);
+        history.data.emplace_back(HistoryState());
     }
     
     ++history.index;
@@ -36,8 +33,6 @@ void GameState::pass(){
         history[history.index].turn = HistoryState::Turn::white;
     
     history[history.index].isPassed = true;
-        
-    RemoveCapturedStones(history[history.index]);
     history.undoCount = 0;
 }
 
@@ -48,10 +43,7 @@ void GameState::addStoneMove(int y, int x){
     // truncate history if we are not at the end
     if (history.index + 1 == static_cast<int>(history.size()))
     {
-        std::vector<std::pair<int, int>> emptyCaptured;
-        emptyCaptured.resize(0);
-        HistoryState emptyState(HistoryState::Turn::black, 0, 0, emptyCaptured);
-        history.data.emplace_back(emptyState);
+        history.data.emplace_back(HistoryState());
     }
     
     // push new info state into history.index + 1
@@ -283,71 +275,80 @@ void GameState::redo() {
 
 //*  load/save game
 void GameState::load(std::string _address){
-    std::ifstream fin;
-    fin.open(_address);
+    std::ifstream fin(_address);
 
     if (fin.peek() == std::ifstream::traits_type::eof()){
         isFileEmpty = true;
         return;
     }
-    isFileEmpty = false;
+    else{
+        isFileEmpty = false;
+        reset();
+    }
 
-    int t; fin >> t >> lastMovePass;
-    turn = static_cast<Turn>(t);
+    //* current state:
+    //* turn, lastmovePass, isEnd, grid
+    bool _turn;
+    fin >> _turn >> lastMovePass >> isEnd;
+    turn = static_cast<Turn>(_turn);
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
-            grid[y][x] = Stone::State::empty;
+            int tmp; fin >> tmp;
+            grid[y][x] = static_cast<Stone::State>(tmp);
         }
     }
+    //* History:
+    //* index, undoCount, data
+    int sz;
+    fin >> history.index >> history.undoCount >> sz;
+    for (int i = 0; i < sz; ++i){
+        HistoryState state;
+        int _turn, _size;
+        fin >> _turn >> state.isPassed 
+            >> state.y_newStone >> state.x_newStone >> _size; 
+        
+        state.turn = static_cast<HistoryState::Turn>(_turn);
+        for (int i = 0; i < _size; ++i){
+            int y, x; fin >> y >> x;
+            state.capturedStones.emplace_back(y, x);
+        }
 
-    int black_num, white_num;
-    fin >> black_num;
-    for (int i = 0; i < black_num; ++i){
-        int y, x; fin >> y >> x;
-        grid[y][x] = Stone::State::black; 
-    }
+        history.data.push_back(state);
+    } 
 
-    fin >> white_num;
-    for (int i = 0; i < black_num; ++i){
-        int y, x; fin >> y >> x;
-        grid[y][x] = Stone::State::white; 
-    }
-
-    if (black_num == 0 && white_num == 0) isFileEmpty = true;
     fin.close();
 }
 
 void GameState::save(std::string _address){
     std::ofstream fout(_address);
 
-    fout << static_cast<int>(turn) << ' ' << lastMovePass << '\n';
-    int black_num, white_num;
-    std::vector<std::pair<int, int>> temp;
+    //* current state:
+    //* turn, lastmovePass, isEnd, grid
+    fout << static_cast<int>(turn) << ' ' << lastMovePass << ' ' << isEnd << '\n';
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
-            if (grid[y][x] == Stone::State::black){
-                temp.push_back({y, x});
-            }
+            fout << static_cast<int>(grid[y][x]) << ' ';
         }
+        fout << '\n';
     }
 
-    fout << temp.size() << ' ';
-    for (auto [y, x]: temp) fout << y << ' ' << x << ' ';
-    fout << '\n';
-    temp.clear();
+    //* History:
+    //* index, undoCount, data
+    fout << history.index << ' ' << history.undoCount 
+         << ' ' << history.data.size() << '\n';
 
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
-            if (grid[y][x] == Stone::State::white){
-                temp.push_back({y, x});
-            }
+    for (int i = 0; i < history.size(); ++i){
+        auto state = history[i];
+        fout << static_cast<int>(state.turn) << ' ' 
+             << state.isPassed << ' '
+             << state.y_newStone << ' ' << state.x_newStone << ' '
+             << state.capturedStones.size() << '\n';
+        
+        for (auto [y, x]: state.capturedStones){
+            fout << y << ' ' << x << ' ';
         }
+        fout << '\n';
     }
-
-    fout << temp.size() << ' ';
-    for (auto [y, x]: temp) fout << y << ' ' << x << ' ';
-    fout << '\n';
-    temp.clear();
 
     fout.close();
 }

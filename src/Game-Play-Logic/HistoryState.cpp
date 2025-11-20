@@ -1,6 +1,8 @@
 #include "Game-Play-Logic/HistoryState.hpp"
 #include <iostream>
 
+HistoryState::HistoryState() {}
+
 HistoryState& History::operator[](int id) {
     return data[id];
 }

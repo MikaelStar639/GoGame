@@ -11,14 +11,12 @@ public:
         white
     };
 
-    Turn turn;
-    int y_newStone, x_newStone;
+    Turn turn = Turn::black;
+    int y_newStone = 0, x_newStone = 0;
     bool isPassed = false;
     std::vector<std::pair<int, int>> capturedStones;
 
-    HistoryState(Turn _turn, int y, int x,
-                 const std::vector<std::pair<int, int>> &_capturedStones)
-        :  turn(_turn), y_newStone(y), x_newStone(x), capturedStones(_capturedStones) {}
+    HistoryState();
 };
 
 
