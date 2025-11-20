@@ -44,7 +44,7 @@ private:
     sf::Sprite &CartoonBlack;
     sf::Sprite &CartoonWhite;
     
-    sf::Sound &stoneSound;
+    sf::Sound &endGameSound;    
     
     //UI
     void drawBoard();
@@ -78,7 +78,8 @@ public:
                 sf::Sprite &BackgroundSprite, 
                 Board &_board,
                 sf::Sound &stoneSound,
-                sf::Sound &stoneCaptureSound);
+                sf::Sound &stoneCaptureSound,
+                sf::Sound &endGameSound);
 
     Game::windowState nextState = Game::windowState::GameScreen;
 

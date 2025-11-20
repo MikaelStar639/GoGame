@@ -1,6 +1,7 @@
 #include "Game-Play-Logic/GameState.hpp"
 
-GameState::GameState(sf::Sound &_stoneCaptureSound) : stoneCaptureSound(_stoneCaptureSound) {
+GameState::GameState(sf::Sound &_stoneCaptureSound, sf::Sound &_stoneSound) : 
+    stoneCaptureSound(_stoneCaptureSound), stoneSound(_stoneSound) {
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
             grid[y][x] = Stone::State::empty;
@@ -119,6 +120,9 @@ void GameState::RemoveCapturedStones(HistoryState& historyState) {
 
     if (!toDelete.empty()){
         stoneCaptureSound.play();
+    }
+    else{
+        stoneSound.play();
     }
 
     for (auto &[y, x] : toDelete) {

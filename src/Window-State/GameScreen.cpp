@@ -6,7 +6,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
                 sf::Sprite &BackgroundTexture,
                 Board &_board,
                 sf::Sound &_stoneSound,
-                sf::Sound &_stoneCaptureSound) : 
+                sf::Sound &_stoneCaptureSound,
+                sf::Sound &_endGameSound) : 
     backButton  (_font),
     redoButton  (_font),
     undoButton  (_font),
@@ -22,8 +23,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),
     BackgroundSprite(BackgroundTexture),
-    stoneSound(_stoneSound),
-    gameState(_stoneCaptureSound),
+    endGameSound(_endGameSound),
+    gameState(_stoneCaptureSound, _stoneSound),
     endGame(_font)
     {
 
@@ -118,6 +119,7 @@ void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
         if (passButton.onRelease) {
             if (gameState.lastMovePass == true) {
                 gameState.isEnd = true;
+                endGameSound.play();
             }
             else{
                 gameState.pass();
@@ -201,7 +203,6 @@ void GameScreen::updateStone(Mouse &mouse){
                 overStone.setState(Stone::State::white);
             }
             gameState.addStoneMove(cy, cx);
-            stoneSound.play();
             newTurn = true;
         }
     }

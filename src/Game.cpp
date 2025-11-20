@@ -15,6 +15,7 @@ Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"),
 
 void Game::run(){
     
+    //* Texture Load
     sf::Texture backgroundTexture("assets/images/Background.png");
     sf::Texture BlackBoard       ("assets/images/DarkWood.png");
     sf::Texture LightBoard       ("assets/images/LightWood.png");
@@ -25,38 +26,52 @@ void Game::run(){
     sf::Texture CartoonBlackStoneTexture("assets/images/PixelatedBlackStone.png");
     sf::Texture CartoonWhiteStoneTexture("assets/images/PixelatedWhiteStone.png");
     
+    //* Sprite
     sf::Sprite ClassicBlackStoneSprite(ClassicblackStoneTexture);
     sf::Sprite ClassicWhiteStoneSprite(ClassicwhiteStoneTexture);
     sf::Sprite CartoonBlackStoneSprite(CartoonBlackStoneTexture);
     sf::Sprite CartoonWhiteStoneSprite(CartoonWhiteStoneTexture);
     sf::Sprite backgroundSprite(backgroundTexture);
 
+    //* Sounds
     sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
     sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
-    sf::SoundBuffer stoneCapturedBuffer  ("assets/sounds/boom.mp3");
-    
+    sf::SoundBuffer stoneCapturedBuffer  ("assets/sounds/stoneCapture.mp3");
+    sf::SoundBuffer endGameSoundBuffer   ("assets/sounds/boom.mp3");
+
     sf::Sound backgroundMusic(backgroundMusicBuffer);
     sf::Sound stoneSound(stoneSoundBuffer);
     sf::Sound stoneCaptureSound(stoneCapturedBuffer);
+    sf::Sound endGameSound(endGameSoundBuffer);
 
+    //* Board
     Board board(font, LightBoard, BlackBoard, PlainBoard);
 
+    //* Window States
     Homescreen  homeScreen (font, window, backgroundSprite);
-    GameMenu    GameMenu(font, window, backgroundSprite);
-    Settings    settings   (font, window, backgroundSprite, backgroundMusic, stoneSound, stoneCaptureSound);
+    GameMenu    GameMenu   (font, window, backgroundSprite);
+    Settings    settings   (font, window, backgroundSprite, backgroundMusic, stoneSound, stoneCaptureSound, endGameSound);
     SelectBoard selectBoard(font, window, board, backgroundSprite, backgroundMusic);
-
-    backgroundMusic.setLooping(true);
-    backgroundMusic.setVolume(75);
-    backgroundMusic.play();
-
-    GameScreen gameScreen(font, window,
-         ClassicBlackStoneSprite, ClassicWhiteStoneSprite,
+    GameScreen  gameScreen (font, window,
+        ClassicBlackStoneSprite, ClassicWhiteStoneSprite,
         CartoonBlackStoneSprite, CartoonWhiteStoneSprite,
-                                    backgroundSprite, board, stoneSound, stoneCaptureSound);
-
+        backgroundSprite, board, stoneSound, stoneCaptureSound, endGameSound);
+    
+    //* Stone Selector
     SelectStone selectStone(font, window, gameScreen, backgroundSprite, backgroundMusic);
     
+    //* Sound Default
+    backgroundMusic.setLooping(true);
+    backgroundMusic.setVolume(75);
+    backgroundMusic.setVolume(75);
+    stoneSound.setVolume(75);
+    stoneCaptureSound.setVolume(75);
+    endGameSound.setVolume(75);
+    backgroundMusic.play();
+
+    //* Window Icon
+    sf::Image icon("assets/images/PixelatedBlackStone.png");
+    window.setIcon(icon);
     
     while (window.isOpen()){
         handleEvent(window);

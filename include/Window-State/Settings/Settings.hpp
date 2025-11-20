@@ -16,6 +16,7 @@ private:
     sf::Sound &BackgroundMusic;
     sf::Sound &stoneSound;
     sf::Sound &stoneCaptureSound;
+    sf::Sound &endGameSound;
 
     sf::RenderWindow &window;
     
@@ -26,7 +27,8 @@ public:
              sf::Sprite &BackgroundSprite,
              sf::Sound &BackgroundMusic, 
              sf::Sound &stoneSound,
-             sf::Sound &stoneCaptureSound);
+             sf::Sound &stoneCaptureSound,
+             sf::Sound &endGameSound);
     
     Game::windowState nextState = Game::windowState::Settings;
     

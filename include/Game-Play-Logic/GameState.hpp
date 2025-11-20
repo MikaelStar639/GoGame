@@ -10,6 +10,7 @@
 class GameState{
 private:
     sf::Sound &stoneCaptureSound;
+    sf::Sound &stoneSound;
 
 public:
     enum class Turn{
@@ -17,7 +18,7 @@ public:
         white
     };
 
-    GameState(sf::Sound &stoneCaptureSound);
+    GameState(sf::Sound &stoneCaptureSound, sf::Sound &stoneSound);
 
     //* Game Elements
     Turn turn = Turn::black;

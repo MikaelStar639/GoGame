@@ -7,7 +7,8 @@ Settings::Settings(
     sf::Sprite &_BackgroundTexture,
     sf::Sound &_BackgroundMusic,
     sf::Sound &_stoneSound,
-    sf::Sound &_stoneCaptureSound):
+    sf::Sound &_stoneCaptureSound,
+    sf::Sound &_endGameSound):
     
     backButton      (_font),
     stoneStyleButton(_font),
@@ -18,7 +19,8 @@ Settings::Settings(
     soundSlider(_font),
     musicSlider(_font),
     stoneSound(_stoneSound),
-    stoneCaptureSound(_stoneCaptureSound)
+    stoneCaptureSound(_stoneCaptureSound),
+    endGameSound(_endGameSound)
     {}
 
 
@@ -95,6 +97,7 @@ void Settings::updateSlider(Mouse &mouse){
     BackgroundMusic  .setVolume(musicSlider.value);
     stoneCaptureSound.setVolume(soundSlider.value);
     stoneSound       .setVolume(soundSlider.value);
+    endGameSound     .setVolume(soundSlider.value);
 }
 
 void Settings::draw(){
