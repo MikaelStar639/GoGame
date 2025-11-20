@@ -46,8 +46,7 @@ void Game::run(){
     backgroundMusic.setLooping(true);
     backgroundMusic.play();
     
-
-    GameScreen resume(font, window, BlackStoneSprite, WhiteStoneSprite, 
+    GameScreen gameScreen(font, window, BlackStoneSprite, WhiteStoneSprite, 
                                 backgroundSprite, board, stoneSound, stoneCaptureSound);
 
     
@@ -80,10 +79,10 @@ void Game::run(){
 
             if (GameMenu.loadGame == true){
                 GameMenu.loadGame = false;
-                resume.loadGame("game.saves");
+                gameScreen.loadGame("game.saves");
             }
             if (GameMenu.saveGame == true){
-                resume.saveGame("game.saves");
+                gameScreen.saveGame("game.saves");
                 GameMenu.saveGame = false;
                 GameMenu.nextState = windowState::GameMenu;
             }
@@ -98,14 +97,12 @@ void Game::run(){
             continue;
         }
 
-        if (state == windowState::GameScreen){
-            GameScreen gameScreen (font, window,BlackStoneSprite , WhiteStoneSprite, 
-                                   backgroundSprite, board, stoneSound, stoneCaptureSound);
+        if (state == windowState::NewGame){
+            gameScreen.reset();
+            gameScreen.canNotLoad = false;
             gameScreen.nextState = windowState::GameScreen;
             gameScreen.run();
             
-            gameScreen.copyTo(resume);
-
             state = gameScreen.nextState;
             if (state != windowState::Exit)
                 windowStateStack.push(state);
@@ -116,16 +113,16 @@ void Game::run(){
         }
 
         if (state == windowState::Resume){
-            if (resume.canNotLoad){
+            if (gameScreen.canNotLoad){
                 windowStateStack.pop();
                 state = windowStateStack.top();
                 continue;
             }
             
-            resume.nextState = windowState::GameScreen;
-            resume.run();
+            gameScreen.nextState = windowState::GameScreen;
+            gameScreen.run();
             
-            state = resume.nextState;
+            state = gameScreen.nextState;
             if (state != windowState::Exit)
                 windowStateStack.push(state);
             else

@@ -12,6 +12,7 @@ public:
         GameMenu,
         PlayOptions,
         Resume,
+        NewGame,
         Settings,
         SelectBoard,
         SelectStone,

@@ -45,7 +45,7 @@ void GameMenu::updateButton(Mouse &mouse){
     backButton    .update(mouse);
 
     //check if any button is clicked
-    if (newGameButton .onRelease) nextState = Game::windowState::GameScreen;
+    if (newGameButton .onRelease) nextState = Game::windowState::NewGame;
     if (continueButton.onRelease) nextState = Game::windowState::Resume;
     if (saveGameButton.onRelease) nextState = Game::windowState::Exit, saveGame = true;
     if (loadGameButton.onRelease) nextState = Game::windowState::Resume, loadGame = true;
