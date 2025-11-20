@@ -9,7 +9,7 @@ EndGameWindow::EndGameWindow(sf::Font &font) :
     shape.setSize({800.f, 500.f});
     shape.setOrigin(shape.getGeometricCenter());
     shape.setPosition({600.f, 450.f});
-    shape.setFillColor(sf::Color(64, 100, 150));
+    shape.setFillColor(sf::Color(238, 238, 210));
     
     //* button:
     replayButton.setString("Replay");
@@ -22,13 +22,12 @@ EndGameWindow::EndGameWindow(sf::Font &font) :
 }
 
 void EndGameWindow::update(GameState &gameState){
+    text.setFillColor(sf::Color::Black);
     if (gameState.blackScore > gameState.whiteScore){
         text.setString("Black Wins!!!");
-        text.setFillColor(sf::Color::Black);
     }
     else{
         text.setString("White Wins!!!");
-        text.setFillColor(sf::Color::White);
     }
     text.setCharacterSize(50);
     text.setPosition({600.f, 350.f});

@@ -41,7 +41,7 @@ void ScoreBoard::draw(sf::RenderWindow &window){
     window.draw(text);
 
     if (isWin){
-        score.setFillColor(sf::Color(64, 160, 200));
+        score.setFillColor(sf::Color(64, 200, 130));
     }
     else{
         score.setFillColor(sf::Color::Red);

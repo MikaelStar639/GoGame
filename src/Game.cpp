@@ -50,8 +50,9 @@ void Game::run(){
     SelectBoard selectBoard(font, window, board, backgroundSprite, backgroundMusic);
 
     backgroundMusic.setLooping(true);
-    // backgroundMusic.play();
-    
+    backgroundMusic.setVolume(75);
+    backgroundMusic.play();
+
     GameScreen gameScreen(font, window,
          ClassicBlackStoneSprite, ClassicWhiteStoneSprite,
         CartoonBlackStoneSprite, CartoonWhiteStoneSprite,
@@ -179,6 +180,5 @@ void Game::run(){
 
             continue;
         }
-        
     }
 }
