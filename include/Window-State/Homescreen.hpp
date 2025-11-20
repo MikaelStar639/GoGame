@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Game.hpp"
 #include "UI/Button.hpp"
 #include "UI/RoundRectShape.hpp"

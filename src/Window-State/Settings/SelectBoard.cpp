@@ -1,5 +1,4 @@
 #include "Window-State/Settings/SelectBoard.hpp"
-#include <iostream>
 
 
 SelectBoard::SelectBoard(

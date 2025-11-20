@@ -1,5 +1,4 @@
 #include "Window-State/GameScreen.hpp"
-#include <iostream>
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 sf::Sprite &ClassicBlackTexture, sf::Sprite &ClassicWhiteTexture,

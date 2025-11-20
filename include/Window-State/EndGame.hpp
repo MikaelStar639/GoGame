@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFMl/Graphics.hpp>
 #include "UI/Button.hpp"
 #include "UI/Blur.hpp"

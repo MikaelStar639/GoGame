@@ -1,5 +1,4 @@
 #include "Game-Play-Logic/HistoryState.hpp"
-#include <iostream>
 
 HistoryState::HistoryState() {}
 

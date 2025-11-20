@@ -1,5 +1,4 @@
 #include "Window-State/Settings/SelectStone.hpp"
-#include <iostream>
 
 
 SelectStone::SelectStone(

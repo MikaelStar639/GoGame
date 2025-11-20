@@ -2,8 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "Input/Mouse.hpp"
-#include "UI/RoundRectShape.hpp"
 
+#include "UI/RoundRectShape.hpp"
 #include "UI/Slider/Thumb.hpp"
 #include "UI/Slider/Track.hpp"
 

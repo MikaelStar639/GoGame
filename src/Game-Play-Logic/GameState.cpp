@@ -1,5 +1,4 @@
 #include "Game-Play-Logic/GameState.hpp"
-#include <iostream>
 
 GameState::GameState(sf::Sound &_stoneCaptureSound) : stoneCaptureSound(_stoneCaptureSound) {
     for (int y = 0; y < 19; ++y){

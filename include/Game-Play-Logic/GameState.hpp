@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <vector>
 #include <queue>
-#include <vector>
 
 class GameState{
 private:

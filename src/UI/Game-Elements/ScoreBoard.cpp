@@ -1,5 +1,5 @@
 #include "UI/Game-Elements/ScoreBoard.hpp"
-#include <iostream>
+
 ScoreBoard::ScoreBoard(sf::Font &font, Player _player) : 
     text(font), score(font), player(_player) {}
 
