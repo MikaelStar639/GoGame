@@ -1,6 +1,6 @@
 #include "Window-State/Homescreen.hpp"
 
-Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window, sf::Texture &BackgroundTexture) : 
+Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 
     playButton(font),
     settingButton(font),
     exitButton(font),

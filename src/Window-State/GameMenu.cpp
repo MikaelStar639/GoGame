@@ -1,7 +1,7 @@
 #include "Window-State/GameMenu.hpp"
 
 
-GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, sf::Texture &BackgroundTexture) : 
+GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 
     newGameButton  (font),
     continueButton (font),
     loadGameButton (font),

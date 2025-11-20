@@ -1,7 +1,7 @@
 #include "Window-State/PlayOptions.hpp"
 
 
-PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, sf::Texture &BackgroundTexture) : 
+PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 
     pvbButton (font),
     pvpButton (font),
     backButton(font),

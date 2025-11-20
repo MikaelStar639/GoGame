@@ -2,7 +2,7 @@
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 sf::Sprite &BlackTexture, sf::Sprite &WhiteTexture,
-                sf::Texture &BackgroundTexture,
+                sf::Sprite &BackgroundTexture,
                 Board &_board,
                 sf::Sound &_stoneSound,
                 sf::Sound &_stoneCaptureSound) : 

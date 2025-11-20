@@ -26,6 +26,7 @@ void Game::run(){
 
     sf::Sprite BlackStoneSprite(blackStoneTexture);
     sf::Sprite WhiteStoneSprite(whiteStoneTexture);
+    sf::Sprite backgroundSprite(backgroundTexture);
 
     sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
     sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
@@ -37,17 +38,17 @@ void Game::run(){
 
     Board board(font, LightBoard, BlackBoard, PlainBoard);
 
-    Homescreen  homeScreen (font, window, backgroundTexture);
-    GameMenu    GameMenu(font, window, backgroundTexture);
-    Settings    settings   (font, window, backgroundTexture, backgroundMusic, stoneSound, stoneCaptureSound);
-    SelectBoard selectBoard(font, window, board, backgroundTexture, backgroundMusic);
+    Homescreen  homeScreen (font, window, backgroundSprite);
+    GameMenu    GameMenu(font, window, backgroundSprite);
+    Settings    settings   (font, window, backgroundSprite, backgroundMusic, stoneSound, stoneCaptureSound);
+    SelectBoard selectBoard(font, window, board, backgroundSprite, backgroundMusic);
 
     backgroundMusic.setLooping(true);
-    // backgroundMusic.play();
+    backgroundMusic.play();
     
 
     GameScreen resume(font, window, BlackStoneSprite, WhiteStoneSprite, 
-                                backgroundTexture, board, stoneSound, stoneCaptureSound);
+                                backgroundSprite, board, stoneSound, stoneCaptureSound);
 
     
     while (window.isOpen()){
@@ -92,7 +93,7 @@ void Game::run(){
 
         if (state == windowState::GameScreen){
             GameScreen gameScreen (font, window,BlackStoneSprite , WhiteStoneSprite, 
-                                   backgroundTexture, board, stoneSound, stoneCaptureSound);
+                                   backgroundSprite, board, stoneSound, stoneCaptureSound);
             gameScreen.nextState = windowState::GameScreen;
             gameScreen.run();
             

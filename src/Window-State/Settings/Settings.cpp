@@ -4,7 +4,7 @@
 Settings::Settings(
     sf::Font &_font, 
     sf::RenderWindow &_window, 
-    sf::Texture &_BackgroundTexture,
+    sf::Sprite &_BackgroundTexture,
     sf::Sound &_BackgroundMusic,
     sf::Sound &_stoneSound,
     sf::Sound &_stoneCaptureSound):

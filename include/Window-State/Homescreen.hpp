@@ -8,14 +8,14 @@ private:
     Button settingButton;
     Button exitButton;
 
-    sf::Sprite BackgroundSprite;
+    sf::Sprite &BackgroundSprite;
 
     sf::Text         Gamename;
     sf::RenderWindow &window;
 
 public:
 
-    Homescreen(sf::Font &font, sf::RenderWindow &window, sf::Texture &BackgroundTexture);
+    Homescreen(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
 
     Game::windowState nextState = Game::windowState::Homescreen;
     void UpdateGamenamePosition();

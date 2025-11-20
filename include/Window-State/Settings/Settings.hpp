@@ -12,7 +12,7 @@ private:
     Slider soundSlider;
     Slider musicSlider;
 
-    sf::Sprite BackgroundSprite;
+    sf::Sprite &BackgroundSprite;
     sf::Sound &BackgroundMusic;
     sf::Sound &stoneSound;
     sf::Sound &stoneCaptureSound;
@@ -23,7 +23,7 @@ private:
 
 public:
     Settings(sf::Font &font, sf::RenderWindow &window, 
-             sf::Texture &BackgroundTexture,
+             sf::Sprite &BackgroundSprite,
              sf::Sound &BackgroundMusic, 
              sf::Sound &stoneSound,
              sf::Sound &stoneCaptureSound);

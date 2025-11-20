@@ -13,7 +13,7 @@ private:
 
     Board &board;
 
-    sf::Sprite BackgroundSprite;
+    sf::Sprite &BackgroundSprite;
     sf::Sound &BackgroundMusic;
 
     sf::RenderWindow &window;
@@ -26,7 +26,7 @@ public:
         DarkWood,
     };
     SelectBoard(sf::Font &font, sf::RenderWindow &window, Board &board,
-             sf::Texture &BackgroundTexture,
+             sf::Sprite &BackgroundSprite,
              sf::Sound &BackgroundMusic);
     
     Game::windowState nextState = Game::windowState::SelectBoard;

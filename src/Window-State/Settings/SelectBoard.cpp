@@ -6,7 +6,7 @@ SelectBoard::SelectBoard(
     sf::Font &_font, 
     sf::RenderWindow &_window,
     Board &_board,
-    sf::Texture &_BackgroundTexture,
+    sf::Sprite &_BackgroundTexture,
     sf::Sound &_BackgroundMusic):
     
     backButton      (_font),

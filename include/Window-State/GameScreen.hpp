@@ -38,7 +38,7 @@ private:
     std::vector<std::vector<Stone>> grid;
 
     //Sprite & Sound
-    sf::Sprite BackgroundSprite;
+    sf::Sprite &BackgroundSprite;
     sf::Sound &stoneSound;
     
     //UI
@@ -64,7 +64,7 @@ private:
 public:
     GameScreen(sf::Font &_font, sf::RenderWindow &_window,
                 sf::Sprite &BlackTexture, sf::Sprite &WhiteTexture,
-                sf::Texture &BackgroundTexture, 
+                sf::Sprite &BackgroundSprite, 
                 Board &_board,
                 sf::Sound &stoneSound,
                 sf::Sound &stoneCaptureSound);

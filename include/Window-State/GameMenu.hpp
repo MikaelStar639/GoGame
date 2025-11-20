@@ -11,13 +11,13 @@ private:
     Button loadGameButton; 
     Button backButton;
 
-    sf::Sprite BackgroundSprite;
+    sf::Sprite &BackgroundSprite;
 
     sf::RenderWindow &window;
 
     void setBackground(sf::Sprite &backgroundSprite);
 public:
-    GameMenu(sf::Font &font, sf::RenderWindow &window, sf::Texture &BackgroundTexture);
+    GameMenu(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
 
     Game::windowState nextState = Game::windowState::GameMenu;
     
