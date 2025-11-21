@@ -6,7 +6,7 @@
 #include <Window-State/Settings/SelectBoard.hpp>
 #include <Window-State/Settings/SelectStone.hpp>
 
-Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame"), 
+Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame", sf::Style::Default ^ sf::Style::Resize), 
                font("assets/fonts/Monocraft.ttc"){
 
     windowStateStack.push({windowState::Exit});
