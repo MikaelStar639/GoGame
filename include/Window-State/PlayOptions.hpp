@@ -16,7 +16,7 @@ private:
 public:
     PlayOptions(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
 
-    Game::windowState nextState = Game::windowState::PlayOptions;
+    Game::screenState nextState = Game::screenState::PlayOptions;
 
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);

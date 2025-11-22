@@ -90,7 +90,7 @@ void SelectBoard::updateButton(Mouse &mouse){
         LightWoodButton.setDefaultColor();
         PlainWoodButton.setChosen();
     }
-    if (backButton.onRelease)     nextState = Game::windowState::Exit;
+    if (backButton.onRelease)     nextState = Game::screenState::Exit;
 }
 
 
@@ -118,7 +118,7 @@ void SelectBoard::run(){
 
         window.display();
 
-        if (nextState != Game::windowState::SelectBoard){
+        if (nextState != Game::screenState::SelectBoard){
             break;
         }
     }

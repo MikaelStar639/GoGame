@@ -67,9 +67,9 @@ void Settings::updateButton(Mouse &mouse){
     backButton.update(mouse);
 
     //check if any button is clicked
-    if (stoneStyleButton.onRelease) nextState = Game::windowState::SelectStone;
-    if (boardStyleButton.onRelease) nextState = Game::windowState::SelectBoard;
-    if (backButton.onRelease)       nextState = Game::windowState::Exit;
+    if (stoneStyleButton.onRelease) nextState = Game::screenState::SelectStone;
+    if (boardStyleButton.onRelease) nextState = Game::screenState::SelectBoard;
+    if (backButton.onRelease)       nextState = Game::screenState::Exit;
 }
 
 void Settings::updateSlider(Mouse &mouse){
@@ -126,7 +126,7 @@ void Settings::run(){
 
         window.display();
 
-        if (nextState != Game::windowState::Settings){
+        if (nextState != Game::screenState::Settings){
             break;
         }
     }

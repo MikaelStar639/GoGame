@@ -9,8 +9,8 @@
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame", sf::Style::Default ^ sf::Style::Resize), 
                font("assets/fonts/Monocraft.ttc"){
 
-    windowStateStack.push({windowState::Exit});
-    windowStateStack.push({windowState::Homescreen});
+    screenStateStack.push({screenState::Exit});
+    screenStateStack.push({screenState::Homescreen});
 }
 
 void Game::run(){
@@ -75,29 +75,29 @@ void Game::run(){
     
     while (window.isOpen()){
         handleEvent(window);
-        assert(!windowStateStack.empty());
-        windowState state = windowStateStack.top();
+        assert(!screenStateStack.empty());
+        screenState state = screenStateStack.top();
 
-        if (state == windowState::Exit){
+        if (state == screenState::Exit){
             window.close();
             break;
         }
 
-        if (state == windowState::Homescreen){
-            homeScreen.nextState = windowState::Homescreen;
+        if (state == screenState::Homescreen){
+            homeScreen.nextState = screenState::Homescreen;
             homeScreen.run();
             state = homeScreen.nextState;
 
-            if (state != windowState::Exit)
-                windowStateStack.push(state);
+            if (state != screenState::Exit)
+                screenStateStack.push(state);
             else
-                windowStateStack.pop();
+                screenStateStack.pop();
 
             continue;
         }
 
-        if (state == windowState::GameMenu){
-            GameMenu.nextState = windowState::GameMenu;
+        if (state == screenState::GameMenu){
+            GameMenu.nextState = screenState::GameMenu;
             GameMenu.run();
 
             if (GameMenu.loadGame == true){
@@ -107,88 +107,88 @@ void Game::run(){
             if (GameMenu.saveGame == true){
                 gameScreen.saveGame("game.saves");
                 GameMenu.saveGame = false;
-                GameMenu.nextState = windowState::GameMenu;
+                GameMenu.nextState = screenState::GameMenu;
             }
 
             state = GameMenu.nextState;
 
-            if (state != windowState::Exit)
-                windowStateStack.push(state);
+            if (state != screenState::Exit)
+                screenStateStack.push(state);
             else
-                windowStateStack.pop();
+                screenStateStack.pop();
 
             continue;
         }
 
-        if (state == windowState::NewGame){
+        if (state == screenState::NewGame){
             gameScreen.reset();
             gameScreen.canNotLoad = false;
-            gameScreen.nextState = windowState::GameScreen;
+            gameScreen.nextState = screenState::GameScreen;
             gameScreen.run();
             
             state = gameScreen.nextState;
-            if (state != windowState::Exit)
-                windowStateStack.push(state);
+            if (state != screenState::Exit)
+                screenStateStack.push(state);
             else
-                windowStateStack.pop();
+                screenStateStack.pop();
 
             continue;
         }
 
-        if (state == windowState::Resume){
+        if (state == screenState::Resume){
             if (gameScreen.canNotLoad){
-                windowStateStack.pop();
-                state = windowStateStack.top();
+                screenStateStack.pop();
+                state = screenStateStack.top();
                 continue;
             }
             
-            gameScreen.nextState = windowState::GameScreen;
+            gameScreen.nextState = screenState::GameScreen;
             gameScreen.run();
             
             state = gameScreen.nextState;
-            if (state != windowState::Exit)
-                windowStateStack.push(state);
+            if (state != screenState::Exit)
+                screenStateStack.push(state);
             else
-                windowStateStack.pop();
+                screenStateStack.pop();
 
             continue;
         }
 
-        if (state == windowState::Settings){
-            settings.nextState = windowState::Settings;
+        if (state == screenState::Settings){
+            settings.nextState = screenState::Settings;
             settings.run();
             state = settings.nextState;
 
-            if (state != windowState::Exit)
-                windowStateStack.push(state);
+            if (state != screenState::Exit)
+                screenStateStack.push(state);
             else
-                windowStateStack.pop();
+                screenStateStack.pop();
 
             continue;
         }
 
-        if (state == windowState::SelectBoard){
-            selectBoard.nextState = windowState::SelectBoard;
+        if (state == screenState::SelectBoard){
+            selectBoard.nextState = screenState::SelectBoard;
             selectBoard.run();
             state = selectBoard.nextState;
 
-            if (state != windowState::Exit)
-                windowStateStack.push(state);
+            if (state != screenState::Exit)
+                screenStateStack.push(state);
             else
-                windowStateStack.pop();
+                screenStateStack.pop();
 
             continue;
         }
 
-        if (state == windowState::SelectStone){
-            selectStone.nextState = windowState::SelectStone;
+        if (state == screenState::SelectStone){
+            selectStone.nextState = screenState::SelectStone;
             selectStone.run();
             state = selectStone.nextState;
 
-            if (state != windowState::Exit)
-                windowStateStack.push(state);
+            if (state != screenState::Exit)
+                screenStateStack.push(state);
             else
-                windowStateStack.pop();
+                screenStateStack.pop();
 
             continue;
         }

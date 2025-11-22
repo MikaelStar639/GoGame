@@ -19,7 +19,7 @@ public:
 
     Homescreen(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
 
-    Game::windowState nextState = Game::windowState::Homescreen;
+    Game::screenState nextState = Game::screenState::Homescreen;
     void UpdateGamenamePosition();
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);

@@ -45,11 +45,11 @@ void GameMenu::updateButton(Mouse &mouse){
     backButton    .update(mouse);
 
     //check if any button is clicked
-    if (newGameButton .onRelease) nextState = Game::windowState::NewGame;
-    if (continueButton.onRelease) nextState = Game::windowState::Resume;
-    if (saveGameButton.onRelease) nextState = Game::windowState::Exit, saveGame = true;
-    if (loadGameButton.onRelease) nextState = Game::windowState::Resume, loadGame = true;
-    if (backButton.    onRelease) nextState = Game::windowState::Exit;
+    if (newGameButton .onRelease) nextState = Game::screenState::NewGame;
+    if (continueButton.onRelease) nextState = Game::screenState::Resume;
+    if (saveGameButton.onRelease) nextState = Game::screenState::Exit, saveGame = true;
+    if (loadGameButton.onRelease) nextState = Game::screenState::Resume, loadGame = true;
+    if (backButton.    onRelease) nextState = Game::screenState::Exit;
 }
 
 void GameMenu::drawButton(){
@@ -99,7 +99,7 @@ void GameMenu::run(){
         window.display();
         
         //if the state is not GameMenu (some button was clicked)
-        if (nextState != Game::windowState::GameMenu){
+        if (nextState != Game::screenState::GameMenu){
             break;
         }
     }

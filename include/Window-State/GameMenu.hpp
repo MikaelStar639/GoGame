@@ -19,7 +19,7 @@ private:
 public:
     GameMenu(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
 
-    Game::windowState nextState = Game::windowState::GameMenu;
+    Game::screenState nextState = Game::screenState::GameMenu;
     
     bool loadGame = false;
     bool saveGame = false;

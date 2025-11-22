@@ -30,7 +30,7 @@ public:
              sf::Sound &stoneCaptureSound,
              sf::Sound &endGameSound);
     
-    Game::windowState nextState = Game::windowState::Settings;
+    Game::screenState nextState = Game::screenState::Settings;
     
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);

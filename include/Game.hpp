@@ -5,7 +5,7 @@
 
 class Game{
 public:
-    enum class windowState{
+    enum class screenState{
         Homescreen,
         GameMenu,
         PlayOptions,
@@ -20,7 +20,7 @@ public:
 
     Game();
 
-    std::stack<windowState> windowStateStack;
+    std::stack<screenState> screenStateStack;
 
     sf::RenderWindow window;
     sf::Font         font;

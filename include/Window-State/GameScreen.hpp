@@ -81,7 +81,7 @@ public:
                 sf::Sound &stoneCaptureSound,
                 sf::Sound &endGameSound);
 
-    Game::windowState nextState = Game::windowState::GameScreen;
+    Game::screenState nextState = Game::screenState::GameScreen;
 
     //* UI
     void setBackground(sf::Sprite &backgroundSprite);

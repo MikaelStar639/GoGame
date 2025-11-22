@@ -35,9 +35,9 @@ void PlayOptions::updateButton(Mouse &mouse){
     backButton.update(mouse);
 
     //check if any button is clicked
-    if (pvbButton .onRelease) nextState = Game::windowState::GameScreen;
-    if (pvpButton .onRelease) nextState = Game::windowState::GameScreen;
-    if (backButton.onRelease) nextState = Game::windowState::Exit;
+    if (pvbButton .onRelease) nextState = Game::screenState::GameScreen;
+    if (pvpButton .onRelease) nextState = Game::screenState::GameScreen;
+    if (backButton.onRelease) nextState = Game::screenState::Exit;
 }
 
 void PlayOptions::drawButton(){
@@ -85,7 +85,7 @@ void PlayOptions::run(){
         window.display();
         
         //if the state is not PlayOptions (some button was clicked)
-        if (nextState != Game::windowState::PlayOptions){
+        if (nextState != Game::screenState::PlayOptions){
             break;
         }
     }

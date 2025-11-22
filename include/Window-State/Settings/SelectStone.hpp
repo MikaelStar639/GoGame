@@ -29,7 +29,7 @@ public:
              sf::Sprite &BackgroundSprite,
              sf::Sound &BackgroundMusic);
     
-    Game::windowState nextState = Game::windowState::SelectStone;
+    Game::screenState nextState = Game::screenState::SelectStone;
     
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);

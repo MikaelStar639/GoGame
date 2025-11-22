@@ -78,7 +78,7 @@ void SelectStone::updateButton(Mouse &mouse){
     }
     if (backButton.onRelease)
     {
-        nextState = Game::windowState::Exit;
+        nextState = Game::screenState::Exit;
     }
 }
 
@@ -106,7 +106,7 @@ void SelectStone::run(){
 
         window.display();
 
-        if (nextState != Game::windowState::SelectStone){
+        if (nextState != Game::screenState::SelectStone){
             break;
         }
     }
