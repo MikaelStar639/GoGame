@@ -2,7 +2,7 @@
 
 #include "Game.hpp"
 #include "UI/Button.hpp"
-#include "Window-State/GameScreen.hpp"
+#include "Screen-State/GameScreen.hpp"
 
 class SelectStone{
 private:

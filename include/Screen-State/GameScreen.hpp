@@ -9,7 +9,7 @@
 #include "UI/Game-Elements/TurnIndicator.hpp"
 #include "UI/Game-Elements/ScoreBoard.hpp"
 
-#include "Window-State/EndGame.hpp"
+#include "Screen-State/EndGame.hpp"
 #include "Game-Play-Logic/GameState.hpp"
 
 

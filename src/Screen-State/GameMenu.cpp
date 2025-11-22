@@ -1,4 +1,4 @@
-#include "Window-State/GameMenu.hpp"
+#include "Screen-State/GameMenu.hpp"
 
 
 GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 

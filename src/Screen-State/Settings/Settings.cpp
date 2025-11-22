@@ -1,4 +1,4 @@
-#include "Window-State/Settings/Settings.hpp"
+#include "Screen-State/Settings/Settings.hpp"
 
 
 Settings::Settings(

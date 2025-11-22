@@ -1,4 +1,4 @@
-#include "Window-State/EndGame.hpp"
+#include "Screen-State/EndGame.hpp"
 
 EndGameWindow::EndGameWindow(sf::Font &font) : 
     text(font), replayButton(font), backButton(font){
