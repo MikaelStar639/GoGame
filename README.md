@@ -8,39 +8,42 @@ The game is built using **C++** language and the **SFML** library. This app simu
 
 ## ✨ Features
 * **Game Mode:** Player vs Player (PvP) on the same device.
-* **Board Support:** Standard 19x19 grid.
+* **Board:** Standard 19x19 grid.
 * **Game Logic:**
     * ✅ Automatic capture of dead stones (0 liberties).
     * ✅ Suicide move prevention.
     * ✅ Ko rule enforcement.
-    * ✅ Automatically detect and end the game. ()
-* **Scoring:** Territory counting algorithm using Flood Fill.
-* **UI/UX:** Mouse interaction, sound effects, and previous move indicators.
+    * ✅ Automatically detect and end the game. 
+* **Scoring:** Chinese rules (Area Scoring, 7.5 komi).
+* **Save/Load Game History**: save/load every moves from the beginning of the game to the current game state.
+* **Change Style**: change the style of the board/stones.
+
 
 ## 🛠️ Tech Stack
-* **Language:** C++ (Standard 17)
-* **Graphics:** SFML 2.5.1 (Simple and Fast Multimedia Library)
+* **Language:** C++ 17 (GCC 14.2.0)
+* **Graphics:** SFML 3.0.2 (Simple and Fast Multimedia Library)
 * **Build System:** CMake
-* **IDE:** Visual Studio Code
 
-## 🚀 Installation & Build Instructions
+## 🚀 Installation
 
 ### Prerequisites
 Ensure you have the following installed:
-* g++ (MinGW-w64)
-* CMake
-* SFML (Located at `C:/SFML-2.5.1` or configured in environment variables)
+* g++ (MinGW-w64) 14.2.0
+* at least CMake 3.15
 
-### How to Compile (Windows)
+### How to run
 Open your terminal in the project folder and run:
 
 ```bash
-# 1. Create a build directory
-mkdir build
+# 1. Create build directory
+md build
 cd build
 
-# 2. Generate Makefiles using CMake
-cmake -G "MinGW Makefiles" ..
+# 2. Configure
+cmake ..
 
-# 3. Compile the executable
-make
+# 3. Build
+cmake --build .
+
+# 4. Run
+.\gogame
