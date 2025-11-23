@@ -165,7 +165,7 @@ bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
 void GameState::getScore(){
 
     blackScore = 0;
-    whiteScore = 6; //komi = 6.5
+    whiteScore = 7; //komi = 7.5
 
     //* using DFS for easier implementation
     bool visited[19][19] = {false};
