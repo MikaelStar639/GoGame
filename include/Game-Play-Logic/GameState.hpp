@@ -53,7 +53,10 @@ public:
     void load(std::string _address);
     void save(std::string _address);
 
-    //* copy to the other GameState
-    void copyTo(GameState &_gameState);
+    //* AI support
+    std::vector<Position> getPossibleMove();
+    void addVirtualMove();
+    void virtualUndo();
+    int  minimaxScore();
 }; 
 

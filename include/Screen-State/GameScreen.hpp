@@ -107,7 +107,4 @@ public:
 
     //* Run 
     void run();
-
-    //* Copy to the other gameScreen
-    void copyTo(GameScreen &gameScreen);
 };

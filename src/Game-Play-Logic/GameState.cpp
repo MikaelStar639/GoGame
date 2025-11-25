@@ -53,8 +53,8 @@ void GameState::addStoneMove(int y, int x){
     else
         history[history.index].turn = HistoryState::Turn::white;
     
-    history[history.index].y_newStone = y;
-    history[history.index].x_newStone = x;
+    history[history.index].newStone.y = y;
+    history[history.index].newStone.x = x;
     RemoveCapturedStones(history[history.index]);
     history.undoCount = 0;
 
@@ -244,7 +244,7 @@ bool GameState::undo() {
     if (history.index >= 0) {
         HistoryState &state = history[history.index];
         if (!state.isPassed){
-            deleteStone(state.y_newStone, state.x_newStone);
+            deleteStone(state.newStone.y, state.newStone.x);
         }
 
         for (auto &[y, x] : state.capturedStones) {
@@ -264,7 +264,7 @@ void GameState::redo() {
         ++history.index;
         HistoryState &state = history[history.index];
         if (!state.isPassed){
-            addStone(state.y_newStone, state.x_newStone, 
+            addStone(state.newStone.y, state.newStone.x, 
                       (state.turn == HistoryState::Turn::black) ? Turn::black : Turn::white);
         }
         for (auto &[y, x] : state.capturedStones) {
@@ -308,12 +308,12 @@ void GameState::load(std::string _address){
         HistoryState state;
         int _turn, _size;
         fin >> _turn >> state.isPassed 
-            >> state.y_newStone >> state.x_newStone >> _size; 
+            >> state.newStone.y >> state.newStone.x >> _size; 
         
         state.turn = static_cast<HistoryState::Turn>(_turn);
         for (int i = 0; i < _size; ++i){
             int y, x; fin >> y >> x;
-            state.capturedStones.emplace_back(y, x);
+            state.capturedStones.push_back({y, x});
         }
 
         history.data.push_back(state);
@@ -344,7 +344,7 @@ void GameState::save(std::string _address){
         auto state = history[i];
         fout << static_cast<int>(state.turn) << ' ' 
              << state.isPassed << ' '
-             << state.y_newStone << ' ' << state.x_newStone << ' '
+             << state.newStone.y << ' ' << state.newStone.x << ' '
              << state.capturedStones.size() << '\n';
         
         for (auto [y, x]: state.capturedStones){
@@ -356,15 +356,12 @@ void GameState::save(std::string _address){
     fout.close();
 }
 
-
-//*  copy to other gameState
-void GameState::copyTo(GameState &_gameState){
-    _gameState.turn = turn;
-    _gameState.isEnd = isEnd;
-    for (int y = 0; y < 19; ++y)
-        for (int x = 0; x < 19; ++x)
-            _gameState.grid[y][x] = grid[y][x];
-    
-    _gameState.history = history;
-    _gameState.lastMovePass = lastMovePass;
+std::vector<Position> GameState::getPossibleMove(){
+    std::vector<Position> emptyPosition;
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            emptyPosition.push_back({y, x});
+        }
+    }
+    return emptyPosition;
 }

@@ -369,12 +369,6 @@ void GameScreen::saveGame(std::string _address){
     gameState.save(_address);
 }
 
-void GameScreen::copyTo(GameScreen &_gameScreen){
-    _gameScreen.endGame.isClosed = endGame.isClosed;
-    gameState.copyTo(_gameScreen.gameState);
-    _gameScreen.canNotLoad = false;
-}
-
 void GameScreen::ChangeStoneStyle(StoneStyle style)
 {
     for (int y = 0; y<19; y++)
