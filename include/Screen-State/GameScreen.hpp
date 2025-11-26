@@ -39,10 +39,14 @@ private:
 
     //Sprite & Sound
     sf::Sprite &BackgroundSprite;
-    sf::Sprite &ClassicBlack;
-    sf::Sprite &ClassicWhite;
-    sf::Sprite &CartoonBlack;
-    sf::Sprite &CartoonWhite;
+    sf::Texture ClassicBlackStoneTexture;
+    sf::Texture ClassicWhiteStoneTexture;
+    sf::Texture CartoonWhiteStoneTexture;
+    sf::Texture CartoonBlackStoneTexture;
+    sf::Sprite ClassicBlack;
+    sf::Sprite ClassicWhite;
+    sf::Sprite CartoonBlack;
+    sf::Sprite CartoonWhite;
     
     sf::Sound &endGameSound;    
     
@@ -73,8 +77,6 @@ public:
         Cartoon
     };
     GameScreen(sf::Font &_font, sf::RenderWindow &_window,
-                sf::Sprite &ClassicBlackTexture, sf::Sprite &ClassicWhiteTexture,
-                sf::Sprite &CartoonBlackTexture, sf::Sprite &CartoonWhiteTexture,
                 sf::Sprite &BackgroundSprite, 
                 Board &_board,
                 sf::Sound &stoneSound,

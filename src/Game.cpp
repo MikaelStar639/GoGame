@@ -17,20 +17,8 @@ void Game::run(){
     
     //* Texture Load
     sf::Texture backgroundTexture("assets/images/Background.png");
-    sf::Texture BlackBoard       ("assets/images/DarkWood.png");
-    sf::Texture LightBoard       ("assets/images/LightWood.png");
-    sf::Texture PlainBoard       ("assets/images/PlainWood.png");
-    
-    sf::Texture ClassicblackStoneTexture("assets/images/BlackStone.png");
-    sf::Texture ClassicwhiteStoneTexture("assets/images/WhiteStone.png");
-    sf::Texture CartoonBlackStoneTexture("assets/images/PixelatedBlackStone.png");
-    sf::Texture CartoonWhiteStoneTexture("assets/images/PixelatedWhiteStone.png");
     
     //* Sprite
-    sf::Sprite ClassicBlackStoneSprite(ClassicblackStoneTexture);
-    sf::Sprite ClassicWhiteStoneSprite(ClassicwhiteStoneTexture);
-    sf::Sprite CartoonBlackStoneSprite(CartoonBlackStoneTexture);
-    sf::Sprite CartoonWhiteStoneSprite(CartoonWhiteStoneTexture);
     sf::Sprite backgroundSprite(backgroundTexture);
 
     //* Sounds
@@ -45,17 +33,14 @@ void Game::run(){
     sf::Sound endGameSound(endGameSoundBuffer);
 
     //* Board
-    Board board(font, LightBoard, BlackBoard, PlainBoard);
+    Board board(font);
 
     //* Window States
     Homescreen  homeScreen (font, window, backgroundSprite);
     GameMenu    GameMenu   (font, window, backgroundSprite);
     Settings    settings   (font, window, backgroundSprite, backgroundMusic, stoneSound, stoneCaptureSound, endGameSound);
     SelectBoard selectBoard(font, window, board, backgroundSprite, backgroundMusic);
-    GameScreen  gameScreen (font, window,
-        ClassicBlackStoneSprite, ClassicWhiteStoneSprite,
-        CartoonBlackStoneSprite, CartoonWhiteStoneSprite,
-        backgroundSprite, board, stoneSound, stoneCaptureSound, endGameSound);
+    GameScreen  gameScreen (font, window, backgroundSprite, board, stoneSound, stoneCaptureSound, endGameSound);
     
     //* Stone Selector
     SelectStone selectStone(font, window, gameScreen, backgroundSprite, backgroundMusic);

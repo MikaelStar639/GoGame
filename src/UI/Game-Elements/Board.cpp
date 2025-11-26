@@ -1,15 +1,19 @@
 #include "UI/Game-Elements/Board.hpp"
 
 // default constructor
-Board::Board(const sf::Font &font,sf::Texture &LightTexture, sf::Texture &DarkTexture, sf::Texture &PlainTexture) :
+Board::Board(const sf::Font &font) :
     gridNum(19),
     thickness(2.f),
     position({50.f, 100.f}),
-    boardSprite(PlainTexture),
-    LightWoodSprite(LightTexture),
-    DarkWoodSprite(DarkTexture),
-    PlainWoodSprite(PlainTexture),
-    size({750.f, 750.f})
+    size({750.f, 750.f}),
+    PlainBoard("assets/images/PlainWood.png"),
+    BlackBoard("assets/images/DarkWood.png"),
+    LightBoard("assets/images/LightWood.png"),
+    DarkWoodSprite(BlackBoard),
+    LightWoodSprite(LightBoard),
+    PlainWoodSprite(PlainBoard),
+    boardSprite(PlainBoard)
+
 {
     // intialize shapes
     verticalLines.  setSize({thickness, size.y});

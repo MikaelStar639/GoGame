@@ -1,8 +1,6 @@
 #include "Screen-State/GameScreen.hpp"
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
-                sf::Sprite &ClassicBlackTexture, sf::Sprite &ClassicWhiteTexture,
-                sf::Sprite &CartoonBlackTexture, sf::Sprite &CartoonWhiteTexture,
                 sf::Sprite &BackgroundTexture,
                 Board &_board,
                 sf::Sound &_stoneSound,
@@ -16,10 +14,14 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     window      (_window),
     board       (_board),
     turnIndicator(_font),
-    ClassicBlack(ClassicBlackTexture),
-    ClassicWhite(ClassicWhiteTexture),
-    CartoonBlack(CartoonBlackTexture),
-    CartoonWhite(CartoonWhiteTexture),
+    ClassicBlackStoneTexture("assets/images/BlackStone.png"),
+    ClassicWhiteStoneTexture("assets/images/WhiteStone.png"),
+    CartoonBlackStoneTexture("assets/images/PixelatedBlackStone.png"),
+    CartoonWhiteStoneTexture("assets/images/PixelatedWhiteStone.png"),
+    ClassicBlack(ClassicBlackStoneTexture),
+    ClassicWhite(ClassicWhiteStoneTexture),
+    CartoonBlack(CartoonBlackStoneTexture),
+    CartoonWhite(CartoonWhiteStoneTexture),
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),
     BackgroundSprite(BackgroundTexture),
@@ -35,6 +37,11 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     passButton.  setString("Pass");
     resetButton.setString("Reset Game");
 
+    // Texture load
+    ClassicBlack.setTexture(ClassicBlackStoneTexture);
+    ClassicWhite.setTexture(ClassicWhiteStoneTexture);
+    CartoonBlack.setTexture(CartoonBlackStoneTexture);
+    CartoonWhite.setTexture(CartoonWhiteStoneTexture);
     //vector:
     
     grid.resize(19);
