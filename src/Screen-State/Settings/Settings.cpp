@@ -5,22 +5,16 @@ Settings::Settings(
     sf::Font &_font, 
     sf::RenderWindow &_window, 
     sf::Sprite &_BackgroundTexture,
-    sf::Sound &_BackgroundMusic,
-    sf::Sound &_stoneSound,
-    sf::Sound &_stoneCaptureSound,
-    sf::Sound &_endGameSound):
-    
+    SoundManager &_gameSound)
+    :
     backButton      (_font),
     stoneStyleButton(_font),
     boardStyleButton(_font),
     window(_window),
     BackgroundSprite(_BackgroundTexture),
-    BackgroundMusic(_BackgroundMusic),
     soundSlider(_font),
     musicSlider(_font),
-    stoneSound(_stoneSound),
-    stoneCaptureSound(_stoneCaptureSound),
-    endGameSound(_endGameSound)
+    gameSound(_gameSound)
     {}
 
 
@@ -94,10 +88,10 @@ void Settings::updateSlider(Mouse &mouse){
     musicSlider.update(mouse);
 
     //update sounds
-    BackgroundMusic  .setVolume(musicSlider.value);
-    stoneCaptureSound.setVolume(soundSlider.value);
-    stoneSound       .setVolume(soundSlider.value);
-    endGameSound     .setVolume(soundSlider.value);
+    gameSound["BackgroundMusic"]  .setVolume(musicSlider.value);
+    gameSound["StoneCaptureSound"].setVolume(soundSlider.value);
+    gameSound["StoneSound"]       .setVolume(soundSlider.value);
+    gameSound["endGameSound"]     .setVolume(soundSlider.value);
 }
 
 void Settings::draw(){

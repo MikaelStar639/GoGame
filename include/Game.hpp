@@ -12,18 +12,24 @@
 #include <Screen-State/Settings/SelectBoard.hpp>
 #include <Screen-State/Settings/SelectStone.hpp>
 
-
-
+#include <Assets-Manager/AssetsManager.hpp>
 class Game{
 private:
-std::stack<screenState> screenStateStack;
-sf::RenderWindow window;
-sf::Font         font;
+    sf::RenderWindow window;
+    sf::Font         font;
+    TextureManager gameTexture;
+    SoundManager   gameSound;
+    // Homescreen  homeScreen;
+    // GameMenu    GameMenu;
+    // Settings    settings;
+    // SelectBoard selectBoard;
+    // GameScreen  gameScreen;
 
+    std::stack<screenState> screenStateStack;
+
+    void handleScreen();
 
 public:
     Game();
-
-
     void run();
 };

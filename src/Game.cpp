@@ -10,43 +10,34 @@ Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame", sf::Style::Default ^
 
 void Game::run(){
     
-    //* Texture Load
-    sf::Texture backgroundTexture("assets/images/Background.png");
-    
     //* Sprite
-    sf::Sprite backgroundSprite(backgroundTexture);
+    sf::Sprite backgroundSprite(gameTexture["BackGround"]);
 
     //* Sounds
-    sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
-    sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
-    sf::SoundBuffer stoneCapturedBuffer  ("assets/sounds/stoneCapture.mp3");
-    sf::SoundBuffer endGameSoundBuffer   ("assets/sounds/boom.mp3");
-
-    sf::Sound backgroundMusic(backgroundMusicBuffer);
-    sf::Sound stoneSound(stoneSoundBuffer);
-    sf::Sound stoneCaptureSound(stoneCapturedBuffer);
-    sf::Sound endGameSound(endGameSoundBuffer);
+    sf::Sound stoneSound       (gameSound["StoneMove"]);
+    sf::Sound stoneCaptureSound(gameSound["StoneCapture"]);
+    sf::Sound endGameSound     (gameSound["Boom"]);
 
     //* Board
     Board board(font);
 
     Homescreen  homeScreen (font, window, backgroundSprite);
     GameMenu    GameMenu   (font, window, backgroundSprite);
-    Settings    settings   (font, window, backgroundSprite, backgroundMusic, stoneSound, stoneCaptureSound, endGameSound);
-    SelectBoard selectBoard(font, window, board, backgroundSprite, backgroundMusic);
+    Settings    settings   (font, window, backgroundSprite, gameSound);
+    SelectBoard selectBoard(font, window, board, backgroundSprite, gameSound["BackgroundMusic"]);
     GameScreen  gameScreen (font, window, backgroundSprite, board, stoneSound, stoneCaptureSound, endGameSound);
     
     //* Stone Selector
-    SelectStone selectStone(font, window, gameScreen, backgroundSprite, backgroundMusic);
+    SelectStone selectStone(font, window, gameScreen, backgroundSprite, gameSound["BackgroundMusic"]);
     
     //* Sound Default
-    backgroundMusic.setLooping(true);
-    backgroundMusic.setVolume(75);
-    backgroundMusic.setVolume(75);
+    gameSound["BackgroundMusic"].setLooping(true);
+    gameSound["BackgroundMusic"].setVolume(75);
+    gameSound["BackgroundMusic"].setVolume(75);
     stoneSound.setVolume(75);
     stoneCaptureSound.setVolume(75);
     endGameSound.setVolume(75);
-    backgroundMusic.play();
+    gameSound["BackgroundMusic"].play();
 
     //* Window Icon
     sf::Image icon("assets/images/PixelatedBlackStone.png");
