@@ -94,7 +94,7 @@ void GameScreen::updateFeatureButton(Mouse &mouse){
     backButton.update(mouse);
 
     //check button state
-    if (backButton.onRelease) nextState = Game::screenState::Exit;
+    if (backButton.onRelease) nextState = screenState::Exit;
 }
 
 void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
@@ -360,7 +360,7 @@ void GameScreen::run(){
 
         window.display();
 
-        if (nextState != Game::screenState::GameScreen){
+        if (nextState != screenState::GameScreen){
             break;
         }
     }

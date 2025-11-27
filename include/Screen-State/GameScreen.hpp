@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Game.hpp"
-
 #include "UI/Button.hpp"
 #include "UI/Blur.hpp"
 #include "UI/Game-Elements/Board.hpp"
@@ -11,7 +9,7 @@
 
 #include "Screen-State/EndGame.hpp"
 #include "Game-Play-Logic/GameState.hpp"
-
+#include "ScreenState.hpp"
 
 #include <cmath>
 #include <vector>
@@ -83,7 +81,7 @@ public:
                 sf::Sound &stoneCaptureSound,
                 sf::Sound &endGameSound);
 
-    Game::screenState nextState = Game::screenState::GameScreen;
+    screenState nextState = screenState::GameScreen;
 
     //* UI
     void setBackground(sf::Sprite &backgroundSprite);

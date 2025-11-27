@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Game.hpp"
 #include "UI/Button.hpp"
+#include "ScreenState.hpp"
 
 class GameMenu{
 private:
@@ -19,7 +19,7 @@ private:
 public:
     GameMenu(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
 
-    Game::screenState nextState = Game::screenState::GameMenu;
+    screenState nextState = screenState::GameMenu;
     
     bool loadGame = false;
     bool saveGame = false;

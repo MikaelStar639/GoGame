@@ -1,10 +1,5 @@
 #include <Game.hpp>
-#include <Screen-State/Homescreen.hpp>
-#include <Screen-State/GameMenu.hpp>
-#include <Screen-State/GameScreen.hpp>
-#include <Screen-State/Settings/Settings.hpp>
-#include <Screen-State/Settings/SelectBoard.hpp>
-#include <Screen-State/Settings/SelectStone.hpp>
+
 
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame", sf::Style::Default ^ sf::Style::Resize), 
                font("assets/fonts/Monocraft.ttc"){
@@ -35,7 +30,6 @@ void Game::run(){
     //* Board
     Board board(font);
 
-    //* Window States
     Homescreen  homeScreen (font, window, backgroundSprite);
     GameMenu    GameMenu   (font, window, backgroundSprite);
     Settings    settings   (font, window, backgroundSprite, backgroundMusic, stoneSound, stoneCaptureSound, endGameSound);

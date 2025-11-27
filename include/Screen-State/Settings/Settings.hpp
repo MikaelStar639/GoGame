@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Game.hpp"
 #include "UI/Button.hpp"
 #include "UI/Slider/Slider.hpp"
+#include "SFML/Audio.hpp"
+#include "ScreenState.hpp"
 
 class Settings{
 private:
@@ -30,7 +31,7 @@ public:
              sf::Sound &stoneCaptureSound,
              sf::Sound &endGameSound);
     
-    Game::screenState nextState = Game::screenState::Settings;
+    screenState nextState = screenState::Settings;
     
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);

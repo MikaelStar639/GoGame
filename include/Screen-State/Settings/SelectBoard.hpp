@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Game.hpp"
 #include "UI/Game-Elements/Board.hpp"
 #include "UI/Button.hpp"
+#include "ScreenState.hpp"
+#include "SFML/Audio.hpp"
 
 class SelectBoard{
 private:
@@ -25,7 +26,7 @@ public:
              sf::Sprite &BackgroundSprite,
              sf::Sound &BackgroundMusic);
     
-    Game::screenState nextState = Game::screenState::SelectBoard;
+    screenState nextState = screenState::SelectBoard;
     
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);

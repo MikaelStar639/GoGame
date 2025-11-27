@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game.hpp"
+#include "ScreenState.hpp"
 #include "UI/Button.hpp"
 #include "Screen-State/GameScreen.hpp"
 
@@ -29,7 +29,7 @@ public:
              sf::Sprite &BackgroundSprite,
              sf::Sound &BackgroundMusic);
     
-    Game::screenState nextState = Game::screenState::SelectStone;
+    screenState nextState = screenState::SelectStone;
     
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);
