@@ -89,9 +89,9 @@ void Settings::updateSlider(Mouse &mouse){
 
     //update sounds
     gameSound["BackgroundMusic"]  .setVolume(musicSlider.value);
-    gameSound["StoneCaptureSound"].setVolume(soundSlider.value);
-    gameSound["StoneSound"]       .setVolume(soundSlider.value);
-    gameSound["endGameSound"]     .setVolume(soundSlider.value);
+    gameSound["StoneCapture"].setVolume(soundSlider.value);
+    gameSound["StoneMove"]       .setVolume(soundSlider.value);
+    gameSound["Boom"]     .setVolume(soundSlider.value);
 }
 
 void Settings::draw(){
