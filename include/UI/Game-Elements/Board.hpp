@@ -2,17 +2,13 @@
 
 #include <SFML/Graphics.hpp>
 #include <Ultil/Ultil.hpp>
+#include <Assets-Manager/AssetsManager.hpp>
 
 class Board {
-private:
-    sf::Texture BlackBoard;
-    sf::Texture LightBoard;
-    sf::Texture PlainBoard;
-    
-    sf::Sprite DarkWoodSprite;
-    sf::Sprite LightWoodSprite;
-    sf::Sprite PlainWoodSprite;
+private:    
     sf::Sprite boardSprite;
+    TextureManager &textures;
+
     sf::RectangleShape horizontalLines;
     sf::RectangleShape verticalLines;
     sf::RectangleShape intersections;
@@ -35,7 +31,7 @@ public:
     float gridX[20];
     float gridY[20];
     // constructor 
-    Board(const sf::Font &font);
+    Board(const sf::Font &font, TextureManager &_gameTexture);
     // set position of the board
     void setPosition(sf::Vector2f _position);
     void draw(sf::RenderWindow &window);

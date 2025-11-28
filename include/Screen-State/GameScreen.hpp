@@ -66,10 +66,7 @@ private:
 
     //Sprite & Sound
     sf::Sprite backgroundSprite;
-    sf::Sprite ClassicBlack;
-    sf::Sprite ClassicWhite;
-    sf::Sprite CartoonBlack;
-    sf::Sprite CartoonWhite;
+    TextureManager &textures;
     
     sf::Sound &endGameSound;    
     
@@ -93,7 +90,6 @@ private:
 
     //* UI
     void setBackground();
-    void setBoard(Board &board);
     void updateFeatureButton(Mouse &mouse);
     void updateGameButton(Mouse &mouse, bool isEndGame);
     void updateStone(Mouse &mouse);

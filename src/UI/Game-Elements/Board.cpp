@@ -1,20 +1,16 @@
 #include "UI/Game-Elements/Board.hpp"
 
 // default constructor
-Board::Board(const sf::Font &font) :
+Board::Board(const sf::Font &font, TextureManager& _gameTexture) :
     gridNum(19),
     thickness(2.f),
     position({50.f, 100.f}),
     size({750.f, 750.f}),
-    PlainBoard("assets/images/PlainWood.png"),
-    BlackBoard("assets/images/DarkWood.png"),
-    LightBoard("assets/images/LightWood.png"),
-    DarkWoodSprite(BlackBoard),
-    LightWoodSprite(LightBoard),
-    PlainWoodSprite(PlainBoard),
-    boardSprite(PlainBoard)
+    textures(_gameTexture),
+    boardSprite(_gameTexture["PlainWood"])
 
 {
+    // texture
     // intialize shapes
     verticalLines.  setSize({thickness, size.y});
     horizontalLines.setSize({size.x, thickness});
@@ -109,20 +105,20 @@ void Board::ChangeStyle(BoardStyle _state)
     sf::Color _color;
     if (_state == BoardStyle::LightWood)
     {
-        boardSprite = LightWoodSprite;
+        boardSprite.setTexture(textures["LightWood"]);
         _color = sf::Color::Black;
         
     }
     if (_state == BoardStyle::DarkWood)
     {
-        boardSprite = DarkWoodSprite;
+        boardSprite.setTexture(textures["DarkWood"]);
         _color = sf::Color(163,152,24);
         // _color = sf::Color::Yellow;
     }
 
     if (_state == BoardStyle::PlainWood)
     {
-        boardSprite = PlainWoodSprite;
+        boardSprite.setTexture(textures["PlainWood"]);
         _color = sf::Color::Black;
     }
     boardSprite.setPosition({10.f, 60.f});
