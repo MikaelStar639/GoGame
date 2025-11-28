@@ -20,23 +20,19 @@ void SoundManager::load(const std::string& path, const std::string& name){
 }
 
 SoundManager::SoundManager(){
-    load("assets/sounds/BackgroundMusic.mp3", "BackgroundMusic");
-    load("assets/sounds/stoneMove.mp3", "StoneMove");
+    load("assets/sounds/stoneMove.mp3",    "StoneMove");
     load("assets/sounds/stoneCapture.mp3", "StoneCapture");
-    load("assets/sounds/boom.mp3", "Boom");
+    load("assets/sounds/boom.mp3",         "Boom");
+
+    if (!backgroundMusic.openFromFile("assets/sounds/BackgroundMusic.mp3")){
+        throw std::runtime_error("Failed to get Music");
+    }
 
     for (auto &sound: sounds){
         sound.setVolume(75);
     }
-
-    sounds[id["BackgroundMusic"]].setLooping(true);
-    sounds[id["BackgroundMusic"]].play();
-}
-
-auto SoundManager::begin(){
-    return sounds.begin();
-}
-
-auto SoundManager::end(){
-    return sounds.end();
+    
+    backgroundMusic.setVolume(75);
+    backgroundMusic.setLooping(true);
+    backgroundMusic.play();
 }

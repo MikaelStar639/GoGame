@@ -88,10 +88,11 @@ void Settings::updateSlider(Mouse &mouse){
     musicSlider.update(mouse);
 
     //update sounds
-    gameSound["BackgroundMusic"].setVolume(musicSlider.value);
-    gameSound["StoneMove"]      .setVolume(soundSlider.value);
-    gameSound["StoneCapture"]   .setVolume(soundSlider.value);
-    gameSound["Boom"]           .setVolume(soundSlider.value);
+    gameSound.backgroundMusic.setVolume(musicSlider.value);
+
+    gameSound["StoneMove"]   .setVolume(soundSlider.value);
+    gameSound["StoneCapture"].setVolume(soundSlider.value);
+    gameSound["Boom"]        .setVolume(soundSlider.value);
 }
 
 void Settings::draw(){
