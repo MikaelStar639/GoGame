@@ -5,22 +5,20 @@ SelectStone::SelectStone(
     sf::Font &_font, 
     sf::RenderWindow &_window,
     GameScreen &_gamescreen,
-    sf::Sprite &_BackgroundTexture,
-    sf::Sound &_BackgroundMusic):
+    TextureManager &_gameTexture):
     
     backButton   (_font),
     ClassicButton(_font),
     CartoonButton(_font),
     window(_window),
     gamescreen(_gamescreen),
-    BackgroundSprite(_BackgroundTexture),
-    BackgroundMusic(_BackgroundMusic)
+    backgroundSprite(_gameTexture["Background"])
     {
         ClassicButton.setChosen();
     }
 
 
-void SelectStone::setBackground(sf::Sprite &backgroundSprite){
+void SelectStone::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -96,7 +94,7 @@ void SelectStone::run(){
         handleEvent(window);
 
         window.clear(sf::Color(64, 64, 64));
-        setBackground(BackgroundSprite);
+        setBackground();
 
         mouse.update(window);
 

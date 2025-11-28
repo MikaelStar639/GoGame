@@ -1,11 +1,11 @@
 #include "Screen-State/Homescreen.hpp"
 
-Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 
+Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window, TextureManager& _gameTexture) : 
     playButton(font),
     settingButton(font),
     exitButton(font),
     Gamename(font),
-    BackgroundSprite(BackgroundTexture),
+    backgroundSprite(_gameTexture["Background"]),
     window(_window){
         playButton.   setString("Play");
         settingButton.setString("Setting");
@@ -45,7 +45,7 @@ void Homescreen::drawButton(){
     exitButton.   draw(window);
 }
 
-void Homescreen::setBackground(sf::Sprite &backgroundSprite){
+void Homescreen::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -89,7 +89,7 @@ void Homescreen::run(){
 
         //Background
         window.clear();
-        setBackground(BackgroundSprite);
+        setBackground();
         UpdateGamenamePosition();
 
         //mouse update

@@ -4,9 +4,8 @@
 SelectBoard::SelectBoard(
     sf::Font &_font, 
     sf::RenderWindow &_window,
-    Board &_board,
-    sf::Sprite &_BackgroundTexture,
-    sf::Sound &_BackgroundMusic):
+    TextureManager &_gameTexture,
+    Board &_board):
     
     backButton      (_font),
     DarkWoodButton(_font),
@@ -14,14 +13,13 @@ SelectBoard::SelectBoard(
     PlainWoodButton(_font),
     window(_window),
     board(_board),
-    BackgroundSprite(_BackgroundTexture),
-    BackgroundMusic(_BackgroundMusic)
+    backgroundSprite(_gameTexture["Background"])
     {
         PlainWoodButton.setChosen();
     }
 
 
-void SelectBoard::setBackground(sf::Sprite &backgroundSprite){
+void SelectBoard::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -108,7 +106,7 @@ void SelectBoard::run(){
         handleEvent(window);
 
         window.clear(sf::Color(64, 64, 64));
-        setBackground(BackgroundSprite);
+        setBackground();
 
         mouse.update(window);
 

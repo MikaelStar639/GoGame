@@ -4,6 +4,7 @@
 #include "UI/Button.hpp"
 #include "ScreenState.hpp"
 #include "SFML/Audio.hpp"
+#include "Assets-Manager/TextureManager.hpp"
 
 class SelectBoard{
 private:
@@ -14,22 +15,20 @@ private:
 
     Board &board;
 
-    sf::Sprite &BackgroundSprite;
-    sf::Sound &BackgroundMusic;
+    sf::Sprite backgroundSprite;
 
     sf::RenderWindow &window;
     
     const float space = 75.f;
-
-public:
-    SelectBoard(sf::Font &font, sf::RenderWindow &window, Board &board,
-             sf::Sprite &BackgroundSprite,
-             sf::Sound &BackgroundMusic);
     
-    screenState nextState = screenState::SelectBoard;
-    
-    void setBackground(sf::Sprite &backgroundSprite);
+    void setBackground();
     void updateButton(Mouse &mouse);
     void draw();
+
+public:
+    SelectBoard(sf::Font &font, sf::RenderWindow &window, 
+        TextureManager& gameTexture, Board &board);
+    
+    screenState nextState = screenState::SelectBoard;
     void run();
 };

@@ -3,7 +3,7 @@
 #include "ScreenState.hpp"
 #include "UI/Button.hpp"
 #include "Screen-State/GameScreen.hpp"
-
+#include "Assets-Manager/TextureManager.hpp"
 class SelectStone{
 private:
     Button backButton;
@@ -12,12 +12,15 @@ private:
 
     GameScreen &gamescreen;
 
-    sf::Sprite &BackgroundSprite;
-    sf::Sound &BackgroundMusic;
+    sf::Sprite backgroundSprite;
 
     sf::RenderWindow &window;
     
     const float space = 75.f;
+
+    void setBackground();
+    void updateButton(Mouse &mouse);
+    void draw();
 
 public:
     enum class SelectStoneState{
@@ -25,14 +28,9 @@ public:
         Cartoon,
     };
 
-    SelectStone(sf::Font &font, sf::RenderWindow &window, GameScreen &_gamescreen,
-             sf::Sprite &BackgroundSprite,
-             sf::Sound &BackgroundMusic);
+    SelectStone(sf::Font &font, sf::RenderWindow &window, 
+                GameScreen &_gamescreen, TextureManager &_gameTexture);
     
     screenState nextState = screenState::SelectStone;
-    
-    void setBackground(sf::Sprite &backgroundSprite);
-    void updateButton(Mouse &mouse);
-    void draw();
     void run();
 };

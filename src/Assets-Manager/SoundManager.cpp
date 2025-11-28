@@ -25,4 +25,18 @@ SoundManager::SoundManager(){
     load("assets/sounds/stoneCapture.mp3", "StoneCapture");
     load("assets/sounds/boom.mp3", "Boom");
 
+    for (auto &sound: sounds){
+        sound.setVolume(75);
+    }
+
+    sounds[id["BackgroundMusic"]].setLooping(true);
+    sounds[id["BackgroundMusic"]].play();
+}
+
+auto SoundManager::begin(){
+    return sounds.begin();
+}
+
+auto SoundManager::end(){
+    return sounds.end();
 }

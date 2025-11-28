@@ -15,15 +15,21 @@
 #include <Assets-Manager/AssetsManager.hpp>
 class Game{
 private:
+
     sf::RenderWindow window;
     sf::Font         font;
+    sf::Image        icon;
+    Board            board;
+    
     TextureManager gameTexture;
     SoundManager   gameSound;
-    // Homescreen  homeScreen;
-    // GameMenu    GameMenu;
-    // Settings    settings;
-    // SelectBoard selectBoard;
-    // GameScreen  gameScreen;
+
+    Homescreen  homeScreen;
+    GameMenu    gameMenu;
+    Settings    settings;
+    GameScreen  gameScreen;
+    SelectBoard selectBoard;
+    SelectStone selectStone;
 
     std::stack<screenState> screenStateStack;
 

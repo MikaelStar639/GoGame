@@ -1,11 +1,10 @@
 #include "Screen-State/GameScreen.hpp"
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
-                sf::Sprite &BackgroundTexture,
-                Board &_board,
-                sf::Sound &_stoneSound,
-                sf::Sound &_stoneCaptureSound,
-                sf::Sound &_endGameSound) : 
+                TextureManager &_gameTexture,
+                SoundManager &_gameSound,
+                Board &_board) : 
+
     backButton  (_font),
     redoButton  (_font),
     undoButton  (_font),
@@ -14,19 +13,15 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     window      (_window),
     board       (_board),
     turnIndicator(_font),
-    ClassicBlackStoneTexture("assets/images/BlackStone.png"),
-    ClassicWhiteStoneTexture("assets/images/WhiteStone.png"),
-    CartoonBlackStoneTexture("assets/images/PixelatedBlackStone.png"),
-    CartoonWhiteStoneTexture("assets/images/PixelatedWhiteStone.png"),
-    ClassicBlack(ClassicBlackStoneTexture),
-    ClassicWhite(ClassicWhiteStoneTexture),
-    CartoonBlack(CartoonBlackStoneTexture),
-    CartoonWhite(CartoonWhiteStoneTexture),
+    ClassicBlack(_gameTexture["BlackStone"]),
+    ClassicWhite(_gameTexture["WhiteStone"]),
+    CartoonBlack(_gameTexture["PixelatedBlackStone"]),
+    CartoonWhite(_gameTexture["PixelatedWhiteStone"]),
+    backgroundSprite(_gameTexture["Background"]),
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),
-    BackgroundSprite(BackgroundTexture),
-    endGameSound(_endGameSound),
-    gameState(_stoneCaptureSound, _stoneSound),
+    endGameSound(_gameSound["Boom"]),
+    gameState(_gameSound["StoneCapture"], _gameSound["StoneMove"]),
     endGame(_font)
     {
 
@@ -37,13 +32,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     passButton.  setString("Pass");
     resetButton.setString("Reset Game");
 
-    // Texture load
-    ClassicBlack.setTexture(ClassicBlackStoneTexture);
-    ClassicWhite.setTexture(ClassicWhiteStoneTexture);
-    CartoonBlack.setTexture(CartoonBlackStoneTexture);
-    CartoonWhite.setTexture(CartoonWhiteStoneTexture);
     //vector:
-    
     grid.resize(19);
     for (int y = 0; y < 19; ++y){
         grid[y].reserve(19);
@@ -54,7 +43,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     }
 }
 
-void GameScreen::setBackground(sf::Sprite &backgroundSprite){
+void GameScreen::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -153,7 +142,7 @@ void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
     }
 }
 
-GameScreen::Cordinate GameScreen::to_cord(sf::Vector2f position){
+Position GameScreen::to_cord(sf::Vector2f position){
     float fy = (position.y - board.gridY[0])/board.gap;
     float fx = (position.x - board.gridX[0])/board.gap;
 
@@ -315,7 +304,7 @@ void GameScreen::run(){
 
         //background
         window.clear(sf::Color(64, 64, 64));
-        setBackground(BackgroundSprite);
+        setBackground();
 
         //mouse
         mouse.update(window);

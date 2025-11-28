@@ -14,7 +14,7 @@ private:
     Slider soundSlider;
     Slider musicSlider;
 
-    sf::Sprite &BackgroundSprite;
+    sf::Sprite backgroundSprite;
 
     SoundManager& gameSound;
 
@@ -22,13 +22,13 @@ private:
     
     const float space = 75.f;
 
-    void setBackground(sf::Sprite &backgroundSprite);
+    void setBackground();
     void updateButton(Mouse &mouse);
     void updateSlider(Mouse &mouse);
     void draw();
 
 public:
-    Settings(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite, SoundManager &gameSound);
+    Settings(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture, SoundManager &gameSound);
     screenState nextState = screenState::Settings;
     void run();
 };

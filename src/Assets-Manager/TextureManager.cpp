@@ -14,7 +14,7 @@ void TextureManager::load(const std::string& path, const std::string& name){
 }
 
 TextureManager::TextureManager(){
-    load("assets/images/Background.png", "BackGround");
+    load("assets/images/Background.png", "Background");
     load("assets/images/BlackStone.png", "BlackStone");
     load("assets/images/WhiteStone.png", "WhiteStone");
     load("assets/images/PixelatedBlackStone.png", "PixelatedBlackStone");

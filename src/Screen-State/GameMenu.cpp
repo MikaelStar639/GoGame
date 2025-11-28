@@ -1,13 +1,13 @@
 #include "Screen-State/GameMenu.hpp"
 
 
-GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 
+GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, TextureManager &_gameTexture) : 
     newGameButton  (font),
     continueButton (font),
     loadGameButton (font),
     saveGameButton (font),
     backButton     (font),
-    BackgroundSprite(BackgroundTexture),
+    backgroundSprite(_gameTexture["Background"]),
     window(_window){
         newGameButton. setString("New Game");
         continueButton.setString("Continue");
@@ -60,7 +60,7 @@ void GameMenu::drawButton(){
     backButton    .draw(window);
 }
 
-void GameMenu::setBackground(sf::Sprite &backgroundSprite){
+void GameMenu::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -88,7 +88,7 @@ void GameMenu::run(){
 
         //Background
         window.clear();
-        setBackground(BackgroundSprite);
+        setBackground();
 
         //update
         mouse.update(window);

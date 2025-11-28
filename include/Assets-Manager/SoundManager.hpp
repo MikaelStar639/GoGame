@@ -13,4 +13,7 @@ private:
 public:
     SoundManager();
     sf::Sound& operator[](const std::string& name);
+
+    auto begin();
+    auto end();
 };

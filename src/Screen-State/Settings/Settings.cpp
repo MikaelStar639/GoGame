@@ -4,21 +4,21 @@
 Settings::Settings(
     sf::Font &_font, 
     sf::RenderWindow &_window, 
-    sf::Sprite &_BackgroundTexture,
+    TextureManager &_gameTexture,
     SoundManager &_gameSound)
     :
     backButton      (_font),
     stoneStyleButton(_font),
     boardStyleButton(_font),
     window(_window),
-    BackgroundSprite(_BackgroundTexture),
+    backgroundSprite(_gameTexture["Background"]),
     soundSlider(_font),
     musicSlider(_font),
     gameSound(_gameSound)
     {}
 
 
-void Settings::setBackground(sf::Sprite &backgroundSprite){
+void Settings::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -109,7 +109,7 @@ void Settings::run(){
         handleEvent(window);
 
         window.clear(sf::Color(64, 64, 64));
-        setBackground(BackgroundSprite);
+        setBackground();
 
         mouse.update(window);
 

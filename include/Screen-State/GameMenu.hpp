@@ -2,6 +2,7 @@
 
 #include "UI/Button.hpp"
 #include "ScreenState.hpp"
+#include "Assets-Manager/TextureManager.hpp"
 
 class GameMenu{
 private:
@@ -11,20 +12,18 @@ private:
     Button loadGameButton; 
     Button backButton;
 
-    sf::Sprite &BackgroundSprite;
+    sf::Sprite backgroundSprite;
 
     sf::RenderWindow &window;
 
-    void setBackground(sf::Sprite &backgroundSprite);
-public:
-    GameMenu(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
-
-    screenState nextState = screenState::GameMenu;
-    
-    bool loadGame = false;
-    bool saveGame = false;
-
     void updateButton(Mouse &mouse);
     void drawButton();
+    
+    void setBackground();
+public:
+    GameMenu(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture);
+    screenState nextState = screenState::GameMenu;
+    bool loadGame = false;
+    bool saveGame = false;
     void run();
 };
