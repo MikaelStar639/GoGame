@@ -7,9 +7,9 @@
 #include "UI/Game-Elements/TurnIndicator.hpp"
 #include "UI/Game-Elements/ScoreBoard.hpp"
 
+#include "Screen-State/ScreenState.hpp"
 #include "Screen-State/EndGame.hpp"
 #include "Game-Play-Logic/GameState.hpp"
-#include "ScreenState.hpp"
 #include "Assets-Manager/AssetsManager.hpp"
 
 #include <cmath>

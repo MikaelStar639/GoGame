@@ -3,7 +3,7 @@
 #include "UI/Button.hpp"
 #include "UI/Slider/Slider.hpp"
 #include "SFML/Audio.hpp"
-#include "ScreenState.hpp"
+#include "Screen-State/ScreenState.hpp"
 #include "Assets-Manager/AssetsManager.hpp"
 
 class Settings{

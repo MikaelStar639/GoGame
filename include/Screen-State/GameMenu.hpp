@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UI/Button.hpp"
-#include "ScreenState.hpp"
+#include "Screen-State/ScreenState.hpp"
 #include "Assets-Manager/TextureManager.hpp"
 
 class GameMenu{
