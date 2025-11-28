@@ -19,11 +19,12 @@ private:
     sf::RenderWindow window;
     sf::Font         font;
     sf::Image        icon;
-    Board            board;
     
     TextureManager gameTexture;
     SoundManager   gameSound;
-
+    
+    Board            board;
+    
     Homescreen  homeScreen;
     GameMenu    gameMenu;
     Settings    settings;

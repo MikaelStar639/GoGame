@@ -14,7 +14,7 @@ void Game::run(){
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame", sf::Style::Default ^ sf::Style::Resize), 
                font("assets/fonts/Monocraft.ttc"),
                icon("assets/images/PixelatedBlackStone.png"),
-               board(font),
+               board      (font, gameTexture),
                homeScreen (font, window, gameTexture),
                gameMenu   (font, window, gameTexture),
                settings   (font, window, gameTexture, gameSound),

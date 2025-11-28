@@ -13,10 +13,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     window      (_window),
     board       (_board),
     turnIndicator(_font),
-    ClassicBlack(_gameTexture["BlackStone"]),
-    ClassicWhite(_gameTexture["WhiteStone"]),
-    CartoonBlack(_gameTexture["PixelatedBlackStone"]),
-    CartoonWhite(_gameTexture["PixelatedWhiteStone"]),
+    textures(_gameTexture),
     backgroundSprite(_gameTexture["Background"]),
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),
@@ -34,11 +31,12 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
 
     //vector:
     grid.resize(19);
+    Stone initStone(textures["BlackStone"], textures["WhiteStone"], sf::Vector2f(0.f, 0.f));
     for (int y = 0; y < 19; ++y){
         grid[y].reserve(19);
         for (int x = 0; x < 19; ++x){
-            grid[y].emplace_back(ClassicBlack, ClassicWhite,
-                sf::Vector2f(board.gridX[x], board.gridY[18 - y]));
+            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[18 - y]);
+            grid[y].emplace_back(initStone);
         }
     }
 }
@@ -64,9 +62,6 @@ void GameScreen::drawBoard(){
     board.draw(window);
 }
 
-void GameScreen::setBoard(Board &_board){
-    board = _board;
-}
 
 void GameScreen::updateFeatureButton(Mouse &mouse){
     //window size
@@ -372,10 +367,10 @@ void GameScreen::ChangeStoneStyle(StoneStyle style)
         for (int x = 0; x<19; x++)
         {
             if (style == StoneStyle::Classic)
-                grid[y][x].ChangeSprite(ClassicBlack, ClassicWhite);
+                grid[y][x].ChangeSprite(textures["BlackStone"],  textures["WhiteStone"]);
 
             if (style == StoneStyle::Cartoon) 
-                grid[y][x].ChangeSprite(CartoonBlack, CartoonWhite);
+                grid[y][x].ChangeSprite(textures["PixelatedBlackStone"], textures["PixelatedWhiteStone"]);
         }
     }
 }
