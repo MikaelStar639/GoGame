@@ -64,9 +64,13 @@ void SelectBoard::updateButton(Mouse &mouse){
     LightWoodButton.update(mouse);
     PlainWoodButton.update(mouse);
     backButton.     update(mouse);
+}
 
+void SelectBoard::updateScreenState(){
+    if (backButton.onRelease) nextState = screenState::Exit;
+}
 
-    //check if any button is clicked
+void SelectBoard::updateStyle(){
     if (DarkWoodButton.onRelease)
     {
         board.ChangeStyle(Board::BoardStyle::DarkWood);
@@ -88,9 +92,7 @@ void SelectBoard::updateButton(Mouse &mouse){
         LightWoodButton.setDefaultColor();
         PlainWoodButton.setChosen();
     }
-    if (backButton.onRelease)     nextState = screenState::Exit;
 }
-
 
 void SelectBoard::draw(){
     backButton      .draw(window);
@@ -111,6 +113,9 @@ void SelectBoard::run(){
         mouse.update(window);
 
         updateButton(mouse);
+        
+        updateScreenState();
+        updateStyle();
 
         draw();
 

@@ -19,6 +19,7 @@ private:
     void UpdateGamenamePosition();
     void setBackground();
     void updateButton(Mouse &mouse);
+    void updateScreenState();
     void drawButton();
     void drawGamename();
 

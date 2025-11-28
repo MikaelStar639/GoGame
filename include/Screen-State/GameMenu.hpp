@@ -17,9 +17,11 @@ private:
     sf::RenderWindow &window;
 
     void updateButton(Mouse &mouse);
+    void updateScreenState();
+
     void drawButton();
-    
     void setBackground();
+    
 public:
     GameMenu(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture);
     screenState nextState = screenState::GameMenu;

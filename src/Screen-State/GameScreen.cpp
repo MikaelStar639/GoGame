@@ -1,8 +1,7 @@
 #include "Screen-State/GameScreen.hpp"
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
-                TextureManager &_gameTexture,
-                SoundManager &_gameSound,
+                TextureManager &_gameTexture, SoundManager &_gameSound,
                 Board &_board) : 
 
     backButton  (_font),
@@ -62,7 +61,6 @@ void GameScreen::drawBoard(){
     board.draw(window);
 }
 
-
 void GameScreen::updateFeatureButton(Mouse &mouse){
     //window size
     float window_w = window.getSize().x;
@@ -76,12 +74,9 @@ void GameScreen::updateFeatureButton(Mouse &mouse){
 
     //Buttons update
     backButton.update(mouse);
-
-    //check button state
-    if (backButton.onRelease) nextState = screenState::Exit;
 }
 
-void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
+void GameScreen::updateGameButton(Mouse &mouse){
     //window size
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -101,40 +96,10 @@ void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
     resetButton.setSize({300.f, 75.f});
 
     //Buttons update
-    redoButton  .update(mouse);
-    undoButton  .update(mouse);
-    passButton  .update(mouse);  
+    redoButton .update(mouse);
+    undoButton .update(mouse);
+    passButton .update(mouse);  
     resetButton.update(mouse);
-
-    if (!isEndGame){
-        if (passButton.onRelease) {
-            if (gameState.lastMovePass == true) {
-                gameState.isEnd = true;
-                endGameSound.play();
-            }
-            else{
-                gameState.pass();
-            }
-            gameState.lastMovePass = true;
-            newTurn = true;
-        }
-    }
-    else{
-        passButton.isInvalid = true;
-    }
-
-    if (redoButton.onRelease) {
-        gameState.redo();
-    }
-    if (undoButton.onRelease){
-        if (gameState.undo()){
-            newTurn = true;
-        }
-    }
-    
-    if (resetButton.onRelease){
-        reset();
-    }
 }
 
 Position GameScreen::to_cord(sf::Vector2f position){
@@ -200,7 +165,41 @@ void GameScreen::updateStone(Mouse &mouse){
 
 }
 
-void GameScreen::updateGameState(){
+void GameScreen::updateScreenState(){
+    if (backButton.onRelease) nextState = screenState::Exit;
+}
+
+void GameScreen::updateGameState(bool isEndGame){
+    if (!isEndGame){
+        if (passButton.onRelease) {
+            if (gameState.lastMovePass == true) {
+                gameState.isEnd = true;
+                endGameSound.play();
+            }
+            else{
+                gameState.pass();
+            }
+            gameState.lastMovePass = true;
+            newTurn = true;
+        }
+    }
+    else{
+        passButton.isInvalid = true;
+    }
+
+    if (redoButton.onRelease) {
+        gameState.redo();
+    }
+    if (undoButton.onRelease){
+        if (gameState.undo()){
+            newTurn = true;
+        }
+    }
+    
+    if (resetButton.onRelease){
+        reset();
+    }
+
     if (newTurn == true){
         if (gameState.turn == GameState::Turn::black){
             gameState.turn = GameState::Turn::white;
@@ -307,10 +306,10 @@ void GameScreen::run(){
         if (!gameState.isEnd){
             //update elements
             updateFeatureButton(mouse);
-            updateGameButton(mouse, false);
+            updateGameButton(mouse);
             updateStone(mouse);
             SyncStoneWithGameState();
-            updateGameState();
+            updateGameState(false);
             updateIndicator();
             updateScoreBoard();
         }
@@ -321,9 +320,9 @@ void GameScreen::run(){
             }
             if (endGame.isClosed){
                 updateFeatureButton(mouse);
-                updateGameButton(mouse, true);
+                updateGameButton(mouse);
                 SyncStoneWithGameState();
-                updateGameState();
+                updateGameState(true);
                 updateIndicator();
                 updateScoreBoard();
             }
@@ -341,7 +340,7 @@ void GameScreen::run(){
             endGame.run(window, mouse);
         }
 
-
+        updateScreenState();
         window.display();
 
         if (nextState != screenState::GameScreen){

@@ -43,14 +43,16 @@ void GameMenu::updateButton(Mouse &mouse){
     saveGameButton.update(mouse);
     loadGameButton.update(mouse);
     backButton    .update(mouse);
+}
 
-    //check if any button is clicked
+void GameMenu::updateScreenState(){
     if (newGameButton .onRelease) nextState = screenState::NewGame;
     if (continueButton.onRelease) nextState = screenState::Resume;
     if (saveGameButton.onRelease) nextState = screenState::Exit, saveGame = true;
     if (loadGameButton.onRelease) nextState = screenState::Resume, loadGame = true;
     if (backButton.    onRelease) nextState = screenState::Exit;
 }
+
 
 void GameMenu::drawButton(){
     newGameButton. draw(window);
@@ -90,11 +92,13 @@ void GameMenu::run(){
         window.clear();
         setBackground();
 
-        //update
+        //update button
         mouse.update(window);
         updateButton(mouse);
 
-        //just draw :v
+        //update Screenstate
+        updateScreenState();
+
         drawButton();
         window.display();
         

@@ -20,6 +20,8 @@ private:
 
     void setBackground();
     void updateButton(Mouse &mouse);
+    void updateScreenState();
+    void updateStyle();
     void draw();
 
 public:

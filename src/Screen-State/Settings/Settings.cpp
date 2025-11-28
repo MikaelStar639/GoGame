@@ -59,8 +59,9 @@ void Settings::updateButton(Mouse &mouse){
     stoneStyleButton.update(mouse);
     boardStyleButton.update(mouse);
     backButton.update(mouse);
+}
 
-    //check if any button is clicked
+void Settings::updateScreenState(){
     if (stoneStyleButton.onRelease) nextState = screenState::SelectStone;
     if (boardStyleButton.onRelease) nextState = screenState::SelectBoard;
     if (backButton.onRelease)       nextState = screenState::Exit;
@@ -86,9 +87,10 @@ void Settings::updateSlider(Mouse &mouse){
     //update
     soundSlider.update(mouse);
     musicSlider.update(mouse);
+}
 
-    //update sounds
-    gameSound.backgroundMusic.setVolume(musicSlider.value);
+void Settings::updateSounds(){
+     gameSound.backgroundMusic.setVolume(musicSlider.value);
 
     gameSound["StoneMove"]   .setVolume(soundSlider.value);
     gameSound["StoneCapture"].setVolume(soundSlider.value);
@@ -117,6 +119,9 @@ void Settings::run(){
         updateButton(mouse);
         updateSlider(mouse);
 
+        updateScreenState();
+        updateSounds();
+        
         draw();
 
         window.display();

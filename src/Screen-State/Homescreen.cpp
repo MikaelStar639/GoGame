@@ -32,8 +32,9 @@ void Homescreen::updateButton(Mouse &mouse){
     playButton.   update(mouse);
     settingButton.update(mouse);
     exitButton.   update(mouse);
+}
 
-    //check if any button is clicked
+void Homescreen::updateScreenState(){
     if (playButton.onRelease)    nextState = screenState::GameMenu;
     if (settingButton.onRelease) nextState = screenState::Settings;
     if (exitButton.onRelease)    nextState = screenState::Exit;
@@ -96,12 +97,14 @@ void Homescreen::run(){
         mouse.update(window);
         updateButton(mouse);
 
-        //just draw :v
+        //screen update
+        updateScreenState();
+
+        //display
         drawButton();
         drawGamename();
         window.display();
         
-        //if the state is not homescreen (some button was clicked)
         if (nextState != screenState::Homescreen){
             break;
         }

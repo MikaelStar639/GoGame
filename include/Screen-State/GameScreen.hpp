@@ -91,13 +91,15 @@ private:
     //* UI
     void setBackground();
     void updateFeatureButton(Mouse &mouse);
-    void updateGameButton(Mouse &mouse, bool isEndGame);
+    void updateGameButton(Mouse &mouse);
     void updateStone(Mouse &mouse);
     void updateIndicator();
     void updateScoreBoard();
-    
+
+    //* ScreenState
+    void updateScreenState();
 
     //* Game State
-    void updateGameState();
+    void updateGameState(bool isEndGame);
     void SyncStoneWithGameState();
 };

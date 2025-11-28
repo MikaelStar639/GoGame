@@ -59,9 +59,13 @@ void SelectStone::updateButton(Mouse &mouse){
     ClassicButton. update(mouse);
     CartoonButton.update(mouse);
     backButton.     update(mouse);
+}
 
+void SelectStone::updateScreenState(){
+    if (backButton.onRelease) nextState = screenState::Exit;
+}
 
-    //check if any button is clicked
+void SelectStone::updateStyle(){
     if (ClassicButton.onRelease)
     {
         gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Classic);
@@ -74,12 +78,7 @@ void SelectStone::updateButton(Mouse &mouse){
         CartoonButton.setChosen();
         ClassicButton.setDefaultColor();        
     }
-    if (backButton.onRelease)
-    {
-        nextState = screenState::Exit;
-    }
 }
-
 
 void SelectStone::draw(){
     backButton   .draw(window);
@@ -99,6 +98,8 @@ void SelectStone::run(){
         mouse.update(window);
 
         updateButton(mouse);
+        updateScreenState();
+        updateStyle();
 
         draw();
 

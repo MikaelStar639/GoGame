@@ -25,6 +25,8 @@ private:
     void setBackground();
     void updateButton(Mouse &mouse);
     void updateSlider(Mouse &mouse);
+    void updateSounds();
+    void updateScreenState();
     void draw();
 
 public:
