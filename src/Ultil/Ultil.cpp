@@ -1,4 +1,4 @@
-#include "Ultil.hpp"
+#include <Ultil/Ultil.hpp>
 
 // to edit text
 void alignText(sf::Text &text, float horizontal, float vertical){

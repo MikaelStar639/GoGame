@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Ultil.hpp"
+#include <Ultil/Ultil.hpp>
 
 class Board {
 private:
