@@ -87,6 +87,9 @@ void SelectStone::draw(){
 }
 
 void SelectStone::run(){
+
+    nextState = screenState::SelectStone;
+
     Mouse mouse;
 
     while (window.isOpen()){

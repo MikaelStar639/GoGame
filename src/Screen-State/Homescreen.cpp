@@ -82,6 +82,8 @@ void Homescreen::drawGamename(){
 
 void Homescreen::run(){
 
+    nextState = screenState::Homescreen;
+
     //mouse
     Mouse mouse;
 

@@ -50,34 +50,27 @@ void Game::handleScreen(){
             break;
         
         case screenState::Homescreen:
-            homeScreen.nextState = screenState::Homescreen;
             updateScreen(homeScreen);
             break;
 
         case screenState::GameMenu:
-            gameMenu.nextState = screenState::GameMenu;
             updateScreen(gameMenu);
             break;
 
         case screenState::GameScreen:
-            gameScreen.nextState = screenState::GameScreen;
             updateScreen(gameScreen);
             break;
 
         case screenState::Settings:
-            settings.nextState = screenState::Settings;
             updateScreen(settings);
             break;
 
         case screenState::SelectBoard:
-            selectBoard.nextState = screenState::SelectBoard;
             updateScreen(selectBoard);
             break;
 
         case screenState::SelectStone:
-            selectStone.nextState = screenState::SelectStone;
             updateScreen(selectStone);
             break; 
         }
-    
 }

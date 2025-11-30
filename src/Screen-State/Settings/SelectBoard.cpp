@@ -102,6 +102,9 @@ void SelectBoard::draw(){
 }
 
 void SelectBoard::run(){
+    
+    nextState = screenState::SelectBoard;
+
     Mouse mouse;
 
     while (window.isOpen()){

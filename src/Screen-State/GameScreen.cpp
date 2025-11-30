@@ -275,6 +275,8 @@ void GameScreen::reset(){
 
 void GameScreen::run(){
 
+    nextState = screenState::GameScreen;
+
     //mouse
     Mouse mouse;
 

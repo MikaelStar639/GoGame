@@ -87,6 +87,8 @@ void GameMenu::setBackground(){
 
 void GameMenu::run(){
 
+    nextState = screenState::GameMenu;
+    
     //mouse
     Mouse mouse;
 

@@ -106,6 +106,9 @@ void Settings::draw(){
 }
 
 void Settings::run(){
+
+    nextState = screenState::Settings;
+
     Mouse mouse;
 
     while (window.isOpen()){

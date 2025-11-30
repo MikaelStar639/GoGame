@@ -66,6 +66,8 @@ void PlayOptions::setBackground(sf::Sprite &backgroundSprite){
 
 void PlayOptions::run(){
 
+    nextState = screenState::PlayOptions;
+
     //mouse
     Mouse mouse;
 
