@@ -1,14 +1,15 @@
 #include "Screen-State/GameMenu.hpp"
 
 
-GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, TextureManager &_gameTexture) : 
+GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, TextureManager &_gameTexture, GameScreen &_gameScreen) : 
     newGameButton  (font),
     continueButton (font),
     loadGameButton (font),
     saveGameButton (font),
     backButton     (font),
     backgroundSprite(_gameTexture["Background"]),
-    window(_window){
+    window(_window),
+    gameScreen(_gameScreen){
         newGameButton. setString("New Game");
         continueButton.setString("Continue");
         saveGameButton.setString("Save Game");
@@ -45,14 +46,18 @@ void GameMenu::updateButton(Mouse &mouse){
     backButton    .update(mouse);
 }
 
-void GameMenu::updateScreenState(){
-    if (newGameButton .onRelease) nextState = screenState::NewGame;
-    if (continueButton.onRelease) nextState = screenState::Resume;
-    if (saveGameButton.onRelease) nextState = screenState::Exit, saveGame = true;
-    if (loadGameButton.onRelease) nextState = screenState::Resume, loadGame = true;
-    if (backButton.    onRelease) nextState = screenState::Exit;
+void GameMenu::updateGameScreen(){
+    if (newGameButton. onRelease) gameScreen.reset();
+    if (saveGameButton.onRelease) gameScreen.saveGame("game.saves");
+    if (loadGameButton.onRelease) gameScreen.loadGame("game.saves");
 }
 
+void GameMenu::updateScreenState(){
+    if (newGameButton. onRelease) nextState = screenState::GameScreen;
+    if (continueButton.onRelease) nextState = screenState::GameScreen;
+    if (loadGameButton.onRelease) nextState = screenState::GameScreen;
+    if (backButton.    onRelease) nextState = screenState::Exit;
+}
 
 void GameMenu::drawButton(){
     newGameButton. draw(window);
@@ -96,7 +101,8 @@ void GameMenu::run(){
         mouse.update(window);
         updateButton(mouse);
 
-        //update Screenstate
+        //update Screenstate & GameScreen
+        updateGameScreen();
         updateScreenState();
 
         drawButton();

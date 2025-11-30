@@ -336,7 +336,6 @@ void GameScreen::run(){
 
 void GameScreen::loadGame(std::string _address){
     gameState.load(_address);
-    canNotLoad = gameState.isFileEmpty;
     SyncStoneWithGameState();
 }
 

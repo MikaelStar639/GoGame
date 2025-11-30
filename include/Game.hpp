@@ -23,7 +23,7 @@ private:
     TextureManager gameTexture;
     SoundManager   gameSound;
     
-    Board            board;
+    Board board;
     
     Homescreen  homeScreen;
     GameMenu    gameMenu;
@@ -34,8 +34,12 @@ private:
 
     std::stack<screenState> screenStateStack;
 
+    void addState(screenState state);
     void handleScreen();
 
+    template<class currentScreen>
+    void updateScreen(currentScreen& screen);
+    
 public:
     Game();
     void run();

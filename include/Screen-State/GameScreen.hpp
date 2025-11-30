@@ -30,7 +30,6 @@ public:
     screenState nextState = screenState::GameScreen;
     
     //* Load/save Game
-    bool canNotLoad = true;
     void loadGame(std::string _address);
     void saveGame(std::string _address);
     
