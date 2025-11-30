@@ -93,13 +93,18 @@ void GameScreen::updateGameButton(Mouse &mouse){
     redoButton  .setSize({300.f, 75.f});
     undoButton  .setSize({300.f, 75.f});
     passButton  .setSize({300.f, 75.f});
-    resetButton.setSize({300.f, 75.f});
+    resetButton .setSize({300.f, 75.f});
 
     //Buttons update
     redoButton .update(mouse);
     undoButton .update(mouse);
     passButton .update(mouse);  
     resetButton.update(mouse);
+
+    //Pass
+    if (gameState.isEnd){
+        passButton.isInvalid = true;
+    }
 }
 
 Position GameScreen::to_cord(sf::Vector2f position){
@@ -159,7 +164,6 @@ void GameScreen::updateStone(Mouse &mouse){
                 overStone.setState(Stone::State::white);
             }
             gameState.addStoneMove(cy, cx);
-            newTurn = true;
         }
     }
 
@@ -169,46 +173,27 @@ void GameScreen::updateScreenState(){
     if (backButton.onRelease) nextState = screenState::Exit;
 }
 
-void GameScreen::updateGameState(bool isEndGame){
-    if (!isEndGame){
-        if (passButton.onRelease) {
-            if (gameState.lastMovePass == true) {
-                gameState.isEnd = true;
-                endGameSound.play();
-            }
-            else{
-                gameState.pass();
-            }
-            gameState.lastMovePass = true;
-            newTurn = true;
+void GameScreen::updateGameState(){
+    if (!passButton.isInvalid && passButton.onRelease) {
+        if (gameState.lastMovePass == true) {
+            gameState.isEnd = true;
+            endGameSound.play();
         }
-    }
-    else{
-        passButton.isInvalid = true;
+        else{
+            gameState.pass();
+        }
+        gameState.lastMovePass = true;
     }
 
     if (redoButton.onRelease) {
         gameState.redo();
     }
     if (undoButton.onRelease){
-        if (gameState.undo()){
-            newTurn = true;
-        }
+        gameState.undo();
     }
     
     if (resetButton.onRelease){
         reset();
-    }
-
-    if (newTurn == true){
-        if (gameState.turn == GameState::Turn::black){
-            gameState.turn = GameState::Turn::white;
-        }
-        else{
-            gameState.turn = GameState::Turn::black;
-        }
-
-        newTurn = false;
     }
 }
 
@@ -309,7 +294,7 @@ void GameScreen::run(){
             updateGameButton(mouse);
             updateStone(mouse);
             SyncStoneWithGameState();
-            updateGameState(false);
+            updateGameState();
             updateIndicator();
             updateScoreBoard();
         }
@@ -322,7 +307,7 @@ void GameScreen::run(){
                 updateFeatureButton(mouse);
                 updateGameButton(mouse);
                 SyncStoneWithGameState();
-                updateGameState(true);
+                updateGameState();
                 updateIndicator();
                 updateScoreBoard();
             }

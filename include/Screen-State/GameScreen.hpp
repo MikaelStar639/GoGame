@@ -82,7 +82,6 @@ private:
 
     //Cordinate of the Stone on the Board
     Position to_cord(sf::Vector2f position);
-    bool newTurn = false;
 
     //EndGame
     EndGameWindow endGame;
@@ -100,6 +99,6 @@ private:
     void updateScreenState();
 
     //* Game State
-    void updateGameState(bool isEndGame);
+    void updateGameState();
     void SyncStoneWithGameState();
 };

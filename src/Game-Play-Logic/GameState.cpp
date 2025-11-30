@@ -34,6 +34,8 @@ void GameState::pass(){
     
     history[history.index].isPassed = true;
     history.undoCount = 0;
+
+    swapTurn();
 }
 
 void GameState::addStoneMove(int y, int x){
@@ -58,6 +60,7 @@ void GameState::addStoneMove(int y, int x){
     RemoveCapturedStones(history[history.index]);
     history.undoCount = 0;
 
+    swapTurn();
 }
 
 void GameState::deleteStone(int y, int x){
@@ -161,6 +164,15 @@ bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
     return true; 
 }
 
+void GameState::swapTurn(){
+    if (turn == Turn::black){
+        turn = Turn::white;
+    }
+    else{
+        turn = Turn::black;
+    }
+}
+
 //*  end game
 void GameState::getScore(){
 
@@ -240,7 +252,7 @@ void GameState::reset(){
 }
 
 //*  undo/redo
-bool GameState::undo() {
+void GameState::undo() {
     if (history.index >= 0) {
         HistoryState &state = history[history.index];
         if (!state.isPassed){
@@ -251,12 +263,10 @@ bool GameState::undo() {
             addStone(y, x, (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black);
         }
 
-        turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
         --history.index;
         history.undoCount++;
-        return true;
+        swapTurn();
     }
-    return false;
 }
 
 void GameState::redo() {
@@ -270,8 +280,8 @@ void GameState::redo() {
         for (auto &[y, x] : state.capturedStones) {
             deleteStone(y, x);
         }
-        turn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
         history.undoCount--;
+        swapTurn();
     }
 }
 
