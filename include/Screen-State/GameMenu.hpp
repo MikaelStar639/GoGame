@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Game.hpp"
 #include "UI/Button.hpp"
+#include "Screen-State/ScreenState.hpp"
+#include "Screen-State/GameScreen.hpp"
+#include "Assets-Manager/TextureManager.hpp"
 
 class GameMenu{
 private:
@@ -11,20 +13,20 @@ private:
     Button loadGameButton; 
     Button backButton;
 
-    sf::Sprite &BackgroundSprite;
-
+    sf::Sprite backgroundSprite;
     sf::RenderWindow &window;
 
-    void setBackground(sf::Sprite &backgroundSprite);
-public:
-    GameMenu(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
-
-    Game::screenState nextState = Game::screenState::GameMenu;
-    
-    bool loadGame = false;
-    bool saveGame = false;
+    GameScreen &gameScreen;
 
     void updateButton(Mouse &mouse);
+    void updateScreenState();
+    void updateGameScreen();
+
     void drawButton();
+    void setBackground();
+    
+public:
+    GameMenu(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture, GameScreen &gameScreen);
+    screenState nextState = screenState::GameMenu;
     void run();
 };

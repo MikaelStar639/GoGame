@@ -4,27 +4,21 @@
 Settings::Settings(
     sf::Font &_font, 
     sf::RenderWindow &_window, 
-    sf::Sprite &_BackgroundTexture,
-    sf::Sound &_BackgroundMusic,
-    sf::Sound &_stoneSound,
-    sf::Sound &_stoneCaptureSound,
-    sf::Sound &_endGameSound):
-    
+    TextureManager &_gameTexture,
+    SoundManager &_gameSound)
+    :
     backButton      (_font),
     stoneStyleButton(_font),
     boardStyleButton(_font),
     window(_window),
-    BackgroundSprite(_BackgroundTexture),
-    BackgroundMusic(_BackgroundMusic),
+    backgroundSprite(_gameTexture["Background"]),
     soundSlider(_font),
     musicSlider(_font),
-    stoneSound(_stoneSound),
-    stoneCaptureSound(_stoneCaptureSound),
-    endGameSound(_endGameSound)
+    gameSound(_gameSound)
     {}
 
 
-void Settings::setBackground(sf::Sprite &backgroundSprite){
+void Settings::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -65,11 +59,12 @@ void Settings::updateButton(Mouse &mouse){
     stoneStyleButton.update(mouse);
     boardStyleButton.update(mouse);
     backButton.update(mouse);
+}
 
-    //check if any button is clicked
-    if (stoneStyleButton.onRelease) nextState = Game::screenState::SelectStone;
-    if (boardStyleButton.onRelease) nextState = Game::screenState::SelectBoard;
-    if (backButton.onRelease)       nextState = Game::screenState::Exit;
+void Settings::updateScreenState(){
+    if (stoneStyleButton.onRelease) nextState = screenState::SelectStone;
+    if (boardStyleButton.onRelease) nextState = screenState::SelectBoard;
+    if (backButton.onRelease)       nextState = screenState::Exit;
 }
 
 void Settings::updateSlider(Mouse &mouse){
@@ -92,12 +87,14 @@ void Settings::updateSlider(Mouse &mouse){
     //update
     soundSlider.update(mouse);
     musicSlider.update(mouse);
+}
 
-    //update sounds
-    BackgroundMusic  .setVolume(musicSlider.value);
-    stoneCaptureSound.setVolume(soundSlider.value);
-    stoneSound       .setVolume(soundSlider.value);
-    endGameSound     .setVolume(soundSlider.value);
+void Settings::updateSounds(){
+     gameSound.backgroundMusic.setVolume(musicSlider.value);
+
+    gameSound["StoneMove"]   .setVolume(soundSlider.value);
+    gameSound["StoneCapture"].setVolume(soundSlider.value);
+    gameSound["Boom"]        .setVolume(soundSlider.value);
 }
 
 void Settings::draw(){
@@ -109,24 +106,30 @@ void Settings::draw(){
 }
 
 void Settings::run(){
+
+    nextState = screenState::Settings;
+
     Mouse mouse;
 
     while (window.isOpen()){
         handleEvent(window);
 
         window.clear(sf::Color(64, 64, 64));
-        setBackground(BackgroundSprite);
+        setBackground();
 
         mouse.update(window);
 
         updateButton(mouse);
         updateSlider(mouse);
 
+        updateScreenState();
+        updateSounds();
+        
         draw();
 
         window.display();
 
-        if (nextState != Game::screenState::Settings){
+        if (nextState != screenState::Settings){
             break;
         }
     }

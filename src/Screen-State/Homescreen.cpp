@@ -1,11 +1,11 @@
 #include "Screen-State/Homescreen.hpp"
 
-Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 
+Homescreen::Homescreen(sf::Font &font, sf::RenderWindow &_window, TextureManager& _gameTexture) : 
     playButton(font),
     settingButton(font),
     exitButton(font),
     Gamename(font),
-    BackgroundSprite(BackgroundTexture),
+    backgroundSprite(_gameTexture["Background"]),
     window(_window){
         playButton.   setString("Play");
         settingButton.setString("Setting");
@@ -32,11 +32,12 @@ void Homescreen::updateButton(Mouse &mouse){
     playButton.   update(mouse);
     settingButton.update(mouse);
     exitButton.   update(mouse);
+}
 
-    //check if any button is clicked
-    if (playButton.onRelease)    nextState = Game::screenState::GameMenu;
-    if (settingButton.onRelease) nextState = Game::screenState::Settings;
-    if (exitButton.onRelease)    nextState = Game::screenState::Exit;
+void Homescreen::updateScreenState(){
+    if (playButton.onRelease)    nextState = screenState::GameMenu;
+    if (settingButton.onRelease) nextState = screenState::Settings;
+    if (exitButton.onRelease)    nextState = screenState::Exit;
 }
 
 void Homescreen::drawButton(){
@@ -45,7 +46,7 @@ void Homescreen::drawButton(){
     exitButton.   draw(window);
 }
 
-void Homescreen::setBackground(sf::Sprite &backgroundSprite){
+void Homescreen::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -81,6 +82,8 @@ void Homescreen::drawGamename(){
 
 void Homescreen::run(){
 
+    nextState = screenState::Homescreen;
+
     //mouse
     Mouse mouse;
 
@@ -89,20 +92,22 @@ void Homescreen::run(){
 
         //Background
         window.clear();
-        setBackground(BackgroundSprite);
+        setBackground();
         UpdateGamenamePosition();
 
         //mouse update
         mouse.update(window);
         updateButton(mouse);
 
-        //just draw :v
+        //screen update
+        updateScreenState();
+
+        //display
         drawButton();
         drawGamename();
         window.display();
         
-        //if the state is not homescreen (some button was clicked)
-        if (nextState != Game::screenState::Homescreen){
+        if (nextState != screenState::Homescreen){
             break;
         }
     }

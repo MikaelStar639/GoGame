@@ -1,13 +1,9 @@
 #include "Screen-State/GameScreen.hpp"
 
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
-                sf::Sprite &ClassicBlackTexture, sf::Sprite &ClassicWhiteTexture,
-                sf::Sprite &CartoonBlackTexture, sf::Sprite &CartoonWhiteTexture,
-                sf::Sprite &BackgroundTexture,
-                Board &_board,
-                sf::Sound &_stoneSound,
-                sf::Sound &_stoneCaptureSound,
-                sf::Sound &_endGameSound) : 
+                TextureManager &_gameTexture, SoundManager &_gameSound,
+                Board &_board) : 
+
     backButton  (_font),
     redoButton  (_font),
     undoButton  (_font),
@@ -16,15 +12,12 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     window      (_window),
     board       (_board),
     turnIndicator(_font),
-    ClassicBlack(ClassicBlackTexture),
-    ClassicWhite(ClassicWhiteTexture),
-    CartoonBlack(CartoonBlackTexture),
-    CartoonWhite(CartoonWhiteTexture),
+    textures(_gameTexture),
+    backgroundSprite(_gameTexture["Background"]),
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),
-    BackgroundSprite(BackgroundTexture),
-    endGameSound(_endGameSound),
-    gameState(_stoneCaptureSound, _stoneSound),
+    endGameSound(_gameSound["Boom"]),
+    gameState(_gameSound["StoneCapture"], _gameSound["StoneMove"]),
     endGame(_font)
     {
 
@@ -36,18 +29,18 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     resetButton.setString("Reset Game");
 
     //vector:
-    
     grid.resize(19);
+    Stone initStone(textures["BlackStone"], textures["WhiteStone"], sf::Vector2f(0.f, 0.f));
     for (int y = 0; y < 19; ++y){
         grid[y].reserve(19);
         for (int x = 0; x < 19; ++x){
-            grid[y].emplace_back(ClassicBlack, ClassicWhite,
-                sf::Vector2f(board.gridX[x], board.gridY[18 - y]));
+            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[18 - y]);
+            grid[y].emplace_back(initStone);
         }
     }
 }
 
-void GameScreen::setBackground(sf::Sprite &backgroundSprite){
+void GameScreen::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -68,10 +61,6 @@ void GameScreen::drawBoard(){
     board.draw(window);
 }
 
-void GameScreen::setBoard(Board &_board){
-    board = _board;
-}
-
 void GameScreen::updateFeatureButton(Mouse &mouse){
     //window size
     float window_w = window.getSize().x;
@@ -85,12 +74,9 @@ void GameScreen::updateFeatureButton(Mouse &mouse){
 
     //Buttons update
     backButton.update(mouse);
-
-    //check button state
-    if (backButton.onRelease) nextState = Game::screenState::Exit;
 }
 
-void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
+void GameScreen::updateGameButton(Mouse &mouse){
     //window size
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -107,46 +93,21 @@ void GameScreen::updateGameButton(Mouse &mouse, bool isEndGame){
     redoButton  .setSize({300.f, 75.f});
     undoButton  .setSize({300.f, 75.f});
     passButton  .setSize({300.f, 75.f});
-    resetButton.setSize({300.f, 75.f});
+    resetButton .setSize({300.f, 75.f});
 
     //Buttons update
-    redoButton  .update(mouse);
-    undoButton  .update(mouse);
-    passButton  .update(mouse);  
+    redoButton .update(mouse);
+    undoButton .update(mouse);
+    passButton .update(mouse);  
     resetButton.update(mouse);
 
-    if (!isEndGame){
-        if (passButton.onRelease) {
-            if (gameState.lastMovePass == true) {
-                gameState.isEnd = true;
-                endGameSound.play();
-            }
-            else{
-                gameState.pass();
-            }
-            gameState.lastMovePass = true;
-            newTurn = true;
-        }
-    }
-    else{
+    //Pass
+    if (gameState.isEnd){
         passButton.isInvalid = true;
-    }
-
-    if (redoButton.onRelease) {
-        gameState.redo();
-    }
-    if (undoButton.onRelease){
-        if (gameState.undo()){
-            newTurn = true;
-        }
-    }
-    
-    if (resetButton.onRelease){
-        reset();
     }
 }
 
-GameScreen::Cordinate GameScreen::to_cord(sf::Vector2f position){
+Position GameScreen::to_cord(sf::Vector2f position){
     float fy = (position.y - board.gridY[0])/board.gap;
     float fx = (position.x - board.gridX[0])/board.gap;
 
@@ -203,22 +164,36 @@ void GameScreen::updateStone(Mouse &mouse){
                 overStone.setState(Stone::State::white);
             }
             gameState.addStoneMove(cy, cx);
-            newTurn = true;
         }
     }
 
 }
 
+void GameScreen::updateScreenState(){
+    if (backButton.onRelease) nextState = screenState::Exit;
+}
+
 void GameScreen::updateGameState(){
-    if (newTurn == true){
-        if (gameState.turn == GameState::Turn::black){
-            gameState.turn = GameState::Turn::white;
+    if (!passButton.isInvalid && passButton.onRelease) {
+        if (gameState.lastMovePass == true) {
+            gameState.isEnd = true;
+            endGameSound.play();
         }
         else{
-            gameState.turn = GameState::Turn::black;
+            gameState.pass();
         }
+        gameState.lastMovePass = true;
+    }
 
-        newTurn = false;
+    if (redoButton.onRelease) {
+        gameState.redo();
+    }
+    if (undoButton.onRelease){
+        gameState.undo();
+    }
+    
+    if (resetButton.onRelease){
+        reset();
     }
 }
 
@@ -300,6 +275,8 @@ void GameScreen::reset(){
 
 void GameScreen::run(){
 
+    nextState = screenState::GameScreen;
+
     //mouse
     Mouse mouse;
 
@@ -308,7 +285,7 @@ void GameScreen::run(){
 
         //background
         window.clear(sf::Color(64, 64, 64));
-        setBackground(BackgroundSprite);
+        setBackground();
 
         //mouse
         mouse.update(window);
@@ -316,7 +293,7 @@ void GameScreen::run(){
         if (!gameState.isEnd){
             //update elements
             updateFeatureButton(mouse);
-            updateGameButton(mouse, false);
+            updateGameButton(mouse);
             updateStone(mouse);
             SyncStoneWithGameState();
             updateGameState();
@@ -330,7 +307,7 @@ void GameScreen::run(){
             }
             if (endGame.isClosed){
                 updateFeatureButton(mouse);
-                updateGameButton(mouse, true);
+                updateGameButton(mouse);
                 SyncStoneWithGameState();
                 updateGameState();
                 updateIndicator();
@@ -350,10 +327,10 @@ void GameScreen::run(){
             endGame.run(window, mouse);
         }
 
-
+        updateScreenState();
         window.display();
 
-        if (nextState != Game::screenState::GameScreen){
+        if (nextState != screenState::GameScreen){
             break;
         }
     }
@@ -361,18 +338,11 @@ void GameScreen::run(){
 
 void GameScreen::loadGame(std::string _address){
     gameState.load(_address);
-    canNotLoad = gameState.isFileEmpty;
     SyncStoneWithGameState();
 }
 
 void GameScreen::saveGame(std::string _address){
     gameState.save(_address);
-}
-
-void GameScreen::copyTo(GameScreen &_gameScreen){
-    _gameScreen.endGame.isClosed = endGame.isClosed;
-    gameState.copyTo(_gameScreen.gameState);
-    _gameScreen.canNotLoad = false;
 }
 
 void GameScreen::ChangeStoneStyle(StoneStyle style)
@@ -382,10 +352,10 @@ void GameScreen::ChangeStoneStyle(StoneStyle style)
         for (int x = 0; x<19; x++)
         {
             if (style == StoneStyle::Classic)
-                grid[y][x].ChangeSprite(ClassicBlack, ClassicWhite);
+                grid[y][x].ChangeSprite(textures["BlackStone"],  textures["WhiteStone"]);
 
             if (style == StoneStyle::Cartoon) 
-                grid[y][x].ChangeSprite(CartoonBlack, CartoonWhite);
+                grid[y][x].ChangeSprite(textures["PixelatedBlackStone"], textures["PixelatedWhiteStone"]);
         }
     }
 }

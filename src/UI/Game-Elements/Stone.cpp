@@ -1,6 +1,6 @@
 #include "UI/Game-Elements/Stone.hpp"
 
-Stone::Stone(sf::Sprite &_BlackstoneTexture, sf::Sprite &_WhitestoneTexture, sf::Vector2f _pos) : 
+Stone::Stone(sf::Texture &_BlackstoneTexture, sf::Texture &_WhitestoneTexture, sf::Vector2f _pos) : 
     BlackStoneSprite(_BlackstoneTexture),
     WhiteStoneSprite(_WhitestoneTexture),
     position(_pos)
@@ -98,10 +98,10 @@ void Stone::draw(sf::RenderWindow &window){
     }
 }
 
-void Stone::ChangeSprite(sf::Sprite &newSpriteBlack, sf::Sprite &newSpriteWhite)
+void Stone::ChangeSprite(sf::Texture &newBlackTexture, sf::Texture &newWhiteTexture)
 {
-    BlackStoneSprite = newSpriteBlack;
-    WhiteStoneSprite = newSpriteWhite;
+    BlackStoneSprite.setTexture(newBlackTexture);
+    WhiteStoneSprite.setTexture(newWhiteTexture);
     sf::FloatRect bounds = BlackStoneSprite.getLocalBounds();
     BlackStoneSprite.setScale({0.04f, 0.04f});
     WhiteStoneSprite.setScale({0.04f, 0.04f});

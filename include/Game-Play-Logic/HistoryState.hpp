@@ -4,6 +4,9 @@
 #include <string>
 #include <fstream>
 
+struct Position{
+    int y = -1, x = -1;
+};
 class HistoryState {
 public:
     enum class Turn{
@@ -12,9 +15,10 @@ public:
     };
 
     Turn turn = Turn::black;
-    int y_newStone = 0, x_newStone = 0;
+    
     bool isPassed = false;
-    std::vector<std::pair<int, int>> capturedStones;
+    Position newStone;
+    std::vector<Position> capturedStones;
 
     HistoryState();
 };
@@ -28,7 +32,8 @@ public:
 
     std::vector<HistoryState> data;
     HistoryState& operator [] (int id);
-    int size();
 
+    int size();
+    HistoryState last();
     void reset();
 };

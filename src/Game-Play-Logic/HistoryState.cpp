@@ -10,6 +10,10 @@ int History::size(){
     return data.size();
 }
 
+HistoryState History::last(){
+    return data.back();
+}
+
 void History::reset(){
     index = -1;
     undoCount = 0;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Game.hpp"
-
 #include "UI/Button.hpp"
 #include "UI/Blur.hpp"
 #include "UI/Game-Elements/Board.hpp"
@@ -9,14 +7,42 @@
 #include "UI/Game-Elements/TurnIndicator.hpp"
 #include "UI/Game-Elements/ScoreBoard.hpp"
 
+#include "Screen-State/ScreenState.hpp"
 #include "Screen-State/EndGame.hpp"
 #include "Game-Play-Logic/GameState.hpp"
-
+#include "Assets-Manager/AssetsManager.hpp"
 
 #include <cmath>
 #include <vector>
 
 class GameScreen{
+public:
+    enum class StoneStyle{
+        Classic,
+        Cartoon
+    };
+
+    GameScreen(sf::Font &_font, sf::RenderWindow &_window,
+                TextureManager &gameTexture, 
+                SoundManager &gameSound,
+                Board &_board);
+
+    screenState nextState = screenState::GameScreen;
+    
+    //* Load/save Game
+    void loadGame(std::string _address);
+    void saveGame(std::string _address);
+    
+    //* Change Stone Style
+    void ChangeStoneStyle(StoneStyle style);
+
+    //* Reset
+    void reset();
+
+    //* Run 
+    void run();
+    
+    
 private:
     //Feature Button
     Button backButton;
@@ -38,11 +64,8 @@ private:
     std::vector<std::vector<Stone>> grid;
 
     //Sprite & Sound
-    sf::Sprite &BackgroundSprite;
-    sf::Sprite &ClassicBlack;
-    sf::Sprite &ClassicWhite;
-    sf::Sprite &CartoonBlack;
-    sf::Sprite &CartoonWhite;
+    sf::Sprite backgroundSprite;
+    TextureManager &textures;
     
     sf::Sound &endGameSound;    
     
@@ -57,57 +80,24 @@ private:
     sf::RenderWindow &window;
 
     //Cordinate of the Stone on the Board
-    struct Cordinate{
-        int y, x;
-    };
-    Cordinate to_cord(sf::Vector2f position);
-    bool newTurn = false;
+    Position to_cord(sf::Vector2f position);
 
     //EndGame
     EndGameWindow endGame;
 
-public:
-
-    enum class StoneStyle{
-        Classic,
-        Cartoon
-    };
-    GameScreen(sf::Font &_font, sf::RenderWindow &_window,
-                sf::Sprite &ClassicBlackTexture, sf::Sprite &ClassicWhiteTexture,
-                sf::Sprite &CartoonBlackTexture, sf::Sprite &CartoonWhiteTexture,
-                sf::Sprite &BackgroundSprite, 
-                Board &_board,
-                sf::Sound &stoneSound,
-                sf::Sound &stoneCaptureSound,
-                sf::Sound &endGameSound);
-
-    Game::screenState nextState = Game::screenState::GameScreen;
 
     //* UI
-    void setBackground(sf::Sprite &backgroundSprite);
-    void setBoard(Board &board);
+    void setBackground();
     void updateFeatureButton(Mouse &mouse);
-    void updateGameButton(Mouse &mouse, bool isEndGame);
+    void updateGameButton(Mouse &mouse);
     void updateStone(Mouse &mouse);
     void updateIndicator();
     void updateScoreBoard();
-    void ChangeStoneStyle(StoneStyle style);
-    
+
+    //* ScreenState
+    void updateScreenState();
+
     //* Game State
     void updateGameState();
     void SyncStoneWithGameState();
-    
-    //* Load/save Game
-    bool canNotLoad = true;
-    void loadGame(std::string _address);
-    void saveGame(std::string _address);
-    
-    //* Reset
-    void reset();
-
-    //* Run 
-    void run();
-
-    //* Copy to the other gameScreen
-    void copyTo(GameScreen &gameScreen);
 };

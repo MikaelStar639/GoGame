@@ -1,196 +1,76 @@
 #include <Game.hpp>
-#include <Screen-State/Homescreen.hpp>
-#include <Screen-State/GameMenu.hpp>
-#include <Screen-State/GameScreen.hpp>
-#include <Screen-State/Settings/Settings.hpp>
-#include <Screen-State/Settings/SelectBoard.hpp>
-#include <Screen-State/Settings/SelectStone.hpp>
+
+void Game::run(){
+    while (window.isOpen()){
+        handleEvent(window);
+        handleScreen();
+
+        if (screenStateStack.top() == screenState::Exit){
+            break;
+        }
+    }
+}
 
 Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame", sf::Style::Default ^ sf::Style::Resize), 
-               font("assets/fonts/Monocraft.ttc"){
+               font("assets/fonts/Monocraft.ttc"),
+               icon("assets/images/PixelatedBlackStone.png"),
+               board      (font, gameTexture),
+               homeScreen (font, window, gameTexture),
+               gameMenu   (font, window, gameTexture, gameScreen),
+               settings   (font, window, gameTexture, gameSound),
+               gameScreen (font, window, gameTexture, gameSound, board),
+               selectBoard(font, window, gameTexture, board),
+               selectStone(font, window, gameScreen, gameTexture){
 
+    window.setIcon(icon);
     screenStateStack.push({screenState::Exit});
     screenStateStack.push({screenState::Homescreen});
 }
 
-void Game::run(){
-    
-    //* Texture Load
-    sf::Texture backgroundTexture("assets/images/Background.png");
-    sf::Texture BlackBoard       ("assets/images/DarkWood.png");
-    sf::Texture LightBoard       ("assets/images/LightWood.png");
-    sf::Texture PlainBoard       ("assets/images/PlainWood.png");
-    
-    sf::Texture ClassicblackStoneTexture("assets/images/BlackStone.png");
-    sf::Texture ClassicwhiteStoneTexture("assets/images/WhiteStone.png");
-    sf::Texture CartoonBlackStoneTexture("assets/images/PixelatedBlackStone.png");
-    sf::Texture CartoonWhiteStoneTexture("assets/images/PixelatedWhiteStone.png");
-    
-    //* Sprite
-    sf::Sprite ClassicBlackStoneSprite(ClassicblackStoneTexture);
-    sf::Sprite ClassicWhiteStoneSprite(ClassicwhiteStoneTexture);
-    sf::Sprite CartoonBlackStoneSprite(CartoonBlackStoneTexture);
-    sf::Sprite CartoonWhiteStoneSprite(CartoonWhiteStoneTexture);
-    sf::Sprite backgroundSprite(backgroundTexture);
+void Game::addState(screenState state){
+    if (state != screenState::Exit)
+        screenStateStack.push(state);
+    else
+        screenStateStack.pop();
+}
 
-    //* Sounds
-    sf::SoundBuffer backgroundMusicBuffer("assets/sounds/BackgroundMusic.mp3");
-    sf::SoundBuffer stoneSoundBuffer     ("assets/sounds/stoneMove.mp3");
-    sf::SoundBuffer stoneCapturedBuffer  ("assets/sounds/stoneCapture.mp3");
-    sf::SoundBuffer endGameSoundBuffer   ("assets/sounds/boom.mp3");
+template<class currentScreen>
+void Game::updateScreen(currentScreen& screen){
+    screen.run();
+    screenState state = screen.nextState;
+    addState(state);
+}
 
-    sf::Sound backgroundMusic(backgroundMusicBuffer);
-    sf::Sound stoneSound(stoneSoundBuffer);
-    sf::Sound stoneCaptureSound(stoneCapturedBuffer);
-    sf::Sound endGameSound(endGameSoundBuffer);
+void Game::handleScreen(){
+    screenState state = screenStateStack.top();
 
-    //* Board
-    Board board(font, LightBoard, BlackBoard, PlainBoard);
-
-    //* Window States
-    Homescreen  homeScreen (font, window, backgroundSprite);
-    GameMenu    GameMenu   (font, window, backgroundSprite);
-    Settings    settings   (font, window, backgroundSprite, backgroundMusic, stoneSound, stoneCaptureSound, endGameSound);
-    SelectBoard selectBoard(font, window, board, backgroundSprite, backgroundMusic);
-    GameScreen  gameScreen (font, window,
-        ClassicBlackStoneSprite, ClassicWhiteStoneSprite,
-        CartoonBlackStoneSprite, CartoonWhiteStoneSprite,
-        backgroundSprite, board, stoneSound, stoneCaptureSound, endGameSound);
-    
-    //* Stone Selector
-    SelectStone selectStone(font, window, gameScreen, backgroundSprite, backgroundMusic);
-    
-    //* Sound Default
-    backgroundMusic.setLooping(true);
-    backgroundMusic.setVolume(75);
-    backgroundMusic.setVolume(75);
-    stoneSound.setVolume(75);
-    stoneCaptureSound.setVolume(75);
-    endGameSound.setVolume(75);
-    backgroundMusic.play();
-
-    //* Window Icon
-    sf::Image icon("assets/images/PixelatedBlackStone.png");
-    window.setIcon(icon);
-    
-    while (window.isOpen()){
-        handleEvent(window);
-        assert(!screenStateStack.empty());
-        screenState state = screenStateStack.top();
-
-        if (state == screenState::Exit){
+    switch (state){
+        case screenState::Exit:
             window.close();
             break;
+        
+        case screenState::Homescreen:
+            updateScreen(homeScreen);
+            break;
+
+        case screenState::GameMenu:
+            updateScreen(gameMenu);
+            break;
+
+        case screenState::GameScreen:
+            updateScreen(gameScreen);
+            break;
+
+        case screenState::Settings:
+            updateScreen(settings);
+            break;
+
+        case screenState::SelectBoard:
+            updateScreen(selectBoard);
+            break;
+
+        case screenState::SelectStone:
+            updateScreen(selectStone);
+            break; 
         }
-
-        if (state == screenState::Homescreen){
-            homeScreen.nextState = screenState::Homescreen;
-            homeScreen.run();
-            state = homeScreen.nextState;
-
-            if (state != screenState::Exit)
-                screenStateStack.push(state);
-            else
-                screenStateStack.pop();
-
-            continue;
-        }
-
-        if (state == screenState::GameMenu){
-            GameMenu.nextState = screenState::GameMenu;
-            GameMenu.run();
-
-            if (GameMenu.loadGame == true){
-                GameMenu.loadGame = false;
-                gameScreen.loadGame("game.saves");
-            }
-            if (GameMenu.saveGame == true){
-                gameScreen.saveGame("game.saves");
-                GameMenu.saveGame = false;
-                GameMenu.nextState = screenState::GameMenu;
-            }
-
-            state = GameMenu.nextState;
-
-            if (state != screenState::Exit)
-                screenStateStack.push(state);
-            else
-                screenStateStack.pop();
-
-            continue;
-        }
-
-        if (state == screenState::NewGame){
-            gameScreen.reset();
-            gameScreen.canNotLoad = false;
-            gameScreen.nextState = screenState::GameScreen;
-            gameScreen.run();
-            
-            state = gameScreen.nextState;
-            if (state != screenState::Exit)
-                screenStateStack.push(state);
-            else
-                screenStateStack.pop();
-
-            continue;
-        }
-
-        if (state == screenState::Resume){
-            if (gameScreen.canNotLoad){
-                screenStateStack.pop();
-                state = screenStateStack.top();
-                continue;
-            }
-            
-            gameScreen.nextState = screenState::GameScreen;
-            gameScreen.run();
-            
-            state = gameScreen.nextState;
-            if (state != screenState::Exit)
-                screenStateStack.push(state);
-            else
-                screenStateStack.pop();
-
-            continue;
-        }
-
-        if (state == screenState::Settings){
-            settings.nextState = screenState::Settings;
-            settings.run();
-            state = settings.nextState;
-
-            if (state != screenState::Exit)
-                screenStateStack.push(state);
-            else
-                screenStateStack.pop();
-
-            continue;
-        }
-
-        if (state == screenState::SelectBoard){
-            selectBoard.nextState = screenState::SelectBoard;
-            selectBoard.run();
-            state = selectBoard.nextState;
-
-            if (state != screenState::Exit)
-                screenStateStack.push(state);
-            else
-                screenStateStack.pop();
-
-            continue;
-        }
-
-        if (state == screenState::SelectStone){
-            selectStone.nextState = screenState::SelectStone;
-            selectStone.run();
-            state = selectStone.nextState;
-
-            if (state != screenState::Exit)
-                screenStateStack.push(state);
-            else
-                screenStateStack.pop();
-
-            continue;
-        }
-    }
 }

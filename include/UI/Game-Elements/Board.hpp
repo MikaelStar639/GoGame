@@ -1,14 +1,14 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Ultil.hpp"
+#include <Ultil/Ultil.hpp>
+#include <Assets-Manager/AssetsManager.hpp>
 
 class Board {
-private:
-    sf::Sprite DarkWoodSprite;
-    sf::Sprite LightWoodSprite;
-    sf::Sprite PlainWoodSprite;
+private:    
     sf::Sprite boardSprite;
+    TextureManager &textures;
+
     sf::RectangleShape horizontalLines;
     sf::RectangleShape verticalLines;
     sf::RectangleShape intersections;
@@ -21,6 +21,7 @@ public:
         LightWood,
         PlainWood,
     };
+    
     sf::Vector2f size;
     sf::Vector2f position;
 
@@ -30,7 +31,7 @@ public:
     float gridX[20];
     float gridY[20];
     // constructor 
-    Board(const sf::Font &font, sf::Texture &LightTexture, sf::Texture &DarkTexture, sf::Texture &PlainTexture);
+    Board(const sf::Font &font, TextureManager &_gameTexture);
     // set position of the board
     void setPosition(sf::Vector2f _position);
     void draw(sf::RenderWindow &window);
