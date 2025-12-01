@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Screen-State/ScreenState.hpp"
 #include "Game.hpp"
 #include "UI/Button.hpp"
 
@@ -16,7 +17,7 @@ private:
 public:
     PlayOptions(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
 
-    Game::screenState nextState = Game::screenState::PlayOptions;
+    screenState nextState = screenState::PlayOptions;
 
     void setBackground(sf::Sprite &backgroundSprite);
     void updateButton(Mouse &mouse);

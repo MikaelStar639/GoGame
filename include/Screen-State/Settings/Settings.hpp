@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Game.hpp"
 #include "UI/Button.hpp"
 #include "UI/Slider/Slider.hpp"
+#include "SFML/Audio.hpp"
+#include "Screen-State/ScreenState.hpp"
+#include "Assets-Manager/AssetsManager.hpp"
 
 class Settings{
 private:
@@ -12,29 +14,23 @@ private:
     Slider soundSlider;
     Slider musicSlider;
 
-    sf::Sprite &BackgroundSprite;
-    sf::Sound &BackgroundMusic;
-    sf::Sound &stoneSound;
-    sf::Sound &stoneCaptureSound;
-    sf::Sound &endGameSound;
+    sf::Sprite backgroundSprite;
+
+    SoundManager& gameSound;
 
     sf::RenderWindow &window;
     
     const float space = 75.f;
 
-public:
-    Settings(sf::Font &font, sf::RenderWindow &window, 
-             sf::Sprite &BackgroundSprite,
-             sf::Sound &BackgroundMusic, 
-             sf::Sound &stoneSound,
-             sf::Sound &stoneCaptureSound,
-             sf::Sound &endGameSound);
-    
-    Game::screenState nextState = Game::screenState::Settings;
-    
-    void setBackground(sf::Sprite &backgroundSprite);
+    void setBackground();
     void updateButton(Mouse &mouse);
     void updateSlider(Mouse &mouse);
+    void updateSounds();
+    void updateScreenState();
     void draw();
+
+public:
+    Settings(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture, SoundManager &gameSound);
+    screenState nextState = screenState::Settings;
     void run();
 };

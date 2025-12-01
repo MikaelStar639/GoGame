@@ -35,9 +35,9 @@ void PlayOptions::updateButton(Mouse &mouse){
     backButton.update(mouse);
 
     //check if any button is clicked
-    if (pvbButton .onRelease) nextState = Game::screenState::GameScreen;
-    if (pvpButton .onRelease) nextState = Game::screenState::GameScreen;
-    if (backButton.onRelease) nextState = Game::screenState::Exit;
+    if (pvbButton .onRelease) nextState = screenState::GameScreen;
+    if (pvpButton .onRelease) nextState = screenState::GameScreen;
+    if (backButton.onRelease) nextState = screenState::Exit;
 }
 
 void PlayOptions::drawButton(){
@@ -66,6 +66,8 @@ void PlayOptions::setBackground(sf::Sprite &backgroundSprite){
 
 void PlayOptions::run(){
 
+    nextState = screenState::PlayOptions;
+
     //mouse
     Mouse mouse;
 
@@ -85,7 +87,7 @@ void PlayOptions::run(){
         window.display();
         
         //if the state is not PlayOptions (some button was clicked)
-        if (nextState != Game::screenState::PlayOptions){
+        if (nextState != screenState::PlayOptions){
             break;
         }
     }

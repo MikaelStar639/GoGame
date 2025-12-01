@@ -5,22 +5,20 @@ SelectStone::SelectStone(
     sf::Font &_font, 
     sf::RenderWindow &_window,
     GameScreen &_gamescreen,
-    sf::Sprite &_BackgroundTexture,
-    sf::Sound &_BackgroundMusic):
+    TextureManager &_gameTexture):
     
     backButton   (_font),
     ClassicButton(_font),
     CartoonButton(_font),
     window(_window),
     gamescreen(_gamescreen),
-    BackgroundSprite(_BackgroundTexture),
-    BackgroundMusic(_BackgroundMusic)
+    backgroundSprite(_gameTexture["Background"])
     {
         ClassicButton.setChosen();
     }
 
 
-void SelectStone::setBackground(sf::Sprite &backgroundSprite){
+void SelectStone::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -61,9 +59,13 @@ void SelectStone::updateButton(Mouse &mouse){
     ClassicButton. update(mouse);
     CartoonButton.update(mouse);
     backButton.     update(mouse);
+}
 
+void SelectStone::updateScreenState(){
+    if (backButton.onRelease) nextState = screenState::Exit;
+}
 
-    //check if any button is clicked
+void SelectStone::updateStyle(){
     if (ClassicButton.onRelease)
     {
         gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Classic);
@@ -76,12 +78,7 @@ void SelectStone::updateButton(Mouse &mouse){
         CartoonButton.setChosen();
         ClassicButton.setDefaultColor();        
     }
-    if (backButton.onRelease)
-    {
-        nextState = Game::screenState::Exit;
-    }
 }
-
 
 void SelectStone::draw(){
     backButton   .draw(window);
@@ -90,23 +87,28 @@ void SelectStone::draw(){
 }
 
 void SelectStone::run(){
+
+    nextState = screenState::SelectStone;
+
     Mouse mouse;
 
     while (window.isOpen()){
         handleEvent(window);
 
         window.clear(sf::Color(64, 64, 64));
-        setBackground(BackgroundSprite);
+        setBackground();
 
         mouse.update(window);
 
         updateButton(mouse);
+        updateScreenState();
+        updateStyle();
 
         draw();
 
         window.display();
 
-        if (nextState != Game::screenState::SelectStone){
+        if (nextState != screenState::SelectStone){
             break;
         }
     }

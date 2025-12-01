@@ -31,7 +31,7 @@ public:
     bool isContain(sf::Vector2f _position);
     void update(Mouse &mouse);
 
-    Stone(sf::Sprite &_blackStoneTexture, sf::Sprite &_whiteStoneTexture,
+    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture,
           sf::Vector2f _position);
 
     
@@ -41,5 +41,5 @@ public:
     sf::Vector2f position;
     void setState(State state);
     void draw(sf::RenderWindow &window);
-    void ChangeSprite(sf::Sprite &newSpriteBlack, sf::Sprite &newSpriteWhite);
+    void ChangeSprite(sf::Texture &newBlackTexure, sf::Texture &newWhiteTexture);
 };

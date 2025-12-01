@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Game.hpp"
 #include "UI/Game-Elements/Board.hpp"
 #include "UI/Button.hpp"
+#include "Screen-State/ScreenState.hpp"
+#include "SFML/Audio.hpp"
+#include "Assets-Manager/TextureManager.hpp"
 
 class SelectBoard{
 private:
@@ -13,22 +15,22 @@ private:
 
     Board &board;
 
-    sf::Sprite &BackgroundSprite;
-    sf::Sound &BackgroundMusic;
+    sf::Sprite backgroundSprite;
 
     sf::RenderWindow &window;
     
     const float space = 75.f;
+    
+    void setBackground();
+    void updateButton(Mouse &mouse);
+    void updateScreenState();
+    void updateStyle();
+    void draw();
 
 public:
-    SelectBoard(sf::Font &font, sf::RenderWindow &window, Board &board,
-             sf::Sprite &BackgroundSprite,
-             sf::Sound &BackgroundMusic);
+    SelectBoard(sf::Font &font, sf::RenderWindow &window, 
+        TextureManager& gameTexture, Board &board);
     
-    Game::screenState nextState = Game::screenState::SelectBoard;
-    
-    void setBackground(sf::Sprite &backgroundSprite);
-    void updateButton(Mouse &mouse);
-    void draw();
+    screenState nextState = screenState::SelectBoard;
     void run();
 };

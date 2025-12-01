@@ -1,14 +1,15 @@
 #include "Screen-State/GameMenu.hpp"
 
 
-GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 
+GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, TextureManager &_gameTexture, GameScreen &_gameScreen) : 
     newGameButton  (font),
     continueButton (font),
     loadGameButton (font),
     saveGameButton (font),
     backButton     (font),
-    BackgroundSprite(BackgroundTexture),
-    window(_window){
+    backgroundSprite(_gameTexture["Background"]),
+    window(_window),
+    gameScreen(_gameScreen){
         newGameButton. setString("New Game");
         continueButton.setString("Continue");
         saveGameButton.setString("Save Game");
@@ -43,13 +44,19 @@ void GameMenu::updateButton(Mouse &mouse){
     saveGameButton.update(mouse);
     loadGameButton.update(mouse);
     backButton    .update(mouse);
+}
 
-    //check if any button is clicked
-    if (newGameButton .onRelease) nextState = Game::screenState::NewGame;
-    if (continueButton.onRelease) nextState = Game::screenState::Resume;
-    if (saveGameButton.onRelease) nextState = Game::screenState::Exit, saveGame = true;
-    if (loadGameButton.onRelease) nextState = Game::screenState::Resume, loadGame = true;
-    if (backButton.    onRelease) nextState = Game::screenState::Exit;
+void GameMenu::updateGameScreen(){
+    if (newGameButton. onRelease) gameScreen.reset();
+    if (saveGameButton.onRelease) gameScreen.saveGame("game.saves");
+    if (loadGameButton.onRelease) gameScreen.loadGame("game.saves");
+}
+
+void GameMenu::updateScreenState(){
+    if (newGameButton. onRelease) nextState = screenState::GameScreen;
+    if (continueButton.onRelease) nextState = screenState::GameScreen;
+    if (loadGameButton.onRelease) nextState = screenState::GameScreen;
+    if (backButton.    onRelease) nextState = screenState::Exit;
 }
 
 void GameMenu::drawButton(){
@@ -60,7 +67,7 @@ void GameMenu::drawButton(){
     backButton    .draw(window);
 }
 
-void GameMenu::setBackground(sf::Sprite &backgroundSprite){
+void GameMenu::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -80,6 +87,8 @@ void GameMenu::setBackground(sf::Sprite &backgroundSprite){
 
 void GameMenu::run(){
 
+    nextState = screenState::GameMenu;
+    
     //mouse
     Mouse mouse;
 
@@ -88,18 +97,21 @@ void GameMenu::run(){
 
         //Background
         window.clear();
-        setBackground(BackgroundSprite);
+        setBackground();
 
-        //update
+        //update button
         mouse.update(window);
         updateButton(mouse);
 
-        //just draw :v
+        //update Screenstate & GameScreen
+        updateGameScreen();
+        updateScreenState();
+
         drawButton();
         window.display();
         
         //if the state is not GameMenu (some button was clicked)
-        if (nextState != Game::screenState::GameMenu){
+        if (nextState != screenState::GameMenu){
             break;
         }
     }
