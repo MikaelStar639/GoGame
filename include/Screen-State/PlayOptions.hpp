@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Screen-State/ScreenState.hpp"
-#include "Game.hpp"
 #include "UI/Button.hpp"
+#include <Assets-Manager/AssetsManager.hpp>
 
 class PlayOptions{
 private:
@@ -10,12 +10,12 @@ private:
     Button pvpButton; //player vs player
     Button backButton;
 
-    sf::Sprite &BackgroundSprite;
+    sf::Sprite BackgroundSprite;
 
     sf::RenderWindow &window;
 
 public:
-    PlayOptions(sf::Font &font, sf::RenderWindow &window, sf::Sprite &BackgroundSprite);
+    PlayOptions(sf::Font &font, sf::RenderWindow &window, TextureManager &textures);
 
     screenState nextState = screenState::PlayOptions;
 

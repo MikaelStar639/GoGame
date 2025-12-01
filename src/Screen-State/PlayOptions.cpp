@@ -1,11 +1,11 @@
 #include "Screen-State/PlayOptions.hpp"
 
 
-PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, sf::Sprite &BackgroundTexture) : 
+PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManager &textures) : 
     pvbButton (font),
     pvpButton (font),
     backButton(font),
-    BackgroundSprite(BackgroundTexture),
+    BackgroundSprite(textures["Background"]),
     window(_window){
         pvbButton. setString("Two Player - One Device");
         pvpButton. setString("Player vs Bot  ");

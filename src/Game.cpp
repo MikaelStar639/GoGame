@@ -17,6 +17,7 @@ Game::Game() : window(sf::VideoMode({1200, 900}), "GoGame", sf::Style::Default ^
                board      (font, gameTexture),
                homeScreen (font, window, gameTexture),
                gameMenu   (font, window, gameTexture, gameScreen),
+               playoptions(font, window, gameTexture),
                settings   (font, window, gameTexture, gameSound),
                gameScreen (font, window, gameTexture, gameSound, board),
                selectBoard(font, window, gameTexture, board),
@@ -56,6 +57,11 @@ void Game::handleScreen(){
         case screenState::GameMenu:
             updateScreen(gameMenu);
             break;
+
+        case screenState::PlayOptions:
+            updateScreen(playoptions);
+            break;
+
 
         case screenState::GameScreen:
             updateScreen(gameScreen);

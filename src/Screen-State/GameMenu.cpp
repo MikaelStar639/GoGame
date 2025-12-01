@@ -53,7 +53,7 @@ void GameMenu::updateGameScreen(){
 }
 
 void GameMenu::updateScreenState(){
-    if (newGameButton. onRelease) nextState = screenState::GameScreen;
+    if (newGameButton. onRelease) nextState = screenState::PlayOptions;
     if (continueButton.onRelease) nextState = screenState::GameScreen;
     if (loadGameButton.onRelease) nextState = screenState::GameScreen;
     if (backButton.    onRelease) nextState = screenState::Exit;

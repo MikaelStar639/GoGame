@@ -7,6 +7,7 @@
 #include <Screen-State/ScreenState.hpp>
 #include <Screen-State/Homescreen.hpp>
 #include <Screen-State/GameMenu.hpp>
+#include <Screen-State/PlayOptions.hpp>
 #include <Screen-State/GameScreen.hpp>
 #include <Screen-State/Settings/Settings.hpp>
 #include <Screen-State/Settings/SelectBoard.hpp>
@@ -27,6 +28,7 @@ private:
     
     Homescreen  homeScreen;
     GameMenu    gameMenu;
+    PlayOptions playoptions;
     Settings    settings;
     GameScreen  gameScreen;
     SelectBoard selectBoard;
