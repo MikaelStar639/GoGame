@@ -18,7 +18,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     whiteScoreBoard(_font, ScoreBoard::Player::white),
     endGameSound(_gameSound["Boom"]),
     gameState(_gameSound["StoneCapture"], _gameSound["StoneMove"]),
-    endGame(_font)
+    endGame(_font),
+    bot639(gameState)
     {
 
     //Button String
@@ -153,7 +154,7 @@ void GameScreen::updateStone(Mouse &mouse){
     }
     else{
         if (overStone.state == Stone::State::empty){
-            if (gameState.isIllegal(cy, cx, gameState.turn)){
+            if (gameState.isIllegal(cy, cx)){
                 return;
             }
             gameState.lastMovePass = false;
@@ -163,6 +164,7 @@ void GameScreen::updateStone(Mouse &mouse){
             else{
                 overStone.setState(Stone::State::white);
             }
+
             gameState.addStoneMove(cy, cx);
         }
     }
@@ -174,6 +176,7 @@ void GameScreen::updateScreenState(){
 }
 
 void GameScreen::updateGameState(){
+
     if (!passButton.isInvalid && passButton.onRelease) {
         if (gameState.lastMovePass == true) {
             gameState.isEnd = true;
@@ -185,11 +188,18 @@ void GameScreen::updateGameState(){
         gameState.lastMovePass = true;
     }
 
+    if (isAIMode && gameState.turn == GameState::Turn::white){
+        auto [y, x] = bot639.getMove();
+        gameState.addStoneMove(y, x);
+    }
+
     if (redoButton.onRelease) {
         gameState.redo();
+        if (isAIMode) gameState.redo();
     }
     if (undoButton.onRelease){
         gameState.undo();
+        if (isAIMode) gameState.undo();
     }
     
     if (resetButton.onRelease){

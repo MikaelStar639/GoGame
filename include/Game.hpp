@@ -28,7 +28,7 @@ private:
     
     Homescreen  homeScreen;
     GameMenu    gameMenu;
-    PlayOptions playoptions;
+    PlayOptions playOptions;
     Settings    settings;
     GameScreen  gameScreen;
     SelectBoard selectBoard;

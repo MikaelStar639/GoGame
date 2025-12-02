@@ -11,6 +11,7 @@
 #include "Screen-State/EndGame.hpp"
 #include "Game-Play-Logic/GameState.hpp"
 #include "Assets-Manager/AssetsManager.hpp"
+#include "AI/AI.hpp"
 
 #include <cmath>
 #include <vector>
@@ -41,7 +42,9 @@ public:
 
     //* Run 
     void run();
-    
+
+    //* AI
+    bool isAIMode = false;
     
 private:
     //Feature Button
@@ -69,13 +72,6 @@ private:
     
     sf::Sound &endGameSound;    
     
-    //UI
-    void drawBoard();
-    void drawButton();
-    void drawStone();
-    void drawIndicator();
-    void drawScoreBoard();
-    
     //window
     sf::RenderWindow &window;
 
@@ -93,6 +89,11 @@ private:
     void updateStone(Mouse &mouse);
     void updateIndicator();
     void updateScoreBoard();
+    void drawBoard();
+    void drawButton();
+    void drawStone();
+    void drawIndicator();
+    void drawScoreBoard();
 
     //* ScreenState
     void updateScreenState();
@@ -100,4 +101,8 @@ private:
     //* Game State
     void updateGameState();
     void SyncStoneWithGameState();
+
+
+    //* AI
+    AI bot639;
 };

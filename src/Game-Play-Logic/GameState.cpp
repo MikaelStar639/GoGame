@@ -39,8 +39,13 @@ void GameState::pass(){
 }
 
 void GameState::addStoneMove(int y, int x){
+
+    if (x == -1){
+        pass();
+        return;
+    }
+
     addStone(y, x, turn);
-    // modify historyState here
     
     // truncate history if we are not at the end
     if (history.index + 1 == static_cast<int>(history.size()))
@@ -96,7 +101,7 @@ int GameState::LibertiesCount(int y, int x) {
     return liberties;
 }
 
-bool GameState::canCapture(GameState::Turn turn) {
+bool GameState::canCapture(){
     // Placeholder for capture logic
     Stone::State opponent = (turn == Turn::black) ? Stone::State::white : Stone::State::black;
     for (int y = 0; y < 19; ++y) {
@@ -134,28 +139,28 @@ void GameState::RemoveCapturedStones(HistoryState& historyState) {
     }
 }
 
-bool GameState::isIllegal(int y, int x, GameState::Turn _turn) {
+bool GameState::isIllegal(int y, int x) {
 
     //KO rule
     if (history.index >= 0 && history[history.index].capturedStones.size() == 1){
         auto currentState = history[history.index];
         auto [_y, _x] = currentState.capturedStones[0];
         if (y == _y && _x == x){
-            if (static_cast<int>(_turn) != static_cast<int>(currentState.turn)){
+            if (static_cast<int>(turn) != static_cast<int>(currentState.turn)){
                 return true;
             }
         }
     }
 
     // Placeholder for illegal move logic
-    addStone(y, x, _turn);
+    addStone(y, x, turn);
     int currentLiberties = LibertiesCount(y, x);
     if (currentLiberties > 0)
     {
         deleteStone(y, x); // revert the move
         return false;
     }
-    else if (canCapture(_turn))
+    else if (canCapture())
     {
         deleteStone(y, x); // revert the move
         return false;
@@ -367,11 +372,76 @@ void GameState::save(std::string _address){
 }
 
 std::vector<Position> GameState::getPossibleMove(){
-    std::vector<Position> emptyPosition;
+    std::vector<Position> goodPosition;
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
-            emptyPosition.push_back({y, x});
+            if (grid[y][x] == Stone::State::empty && !isIllegal(y, x)){
+                goodPosition.push_back({y, x});
+            }
         }
     }
-    return emptyPosition;
+    goodPosition.push_back({-1, -1});
+    return goodPosition;
+}
+
+void GameState::addVirtualMove(int y, int x){
+
+    if (x != -1) addStone(y, x, turn);
+    
+    if (virtualHistory.index + 1 >= static_cast<int>(virtualHistory.data.size()))
+    {
+        virtualHistory.data.emplace_back(HistoryState());
+    }
+    
+    ++virtualHistory.index;
+    
+    HistoryState &currentState = virtualHistory[virtualHistory.index];
+
+    currentState.capturedStones.clear(); 
+    currentState.isPassed = false;       
+    
+    if (turn == Turn::black)
+        currentState.turn = HistoryState::Turn::black;
+    else
+        currentState.turn = HistoryState::Turn::white;
+    
+    if (x != -1){
+        currentState.newStone.y = y;
+        currentState.newStone.x = x;
+        currentState.isPassed = false; // Đảm bảo chắc chắn
+        
+        RemoveCapturedStones(currentState); 
+    }
+    else{
+        currentState.isPassed = true;
+    }
+
+    virtualHistory.undoCount = 0;
+
+    swapTurn();
+}
+
+void GameState::virtualUndo(){
+    if (virtualHistory.index >= 0) {
+        HistoryState &state = virtualHistory[virtualHistory.index];
+        
+        if (!state.isPassed){
+            deleteStone(state.newStone.y, state.newStone.x);
+        }
+
+        Turn capturedTurn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
+        for (auto &[y, x] : state.capturedStones) {
+            addStone(y, x, capturedTurn);
+        }
+
+        --virtualHistory.index;
+        virtualHistory.undoCount++;
+        
+        swapTurn();
+    }
+}
+
+int GameState::minimaxScore(){
+    getScore();
+    return blackScore - whiteScore;
 }

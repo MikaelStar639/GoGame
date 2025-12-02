@@ -28,7 +28,7 @@ public:
     int whiteScore = 0;
     void getScore();
     void reset();
-    bool isIllegal(int y, int x, GameState::Turn turn);
+    bool isIllegal(int y, int x);
     
     //*  redo and undo
     void undo();
@@ -40,8 +40,9 @@ public:
     void save(std::string _address);
 
     //* AI support
+    History virtualHistory;
     std::vector<Position> getPossibleMove();
-    void addVirtualMove();
+    void addVirtualMove(int y, int x);
     void virtualUndo();
     int  minimaxScore();
 
@@ -55,7 +56,7 @@ private:
     //* Game Management
     void addStone(int y, int x, Turn _turn);
     void deleteStone(int y, int x);
-    bool canCapture(GameState::Turn turn);
+    bool canCapture();
     int  LibertiesCount(int y, int x);
     void RemoveCapturedStones(HistoryState &historyState);
     void swapTurn();

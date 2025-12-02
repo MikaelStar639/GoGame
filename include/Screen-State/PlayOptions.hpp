@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Screen-State/ScreenState.hpp"
+#include "Screen-State/GameScreen.hpp"
+
 #include "UI/Button.hpp"
 #include <Assets-Manager/AssetsManager.hpp>
 
@@ -10,17 +12,18 @@ private:
     Button pvpButton; //player vs player
     Button backButton;
 
-    sf::Sprite BackgroundSprite;
+    sf::Sprite backgroundSprite;
 
     sf::RenderWindow &window;
+    GameScreen &gameScreen;
 
-public:
-    PlayOptions(sf::Font &font, sf::RenderWindow &window, TextureManager &textures);
-
-    screenState nextState = screenState::PlayOptions;
-
-    void setBackground(sf::Sprite &backgroundSprite);
+    void setBackground();
     void updateButton(Mouse &mouse);
     void drawButton();
+    void updateScreenState();
+
+public:
+    PlayOptions(sf::Font &font, sf::RenderWindow &window, TextureManager &textures, GameScreen &gameScreen);
+    screenState nextState = screenState::PlayOptions;
     void run();
 };

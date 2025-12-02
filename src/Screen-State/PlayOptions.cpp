@@ -1,14 +1,15 @@
 #include "Screen-State/PlayOptions.hpp"
 
 
-PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManager &textures) : 
-    pvbButton (font),
+PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManager &textures, GameScreen &_gameScreen) : 
     pvpButton (font),
+    pvbButton (font),
     backButton(font),
-    BackgroundSprite(textures["Background"]),
-    window(_window){
-        pvbButton. setString("Two Player - One Device");
-        pvpButton. setString("Player vs Bot  ");
+    backgroundSprite(textures["Background"]),
+    window(_window), 
+    gameScreen(_gameScreen){
+        pvpButton. setString("Two Player - One Device");
+        pvbButton. setString("Player vs Bot  ");
         backButton.setString("Back");
     }
 
@@ -20,33 +21,34 @@ void PlayOptions::updateButton(Mouse &mouse){
     //Buttons setPosition
     float space = 75.f;
     
-    pvbButton. setPosition({window_w/2, window_h/2 - space});
-    pvpButton. setPosition({window_w/2, window_h/2 + space/2});
+    pvpButton. setPosition({window_w/2, window_h/2 - space});
+    pvbButton. setPosition({window_w/2, window_h/2 + space/2});
     backButton.setPosition({105.f, 50.f});
 
     //Buttons setSize
-    pvbButton. setSize({650.f, 75.f});
     pvpButton. setSize({650.f, 75.f});
+    pvbButton. setSize({650.f, 75.f});
     backButton.setSize({200.f, 60.f});
 
     //buttons update
-    pvbButton. update(mouse);
     pvpButton. update(mouse);
+    pvbButton. update(mouse);
     backButton.update(mouse);
+}
 
-    //check if any button is clicked
-    if (pvbButton .onRelease) nextState = screenState::GameScreen;
-    if (pvpButton .onRelease) nextState = screenState::GameScreen;
+void PlayOptions::updateScreenState(){
+    if (pvpButton .onRelease) nextState = screenState::GameScreen, gameScreen.isAIMode = false;
+    if (pvbButton .onRelease) nextState = screenState::GameScreen, gameScreen.isAIMode = true;
     if (backButton.onRelease) nextState = screenState::Exit;
 }
 
 void PlayOptions::drawButton(){
-    pvbButton. draw(window);
     pvpButton. draw(window);
+    pvbButton. draw(window);
     backButton.draw(window);
 }
 
-void PlayOptions::setBackground(sf::Sprite &backgroundSprite){
+void PlayOptions::setBackground(){
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
@@ -76,11 +78,12 @@ void PlayOptions::run(){
 
         //Background
         window.clear();
-        setBackground(BackgroundSprite);
+        setBackground();
 
         //update
         mouse.update(window);
         updateButton(mouse);
+        updateScreenState();
 
         //just draw :v
         drawButton();
