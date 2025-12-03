@@ -62,6 +62,31 @@ void GameScreen::drawBoard(){
     board.draw(window);
 }
 
+void GameScreen::drawButton(){
+    backButton .draw(window);
+    redoButton .draw(window);
+    undoButton .draw(window);
+    passButton .draw(window);  
+    resetButton.draw(window);
+}
+
+void GameScreen::drawStone(){
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            grid[y][x].draw(window);
+        }
+    }
+}
+
+void GameScreen::drawIndicator(){
+    turnIndicator.draw(window);
+}
+
+void GameScreen::drawScoreBoard(){
+    blackScoreBoard.draw(window);
+    whiteScoreBoard.draw(window);
+}
+
 void GameScreen::updateFeatureButton(Mouse &mouse){
     //window size
     float window_w = window.getSize().x;
@@ -106,31 +131,6 @@ void GameScreen::updateGameButton(Mouse &mouse){
     if (gameState.isEnd){
         passButton.isInvalid = true;
     }
-}
-
-Position GameScreen::to_cord(sf::Vector2f position){
-    float fy = (position.y - board.gridY[0])/board.gap;
-    float fx = (position.x - board.gridX[0])/board.gap;
-
-    int j = std::round(fy);
-    int i = std::round(fx);
-
-    if (std::min(j, i) < 0 || 19 <= std::max(i, j)){
-        return {-1, -1};
-    }
-
-    float py = board.gridY[j];
-    float px = board.gridX[i];
-
-    sf::Vector2f diff = position - sf::Vector2f(px, py);
-    float dist2 = diff.x * diff.x + diff.y * diff.y;
-
-    float radius = board.gap/2;
-    if (dist2 <= radius * radius){
-        return {18 - j, i};
-    }
-
-    return {-1, -1};
 }
 
 void GameScreen::updateStone(Mouse &mouse){
@@ -185,42 +185,30 @@ void GameScreen::updateGameState(){
         else{
             gameState.pass();
         }
-        gameState.lastMovePass = true;
     }
 
-    if (isAIMode && gameState.turn == GameState::Turn::white){
+    updateAI();
+
+    if (redoButton.onRelease)  gameState.redo();
+    if (undoButton.onRelease)  gameState.undo();
+    if (resetButton.onRelease) reset();
+    
+    SyncStoneWithGameState();
+}
+
+void GameScreen::updateAIMove(){
+    if (gameState.turn == GameState::Turn::white){
         auto [y, x] = bot639.getMove();
         gameState.addStoneMove(y, x);
     }
-
-    if (redoButton.onRelease) {
-        gameState.redo();
-        if (isAIMode) gameState.redo();
-    }
-    if (undoButton.onRelease){
-        gameState.undo();
-        if (isAIMode) gameState.undo();
-    }
-    
-    if (resetButton.onRelease){
-        reset();
-    }
 }
 
-void GameScreen::drawButton(){
-    backButton  .draw(window);
-    redoButton  .draw(window);
-    undoButton  .draw(window);
-    passButton  .draw(window);  
-    resetButton.draw(window);
-}
+void GameScreen::updateAI(){
+    if (!isAIMode) return;
 
-void GameScreen::drawStone(){
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
-            grid[y][x].draw(window);
-        }
-    }
+    updateAIMove();
+    if (redoButton.onRelease) gameState.redo();
+    if (undoButton.onRelease) gameState.undo();
 }
 
 void GameScreen::updateIndicator(){
@@ -230,10 +218,6 @@ void GameScreen::updateIndicator(){
     turnIndicator.setSize({300.f, 75.f});
     turnIndicator.setPosition({window_w * 6/7, window_h/2 - 3 * space});
     turnIndicator.updateTurn(gameState);
-}
-
-void GameScreen::drawIndicator(){
-    turnIndicator.draw(window);
 }
 
 void GameScreen::updateScoreBoard(){
@@ -262,11 +246,6 @@ void GameScreen::updateScoreBoard(){
     }
 }
 
-void GameScreen::drawScoreBoard(){
-    blackScoreBoard.draw(window);
-    whiteScoreBoard.draw(window);
-}
-
 void GameScreen::SyncStoneWithGameState(){
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
@@ -283,6 +262,49 @@ void GameScreen::reset(){
     passButton.isInvalid = false;
 }
 
+void GameScreen::update(Mouse &mouse){
+    mouse.update(window);
+    if (gameState.isEnd){
+        if (endGame.isReset){
+            reset();
+            return;
+        }
+        if (!endGame.isClosed){
+            endGame.update(gameState);
+            return;
+        }
+    }
+
+    if (!gameState.isEnd){
+        updateStone(mouse);
+    }
+    
+    updateFeatureButton(mouse);
+    updateGameButton(mouse);
+    updateGameState();
+    updateIndicator();
+    updateScoreBoard();
+    updateScreenState();
+}
+
+void GameScreen::drawEndGame(Mouse &mouse){
+    if (gameState.isEnd && !endGame.isClosed){
+        endGame.run(window, mouse);
+    }
+}
+
+void GameScreen::render(Mouse &mouse){
+    window.clear();
+    setBackground();
+    drawBoard();
+    drawButton();
+    drawStone();
+    drawIndicator();
+    drawScoreBoard();
+    drawEndGame(mouse);
+    window.display();
+}
+
 void GameScreen::run(){
 
     nextState = screenState::GameScreen;
@@ -292,54 +314,8 @@ void GameScreen::run(){
 
     while (window.isOpen()){
         handleEvent(window);
-
-        //background
-        window.clear(sf::Color(64, 64, 64));
-        setBackground();
-
-        //mouse
-        mouse.update(window);
-        
-        if (!gameState.isEnd){
-            //update elements
-            updateFeatureButton(mouse);
-            updateGameButton(mouse);
-            updateStone(mouse);
-            SyncStoneWithGameState();
-            updateGameState();
-            updateIndicator();
-            updateScoreBoard();
-        }
-        else{
-            if (endGame.isReset){
-                reset();
-                continue;
-            }
-            if (endGame.isClosed){
-                updateFeatureButton(mouse);
-                updateGameButton(mouse);
-                SyncStoneWithGameState();
-                updateGameState();
-                updateIndicator();
-                updateScoreBoard();
-            }
-        }
-
-        //draw
-        drawBoard();
-        drawButton();
-        drawStone();
-        drawIndicator();
-        drawScoreBoard();
-
-        if (gameState.isEnd && !endGame.isClosed){
-            endGame.update(gameState);
-            endGame.run(window, mouse);
-        }
-
-        updateScreenState();
-        window.display();
-
+        update(mouse);
+        render(mouse);
         if (nextState != screenState::GameScreen){
             break;
         }
@@ -368,4 +344,29 @@ void GameScreen::ChangeStoneStyle(StoneStyle style)
                 grid[y][x].ChangeSprite(textures["PixelatedBlackStone"], textures["PixelatedWhiteStone"]);
         }
     }
+}
+
+Position GameScreen::to_cord(sf::Vector2f position){
+    float fy = (position.y - board.gridY[0])/board.gap;
+    float fx = (position.x - board.gridX[0])/board.gap;
+
+    int j = std::round(fy);
+    int i = std::round(fx);
+
+    if (std::min(j, i) < 0 || 19 <= std::max(i, j)){
+        return {-1, -1};
+    }
+
+    float py = board.gridY[j];
+    float px = board.gridX[i];
+
+    sf::Vector2f diff = position - sf::Vector2f(px, py);
+    float dist2 = diff.x * diff.x + diff.y * diff.y;
+
+    float radius = board.gap/2;
+    if (dist2 <= radius * radius){
+        return {18 - j, i};
+    }
+
+    return {-1, -1};
 }

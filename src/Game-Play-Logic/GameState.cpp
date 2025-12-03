@@ -20,6 +20,7 @@ void GameState::addStone(int y, int x, Turn _turn){
 }
 
 void GameState::pass(){
+    lastMovePass = true;
     
     if (history.index + 1 == static_cast<int>(history.size()))
     {
@@ -39,6 +40,7 @@ void GameState::pass(){
 }
 
 void GameState::addStoneMove(int y, int x){
+    lastMovePass = false;
 
     if (x == -1){
         pass();
@@ -289,7 +291,6 @@ void GameState::redo() {
         swapTurn();
     }
 }
-
 
 //*  load/save game
 void GameState::load(std::string _address){

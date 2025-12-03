@@ -47,10 +47,8 @@ public:
     bool isAIMode = false;
     
 private:
-    //Feature Button
+    //Buttons
     Button backButton;
-
-    //Game Button
     Button redoButton;
     Button undoButton;
     Button passButton;
@@ -69,40 +67,40 @@ private:
     //Sprite & Sound
     sf::Sprite backgroundSprite;
     TextureManager &textures;
-    
     sf::Sound &endGameSound;    
     
     //window
     sf::RenderWindow &window;
 
-    //Cordinate of the Stone on the Board
-    Position to_cord(sf::Vector2f position);
-
-    //EndGame
-    EndGameWindow endGame;
-
-
-    //* UI
-    void setBackground();
+    //* Update
+    void update(Mouse &mouse);
     void updateFeatureButton(Mouse &mouse);
     void updateGameButton(Mouse &mouse);
     void updateStone(Mouse &mouse);
     void updateIndicator();
     void updateScoreBoard();
+    void updateScreenState();
+    void updateGameState();
+    void SyncStoneWithGameState();
+
+    //* Render
+    void render(Mouse &mouse);
+    void setBackground();
     void drawBoard();
     void drawButton();
     void drawStone();
     void drawIndicator();
     void drawScoreBoard();
 
-    //* ScreenState
-    void updateScreenState();
+    //* Endgame
+    EndGameWindow endGame;
+    void drawEndGame(Mouse &mouse);
 
-    //* Game State
-    void updateGameState();
-    void SyncStoneWithGameState();
-
+    //* Cordinate of the Stone on the Board
+    Position to_cord(sf::Vector2f position);
 
     //* AI
+    void updateAI();
+    void updateAIMove();
     AI bot639;
 };
