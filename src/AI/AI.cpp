@@ -23,9 +23,7 @@ int AI::getEvalScore(){
 
 AI::moveScore AI::minimax(int alpha, int beta, bool isMax, int depth){
 
-    static std::mt19937 rng(time(0)); 
     auto possibleMove = gameState.getPossibleMove();
-    std::shuffle(possibleMove.begin(), possibleMove.end(), rng);
 
     if (depth == max_depth){
         return {getEvalScore(), {-1, -1}};

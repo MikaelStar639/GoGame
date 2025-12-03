@@ -372,8 +372,12 @@ void GameState::save(std::string _address){
     fout.close();
 }
 
+#include <algorithm> // Thư viện cho std::sort
+#include <cmath>     // Thư viện cho std::abs
+
 std::vector<Position> GameState::getPossibleMove(){
     std::vector<Position> goodPosition;
+
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
             if (grid[y][x] == Stone::State::empty && !isIllegal(y, x)){
@@ -381,7 +385,37 @@ std::vector<Position> GameState::getPossibleMove(){
             }
         }
     }
+
+    auto heuristicScore = [&](const Position& p) -> int {
+        int score = 0;
+        for (int dy = -2; dy <= 2; ++dy) {
+            for (int dx = -2; dx <= 2; ++dx) {
+                if (dy == 0 && dx == 0) continue;
+
+                int ny = p.y + dy;
+                int nx = p.x + dx;
+
+                if (ny >= 0 && ny < 19 && nx >= 0 && nx < 19) {
+                    if (grid[ny][nx] != Stone::State::empty) {
+                        int dist = std::abs(dy) + std::abs(dx); 
+                        if (dist == 1) score += 10;
+                        else if (dist == 2) score += 5;
+                        else score += 1;
+                    }
+                }
+            }
+        }
+        return score;
+    };
+
+    std::sort(goodPosition.begin(), goodPosition.end(), 
+        [&](const Position& a, const Position& b) {
+            return heuristicScore(a) > heuristicScore(b);
+        }
+    );
+
     goodPosition.push_back({-1, -1});
+
     return goodPosition;
 }
 
