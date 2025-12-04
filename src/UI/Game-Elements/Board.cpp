@@ -163,6 +163,10 @@ void Board::changeGridSize(int _gridNum)
     gap = size.x / (gridNum - 1);
     
     for (int i = 0; i<gridNum; i++)
+    // initialize grid coordinates
+    gap = size.x / (gridNum - 1);
+    
+    for (int i = 0; i<=gridNum; i++)
     {
         gridX[i] = position.x + i * gap;
         gridY[i] = position.y + i * gap;
@@ -171,4 +175,22 @@ void Board::changeGridSize(int _gridNum)
     // verticle and horizontal lines size update
     verticalLines.  setSize({thickness, size.y});
     horizontalLines.setSize({size.x, thickness});
+    // initialize labels
+    sf::Text defaultText(labelnum[0]);
+    labelchar.assign(gridNum, defaultText);
+    labelnum.assign(gridNum, defaultText);
+
+    // set up label properties
+    for (int i = 0; i < gridNum; ++i) {
+        labelnum[i].setFont(font);
+        labelchar[i].setFont(font);
+        labelnum[i].setCharacterSize(16);
+        labelnum[i].setFillColor(defaultText.getFillColor());
+        labelchar[i].setCharacterSize(16);
+        labelchar[i].setFillColor(defaultText.getFillColor());
+        labelnum[i].setString(std::to_string(i + 1));
+        labelchar[i].setString(std::string(1, 'A' + i  + (i >= 8 ? 1 : 0))); // Skip 'I'
+        alignText(labelnum[i], 0.5f, 0.5f);
+        alignText(labelchar[i], 0.5f, 0.5f);
+    }
 }

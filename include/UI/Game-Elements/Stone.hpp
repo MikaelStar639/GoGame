@@ -24,7 +24,6 @@ public:
 
     int gridNum = 19;
     float scaleRate = 0.04f;
-    
     //empty state:
     bool isOver    = false;
     bool isPressed = false;
