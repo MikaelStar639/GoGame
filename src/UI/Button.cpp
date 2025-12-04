@@ -74,7 +74,7 @@ void Button::draw(sf::RenderWindow& window){
     alignText(text, 0.5f, text_align_v);
 
     //color 
-    if (isInvalid){
+    if (!isValid){
         shape.setColor(invalid_shape);
         text.setFillColor(invalid_text);
     }
@@ -104,4 +104,14 @@ void Button::setChosen()
 {
     default_text = sf::Color::Yellow;
     over_text = sf::Color::Yellow;
+}
+
+void Button::setValid(bool _isValid){
+    isValid   = _isValid;
+    if (isValid == false){
+        isOver    = false;
+        isPressed = false;
+        onPress   = false;
+        onRelease = false;
+    }
 }

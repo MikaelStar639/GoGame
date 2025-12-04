@@ -1,13 +1,56 @@
 #include <AI/AI.hpp>
+#include <iostream>
 
 AI::AI(GameState &_gameState) : gameState(_gameState) {}
 
-Position AI::getMove(){
-    if (difficulty == 0) return getRandomMove();
-    return minimax(-1000000000, 1000000000, true, 0).position;
+bool AI::isThinking(){
+    return thinking;
 }
 
-Position AI::getRandomMove(){
+void AI::stopThinking(){
+    std::cout << "Bot stopped thinking\n";
+    thinking = false;
+}
+
+void AI::think(){
+
+    std::cout << "Bot started thinking\n";
+
+    thinking = true;
+    startTime = std::chrono::steady_clock::now();
+    GameState gameStateCopy = gameState;
+    if (difficulty == 0){
+        botFuture = std::async(std::launch::async, [this, gameStateCopy]() mutable {
+            return this->getRandomMove(gameStateCopy);
+        });
+    }
+    else{
+        botFuture = std::async(std::launch::async, [this, gameStateCopy]() mutable {
+            moveScore result = this->minimax(gameStateCopy, -1000000000, 1000000000, true, 0);
+            return result.position;
+        });
+    }
+}
+
+bool AI::isReady(){
+    if (botFuture.wait_for(std::chrono::seconds(0)) != std::future_status::ready){
+        std::cout << "Bot is thinking...\n";
+    }
+    return botFuture.wait_for(std::chrono::seconds(0)) == std::future_status::ready;
+}
+
+Position AI::getMove(){
+    thinking = false;
+    std::cout << "Bot played a move after " << getThinkingTime() << "ms\n";
+    return botFuture.get();
+}
+
+long long AI::getThinkingTime() {
+    auto now = std::chrono::steady_clock::now();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(now - startTime).count();
+}
+
+Position AI::getRandomMove(GameState &gameState){
     auto possibleMove = gameState.getPossibleMove();
     static std::mt19937 rng(time(0)); 
 
@@ -15,19 +58,19 @@ Position AI::getRandomMove(){
     return possibleMove[idx];
 }
 
-int AI::getEvalScore(){
+int AI::getEvalScore(GameState &gameState){
     int score = gameState.minimaxScore();
     if (!isBlack) score = -score;
     return score;
 }
 
-AI::moveScore AI::minimax(int alpha, int beta, bool isMax, int depth){
+AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax, int depth){
+
+    if (depth == max_depth || getThinkingTime() > 4000){
+        return {getEvalScore(gameState), {-1, -1}};
+    }
 
     auto possibleMove = gameState.getPossibleMove();
-
-    if (depth == max_depth){
-        return {getEvalScore(), {-1, -1}};
-    }
 
     Position bestMove = {-1, -1};
     int bestScore;
@@ -35,7 +78,7 @@ AI::moveScore AI::minimax(int alpha, int beta, bool isMax, int depth){
         bestScore = -1000000000;
         for (auto [x, y]: possibleMove){
             if (x == -1 && gameState.lastMovePass){
-                int finalScore = getEvalScore();
+                int finalScore = getEvalScore(gameState);
                 if (finalScore > bestScore){
                     bestScore = finalScore; 
                     bestMove = {-1, -1};
@@ -43,7 +86,7 @@ AI::moveScore AI::minimax(int alpha, int beta, bool isMax, int depth){
             }
             else{
                 gameState.addVirtualMove(x, y);
-                int curScore = minimax(alpha, beta, false, depth + 1).score;
+                int curScore = minimax(gameState, alpha, beta, false, depth + 1).score;
                 gameState.virtualUndo();
                 if (curScore > bestScore){
                     bestScore = curScore;
@@ -61,7 +104,7 @@ AI::moveScore AI::minimax(int alpha, int beta, bool isMax, int depth){
         bestScore = +1000000000;
         for (auto [x, y]: possibleMove){
             if (x == -1 && gameState.lastMovePass){
-                int finalScore = getEvalScore(); 
+                int finalScore = getEvalScore(gameState); 
                 if (finalScore < bestScore){
                     bestScore = finalScore; 
                     bestMove = {-1, -1};
@@ -69,7 +112,7 @@ AI::moveScore AI::minimax(int alpha, int beta, bool isMax, int depth){
             }
             else{
                 gameState.addVirtualMove(x, y);
-                int curScore = minimax(alpha, beta, true, depth + 1).score;
+                int curScore = minimax(gameState, alpha, beta, true, depth + 1).score;
                 gameState.virtualUndo();
                 if (curScore < bestScore){
                     bestScore = curScore;
@@ -88,8 +131,8 @@ AI::moveScore AI::minimax(int alpha, int beta, bool isMax, int depth){
 }
 
 //0: easy, 1: medium, 2: hard
-void AI::changeDifficulty(int _difficulty){
+void AI::setDifficulty(int _difficulty){
     difficulty = _difficulty;
-    if (difficulty == 2) max_depth = 2;
-    if (difficulty == 3) max_depth = 4;
+    if (difficulty == 1) max_depth = 2;
+    if (difficulty == 2) max_depth = 3;
 }

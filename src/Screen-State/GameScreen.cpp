@@ -19,14 +19,14 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     endGameSound(_gameSound["Boom"]),
     gameState(_gameSound["StoneCapture"], _gameSound["StoneMove"]),
     endGame(_font),
-    bot639(gameState)
+    superBot(gameState)
     {
 
     //Button String
-    backButton.  setString("Menu");
-    redoButton.  setString("Redo");
-    undoButton.  setString("Undo");
-    passButton.  setString("Pass");
+    backButton. setString("Menu");
+    redoButton. setString("Redo");
+    undoButton. setString("Undo");
+    passButton. setString("Pass");
     resetButton.setString("Reset Game");
 
     //vector:
@@ -113,7 +113,7 @@ void GameScreen::updateGameButton(Mouse &mouse){
     passButton  .setPosition({window_w * 6/7, window_h/2});
     undoButton  .setPosition({window_w * 6/7, window_h/2 + space});
     redoButton  .setPosition({window_w * 6/7, window_h/2 + 2 * space});  
-    resetButton.setPosition({window_w * 6/7, window_h/2 + 3 * space});
+    resetButton. setPosition({window_w * 6/7, window_h/2 + 3 * space});
     
     //Buttons setSize
     redoButton  .setSize({300.f, 75.f});
@@ -128,9 +128,17 @@ void GameScreen::updateGameButton(Mouse &mouse){
     resetButton.update(mouse);
 
     //Pass
-    if (gameState.isEnd){
-        passButton.isInvalid = true;
+    if (superBot.isThinking()){
+        passButton.setValid(false);
     }
+    else{
+        passButton.setValid(true);
+    }
+    
+    if (gameState.isEnd){
+        passButton.setValid(false);
+    }
+
 }
 
 void GameScreen::updateStone(Mouse &mouse){
@@ -177,7 +185,7 @@ void GameScreen::updateScreenState(){
 
 void GameScreen::updateGameState(){
 
-    if (!passButton.isInvalid && passButton.onRelease) {
+    if (passButton.onRelease) {
         if (gameState.lastMovePass == true) {
             gameState.isEnd = true;
             endGameSound.play();
@@ -197,9 +205,18 @@ void GameScreen::updateGameState(){
 }
 
 void GameScreen::updateAIMove(){
-    if (gameState.turn == GameState::Turn::white){
-        auto [y, x] = bot639.getMove();
-        gameState.addStoneMove(y, x);
+    if (gameState.turn != GameState::Turn::white) return;
+    if (!superBot.isThinking()){
+        superBot.think();    
+    }
+    else{
+        if (superBot.isReady()){
+            Position botMove = superBot.getMove();
+            gameState.addStoneMove(botMove.y, botMove.x);
+        }
+        else{
+            //...
+        }
     }
 }
 
@@ -207,6 +224,7 @@ void GameScreen::updateAI(){
     if (!isAIMode) return;
 
     updateAIMove();
+
     if (redoButton.onRelease) gameState.redo();
     if (undoButton.onRelease) gameState.undo();
 }
@@ -259,7 +277,11 @@ void GameScreen::SyncStoneWithGameState(){
 void GameScreen::reset(){
     gameState.reset();
     endGame.isClosed = endGame.isReset = false;
-    passButton.isInvalid = false;
+    passButton.setValid(true);
+
+    if (isAIMode){
+        superBot.stopThinking();
+    }
 }
 
 void GameScreen::update(Mouse &mouse){
@@ -275,7 +297,7 @@ void GameScreen::update(Mouse &mouse){
         }
     }
 
-    if (!gameState.isEnd){
+    if (!superBot.isThinking()){
         updateStone(mouse);
     }
     
@@ -312,6 +334,7 @@ void GameScreen::run(){
     //mouse
     Mouse mouse;
 
+    superBot.setDifficulty(1);
     while (window.isOpen()){
         handleEvent(window);
         update(mouse);

@@ -102,5 +102,5 @@ private:
     //* AI
     void updateAI();
     void updateAIMove();
-    AI bot639;
+    AI superBot;
 };
