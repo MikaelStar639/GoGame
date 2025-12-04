@@ -11,8 +11,8 @@ Stone::Stone(sf::Texture &_BlackstoneTexture, sf::Texture &_WhitestoneTexture, s
     WhiteStoneSprite.setOrigin(bounds.size.componentWiseMul({0.5f, 0.5f}));
     BlackStoneSprite.setPosition(position);
     WhiteStoneSprite.setPosition(position);
-    BlackStoneSprite.setScale({0.04f, 0.04f});
-    WhiteStoneSprite.setScale({0.04f, 0.04f});
+    BlackStoneSprite.setScale({0.06f, 0.06f});
+    WhiteStoneSprite.setScale({0.06f, 0.06f});
 }
 
 void Stone::setPosition(sf::Vector2f _position){

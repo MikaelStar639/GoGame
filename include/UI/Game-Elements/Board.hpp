@@ -6,6 +6,7 @@
 
 class Board {
 private:    
+    sf::Font &font;
     sf::Sprite boardSprite;
     TextureManager &textures;
 
@@ -31,10 +32,11 @@ public:
     float gridX[20];
     float gridY[20];
     // constructor 
-    Board(const sf::Font &font, TextureManager &_gameTexture);
+    Board(sf::Font &font, TextureManager &_gameTexture);
     // set position of the board
     void setPosition(sf::Vector2f _position);
     void draw(sf::RenderWindow &window);
     // Setting Board Style
+    void changeGridSize(int _gridNum);
     void ChangeStyle(BoardStyle state);
 };

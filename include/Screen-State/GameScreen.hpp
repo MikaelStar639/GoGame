@@ -82,6 +82,7 @@ private:
     void updateScreenState();
     void updateGameState();
     void SyncStoneWithGameState();
+    void changeBoardSize(int _gridNum);
 
     //* Render
     void render(Mouse &mouse);
