@@ -11,12 +11,6 @@ private:
     Button pvbButton; //player vs bot
     Button pvpButton; //player vs player
     Button backButton;
-    Button playButton;
-    Button button9x9;
-    Button button13x13;
-    Button button19x19;
-    sf::Text chooseModeText;
-    sf::Text chooseSizeText;
 
     sf::Sprite backgroundSprite;
 
