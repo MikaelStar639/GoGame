@@ -307,7 +307,7 @@ void GameState::load(std::string _address){
     //* current state:
     //* turn, lastmovePass, isEnd, grid
     bool _turn;
-    fin >> Size >> _turn >> lastMovePass >> isEnd;
+    fin >> _turn >> lastMovePass >> isEnd;
     turn = static_cast<Turn>(_turn);
     for (int y = 0; y < Size; ++y){
         for (int x = 0; x < Size; ++x){
@@ -342,7 +342,6 @@ void GameState::save(std::string _address){
 
     //* current state:
     //* turn, lastmovePass, isEnd, grid
-    fout << Size<<' ';
     fout << static_cast<int>(turn) << ' ' << lastMovePass << ' ' << isEnd << '\n';
     for (int y = 0; y < Size; ++y){
         for (int x = 0; x < Size; ++x){

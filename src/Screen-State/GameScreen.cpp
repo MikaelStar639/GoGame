@@ -347,7 +347,6 @@ void GameScreen::run(){
 
 void GameScreen::loadGame(std::string _address){
     gameState.load(_address);
-    changeBoardSize(gameState.Size);
     SyncStoneWithGameState();
 }
 
@@ -376,6 +375,7 @@ void GameScreen::changeBoardSize(int size)
     board.changeGridSize(size);
 
     //resize gamestate grid
+    reset();
     gameState.Size = size;
 
     // resize stone grid
