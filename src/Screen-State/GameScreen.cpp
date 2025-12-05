@@ -372,11 +372,11 @@ void GameScreen::ChangeStoneStyle(StoneStyle style)
 
 void GameScreen::changeBoardSize(int size)
 {
-<<<<<<< HEAD
     // resize board UI
     board.changeGridSize(size);
 
     //resize gamestate grid
+    reset();
     gameState.Size = size;
 
     // resize stone grid
@@ -389,23 +389,12 @@ void GameScreen::changeBoardSize(int size)
         grid[y].reserve(size);
         for (int x = 0; x < size; ++x){
             initStone.position = sf::Vector2f(board.gridX[x], board.gridY[board.gridNum - 1 - y]);
-=======
-    board.changeGridSize(size);
-    //resize grid
-    grid.resize(size);
-    Stone initStone(textures["BlackStone"], textures["WhiteStone"], sf::Vector2f(0.f, 0.f));
-    for (int y = 0; y < size; ++y){
-        grid[y].reserve(size);
-        for (int x = 0; x < size; ++x){
-            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[size - 1 - y]);
->>>>>>> dd18b1a (Test)
             grid[y].emplace_back(initStone);
         }
     }
     // stone rescale
     float newscale;
     if (size == 19) newscale = 0.04f;
-<<<<<<< HEAD
     else if (size == 13) newscale = 0.055f;
     else newscale = 0.075f;
 
@@ -416,10 +405,6 @@ void GameScreen::changeBoardSize(int size)
             grid[y][x].scaleRate = newscale;
         }
     }
-=======
-    else if (size == 13) newscale = 0.06f;
-    else newscale = 0.08f;
->>>>>>> dd18b1a (Test)
 }
 
 Position GameScreen::to_cord(sf::Vector2f position){
