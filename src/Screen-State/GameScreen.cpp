@@ -376,7 +376,6 @@ void GameScreen::changeBoardSize(int size)
     board.changeGridSize(size);
 
     //resize gamestate grid
-    reset();
     gameState.Size = size;
 
     // resize stone grid
