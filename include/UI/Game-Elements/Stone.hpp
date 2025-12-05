@@ -21,8 +21,6 @@ public:
 
     State state = State::empty;
     Color color = Color::black;
-
-    int gridNum = 19;
     
     //empty state:
     bool isOver    = false;

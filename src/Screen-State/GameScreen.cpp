@@ -30,12 +30,12 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     resetButton.setString("Reset Game");
 
     //vector:
-    grid.resize(board.gridNum);
+    grid.resize(19);
     Stone initStone(textures["BlackStone"], textures["WhiteStone"], sf::Vector2f(0.f, 0.f));
-    for (int y = 0; y < board.gridNum; ++y){
-        grid[y].reserve(board.gridNum);
-        for (int x = 0; x < board.gridNum; ++x){
-            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[board.gridNum - 1 - y]);
+    for (int y = 0; y < 19; ++y){
+        grid[y].reserve(19);
+        for (int x = 0; x < 19; ++x){
+            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[18 - y]);
             grid[y].emplace_back(initStone);
         }
     }
@@ -71,8 +71,8 @@ void GameScreen::drawButton(){
 }
 
 void GameScreen::drawStone(){
-    for (int y = 0; y < board.gridNum; ++y){
-        for (int x = 0; x < board.gridNum; ++x){
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
             grid[y][x].draw(window);
         }
     }
@@ -265,8 +265,8 @@ void GameScreen::updateScoreBoard(){
 }
 
 void GameScreen::SyncStoneWithGameState(){
-    for (int y = 0; y < board.gridNum; ++y){
-        for (int x = 0; x < board.gridNum; ++x){
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
             if (gameState.grid[y][x] != grid[y][x].state){
                 grid[y][x].setState(gameState.grid[y][x]);
             }
@@ -356,9 +356,9 @@ void GameScreen::saveGame(std::string _address){
 
 void GameScreen::ChangeStoneStyle(StoneStyle style)
 {
-    for (int y = 0; y<board.gridNum; y++)
+    for (int y = 0; y<19; y++)
     {
-        for (int x = 0; x<board.gridNum; x++)
+        for (int x = 0; x<19; x++)
         {
             if (style == StoneStyle::Classic)
                 grid[y][x].ChangeSprite(textures["BlackStone"],  textures["WhiteStone"]);
@@ -369,26 +369,6 @@ void GameScreen::ChangeStoneStyle(StoneStyle style)
     }
 }
 
-void GameScreen::changeBoardSize(int size)
-{
-    board.changeGridSize(size);
-    //resize grid
-    grid.resize(size);
-    Stone initStone(textures["BlackStone"], textures["WhiteStone"], sf::Vector2f(0.f, 0.f));
-    for (int y = 0; y < size; ++y){
-        grid[y].reserve(size);
-        for (int x = 0; x < size; ++x){
-            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[size - 1 - y]);
-            grid[y].emplace_back(initStone);
-        }
-    }
-    // stone rescale
-    float newscale;
-    if (size == 19) newscale = 0.04f;
-    else if (size == 13) newscale = 0.06f;
-    else newscale = 0.08f;
-}
-
 Position GameScreen::to_cord(sf::Vector2f position){
     float fy = (position.y - board.gridY[0])/board.gap;
     float fx = (position.x - board.gridX[0])/board.gap;
@@ -396,7 +376,7 @@ Position GameScreen::to_cord(sf::Vector2f position){
     int j = std::round(fy);
     int i = std::round(fx);
 
-    if (std::min(j, i) < 0 || board.gridNum <= std::max(i, j)){
+    if (std::min(j, i) < 0 || 19 <= std::max(i, j)){
         return {-1, -1};
     }
 
@@ -408,7 +388,7 @@ Position GameScreen::to_cord(sf::Vector2f position){
 
     float radius = board.gap/2;
     if (dist2 <= radius * radius){
-        return {board.gridNum - 1 - j, i};
+        return {18 - j, i};
     }
 
     return {-1, -1};
