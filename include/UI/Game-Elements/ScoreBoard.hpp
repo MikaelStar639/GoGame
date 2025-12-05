@@ -26,7 +26,7 @@ public:
     float text_align_v = 0.6f;
     float radius       = 10.f;
 
-    void getScore(GameState &gameState);
+    void setScore(int num);
     void setPosition(sf::Vector2f _position);
     void setSize(sf::Vector2f _size);
     void draw(sf::RenderWindow &window);

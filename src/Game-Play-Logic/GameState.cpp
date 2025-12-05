@@ -181,10 +181,10 @@ void GameState::swapTurn(){
 }
 
 //*  end game
-void GameState::getScore(){
+GameState::Score GameState::getScore(){
 
-    blackScore = 0;
-    whiteScore = 7; //komi = 7.5
+    int blackScore = 0;
+    int whiteScore = 7; //komi = 7.5
 
     //* using DFS for easier implementation
     bool visited[19][19] = {false};
@@ -242,7 +242,7 @@ void GameState::getScore(){
         }
     }
 
-    // std::cout << "Black: " << blackScore << ", White: " << whiteScore << ".5\n";
+    return {blackScore, whiteScore};
 }
 
 //* reset
@@ -372,9 +372,6 @@ void GameState::save(std::string _address){
     fout.close();
 }
 
-#include <algorithm> // Thư viện cho std::sort
-#include <cmath>     // Thư viện cho std::abs
-
 std::vector<Position> GameState::getPossibleMove(){
     std::vector<Position> goodPosition;
 
@@ -477,6 +474,67 @@ void GameState::virtualUndo(){
 }
 
 int GameState::minimaxScore(){
-    getScore();
+    auto [blackScore, whiteScore] = getScore();
+    blackScore *= 50;
+    whiteScore *= 50;
+
+    bool visited[19][19] = {false};
+    const int dy[4] = {-1, 1, 0, 0};
+    const int dx[4] = {0, 0, -1, 1};
+
+    static std::vector<Position> emptyPos;
+
+    auto dfs = 
+    [&](auto& self, int y, int x, int &liberty) -> void {
+        visited[y][x] = true;
+
+        for (int t = 0;  t < 4; ++t){
+            int nx = x + dx[t], ny = y + dy[t];
+            if (ny < 0 || ny >= 19 || nx < 0 || nx >= 19){
+                continue;
+            }
+
+            if (visited[ny][nx]) continue;
+
+            if (grid[ny][nx] == Stone::State::empty){
+                ++liberty;
+                visited[ny][nx] = true;
+                emptyPos.push_back({ny, nx});
+            }
+            else{
+                if (grid[ny][nx] == grid[y][x]){
+                    self(self, ny, nx, liberty);
+                }
+            }
+        }
+    };
+
+    for (int y = 0; y < 19; ++y){
+        for (int x = 0; x < 19; ++x){
+            if (grid[y][x] == Stone::State::empty) continue;
+            if (visited[y][x]) continue;
+
+            emptyPos.clear();
+
+            int liberty = 0;
+            dfs(dfs, y, x, liberty);
+            
+            liberty = std::min(liberty, 4);
+            int currentScore = liberty * 40;
+
+            if (liberty == 1) currentScore -= 400;
+            if (liberty == 2) currentScore -= 50;
+
+            if (grid[y][x] == Stone::State::black){
+                blackScore += currentScore;
+            }
+            else{
+                whiteScore += currentScore;
+            }
+
+            for (auto [y, x]: emptyPos) visited[y][x] = false;
+        }
+    }
+
     return blackScore - whiteScore;
 }

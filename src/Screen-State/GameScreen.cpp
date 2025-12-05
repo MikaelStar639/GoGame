@@ -250,11 +250,11 @@ void GameScreen::updateScoreBoard(){
     blackScoreBoard.setPosition({window_w * 6/7, window_h/2 - 2 * space});
     whiteScoreBoard.setPosition({window_w * 6/7, window_h/2 - space});
 
-    gameState.getScore();
-    blackScoreBoard.getScore(gameState);
-    whiteScoreBoard.getScore(gameState);
+    auto [blackScore, whiteScore] = gameState.getScore();
+    blackScoreBoard.setScore(blackScore);
+    whiteScoreBoard.setScore(whiteScore);
 
-    if (gameState.blackScore > gameState.whiteScore){
+    if (blackScore > whiteScore){
         blackScoreBoard.isWin = true;
         whiteScoreBoard.isWin = false;
     }

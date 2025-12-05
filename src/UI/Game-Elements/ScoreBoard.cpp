@@ -3,12 +3,12 @@
 ScoreBoard::ScoreBoard(sf::Font &font, Player _player) : 
     text(font), score(font), player(_player) {}
 
-void ScoreBoard::getScore(GameState &gameState){
+void ScoreBoard::setScore(int num){
     if (player == Player::black){
-        score.setString(std::to_string(gameState.blackScore));
+        score.setString(std::to_string(num));
     }
     else{
-        score.setString(std::to_string(gameState.whiteScore) + ".5");
+        score.setString(std::to_string(num) + ".5");
     }
 }
 

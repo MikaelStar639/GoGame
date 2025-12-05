@@ -6,9 +6,15 @@
 #include <algorithm>
 #include <vector>
 #include <queue>
+#include <cmath>  
 
 class GameState{
 public:
+    struct Score{
+        int black;
+        int white;
+    };
+
     enum class Turn{
         black,
         white
@@ -24,9 +30,7 @@ public:
     
     //* End Game State
     bool isEnd = false;
-    int blackScore = 0;
-    int whiteScore = 0;
-    void getScore();
+    Score getScore();
     void reset();
     bool isIllegal(int y, int x);
     

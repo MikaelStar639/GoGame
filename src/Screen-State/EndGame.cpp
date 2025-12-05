@@ -23,7 +23,8 @@ EndGameWindow::EndGameWindow(sf::Font &font) :
 
 void EndGameWindow::update(GameState &gameState){
     text.setFillColor(sf::Color::Black);
-    if (gameState.blackScore > gameState.whiteScore){
+    auto [blackScore, whiteScore] = gameState.getScore();
+    if (blackScore > whiteScore){
         text.setString("Black Wins!!!");
     }
     else{
