@@ -3,7 +3,7 @@
 // default constructor
 Board::Board(sf::Font &_font, TextureManager& _gameTexture) :
     font(_font),
-    gridNum(13),
+    gridNum(19),
     thickness(2.f),
     position({50.f, 100.f}),
     size({750.f, 750.f}),
@@ -53,7 +53,6 @@ Board::Board(sf::Font &_font, TextureManager& _gameTexture) :
         alignText(labelnum[i], 0.5f, 0.5f);
         alignText(labelchar[i], 0.5f, 0.5f);
     }
-
 }
 
 // set position of the board (top-left corner not including )
@@ -109,10 +108,10 @@ void Board::draw(sf::RenderWindow &window) {
     // draw labels
     for (int i = 0; i < gridNum; ++i) {
         // number labels (left side)
-        labelchar[i].setPosition({gridX[i], gridY[0] - 28.f});
+        labelchar[i].setPosition({gridX[i], gridY[0] - (830.f - size.x)/3});
         window.draw(labelchar[i]);
         // character labels (top side)
-        labelnum[i].setPosition({gridX[0] - 28.f, gridY[gridNum - i - 1]});
+        labelnum[i].setPosition({gridX[0] - (830.f - size.y)/3, gridY[gridNum - i - 1]});
         window.draw(labelnum[i]);
     }
 
@@ -154,31 +153,22 @@ void Board::ChangeStyle(BoardStyle _state)
 void Board::changeGridSize(int _gridNum)
 {
     gridNum = _gridNum;
+
+    // change position
+    if (gridNum == 19) size = {730.f, 730.f};
+    else if (gridNum == 13) size = {700.f, 700.f};
+    else if (gridNum == 9) size = {670.f, 670.f};
+    position = {10.f + (830.f - size.x)/2, 60.f + (830.f - size.y)/2};
     // initialize grid coordinates
     gap = size.x / (gridNum - 1);
     
-    for (int i = 0; i<=gridNum; i++)
+    for (int i = 0; i<gridNum; i++)
     {
         gridX[i] = position.x + i * gap;
         gridY[i] = position.y + i * gap;
     }
 
-    // initialize labels
-    sf::Text defaultText(labelnum[0]);
-    labelchar.assign(gridNum, defaultText);
-    labelnum.assign(gridNum, defaultText);
-
-    // set up label properties
-    for (int i = 0; i < gridNum; ++i) {
-        labelnum[i].setFont(font);
-        labelchar[i].setFont(font);
-        labelnum[i].setCharacterSize(16);
-        labelnum[i].setFillColor(defaultText.getFillColor());
-        labelchar[i].setCharacterSize(16);
-        labelchar[i].setFillColor(defaultText.getFillColor());
-        labelnum[i].setString(std::to_string(i + 1));
-        labelchar[i].setString(std::string(1, 'A' + i  + (i >= 8 ? 1 : 0))); // Skip 'I'
-        alignText(labelnum[i], 0.5f, 0.5f);
-        alignText(labelchar[i], 0.5f, 0.5f);
-    }
+    // verticle and horizontal lines size update
+    verticalLines.  setSize({thickness, size.y});
+    horizontalLines.setSize({size.x, thickness});
 }

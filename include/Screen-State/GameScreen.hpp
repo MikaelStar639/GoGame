@@ -36,6 +36,7 @@ public:
     
     //* Change Stone Style
     void ChangeStoneStyle(StoneStyle style);
+    void changeBoardSize(int _gridNum);
 
     //* Reset
     void reset();
@@ -60,6 +61,7 @@ private:
     ScoreBoard whiteScoreBoard;
 
     //Game Elements
+    int Size = 19;
     Board &board;
     GameState gameState;
     std::vector<std::vector<Stone>> grid;
@@ -82,7 +84,6 @@ private:
     void updateScreenState();
     void updateGameState();
     void SyncStoneWithGameState();
-    void changeBoardSize(int _gridNum);
 
     //* Render
     void render(Mouse &mouse);

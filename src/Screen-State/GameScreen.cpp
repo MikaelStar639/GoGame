@@ -371,22 +371,39 @@ void GameScreen::ChangeStoneStyle(StoneStyle style)
 
 void GameScreen::changeBoardSize(int size)
 {
+    // resize board UI
     board.changeGridSize(size);
-    //resize grid
+
+    //resize gamestate grid
+    reset();
+    gameState.Size = size;
+
+    // resize stone grid
     grid.resize(size);
     Stone initStone(textures["BlackStone"], textures["WhiteStone"], sf::Vector2f(0.f, 0.f));
     for (int y = 0; y < size; ++y){
+        grid[y].clear();
+    }
+    for(int y = 0; y < size; ++y){
         grid[y].reserve(size);
         for (int x = 0; x < size; ++x){
-            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[size - 1 - y]);
+            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[board.gridNum - 1 - y]);
             grid[y].emplace_back(initStone);
         }
     }
     // stone rescale
     float newscale;
     if (size == 19) newscale = 0.04f;
-    else if (size == 13) newscale = 0.06f;
-    else newscale = 0.08f;
+    else if (size == 13) newscale = 0.055f;
+    else newscale = 0.075f;
+
+    for (int y = 0; y < size; ++y){
+        for (int x = 0; x < size; ++x){
+            grid[y][x].Scale(newscale);
+            grid[y][x].Scale(newscale);
+            grid[y][x].scaleRate = newscale;
+        }
+    }
 }
 
 Position GameScreen::to_cord(sf::Vector2f position){

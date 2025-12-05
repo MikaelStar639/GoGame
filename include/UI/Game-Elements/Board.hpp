@@ -28,7 +28,7 @@ public:
 
     float thickness;
     float gap;
-    int gridNum;
+    int gridNum = 19;
     float gridX[20];
     float gridY[20];
     // constructor 

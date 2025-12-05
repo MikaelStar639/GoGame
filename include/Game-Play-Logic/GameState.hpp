@@ -15,7 +15,7 @@ public:
     };
 
     GameState(sf::Sound &stoneCaptureSound, sf::Sound &stoneSound);
-
+    int Size = 19;
     Turn turn = Turn::black;
     void addStoneMove(int y, int x);
     void pass();
