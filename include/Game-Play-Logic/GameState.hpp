@@ -7,6 +7,7 @@
 #include <vector>
 #include <queue>
 #include <cmath>  
+#include "random"
 
 class GameState{
 public:
@@ -64,5 +65,7 @@ private:
     int  LibertiesCount(int y, int x);
     void RemoveCapturedStones(HistoryState &historyState);
     void swapTurn();
+
+    Score getScore2();
 }; 
 

@@ -195,7 +195,7 @@ void GameScreen::updateGameState(){
         }
     }
 
-    updateAI();
+    if (!gameState.isEnd) updateAI();
 
     if (redoButton.onRelease)  gameState.redo();
     if (undoButton.onRelease)  gameState.undo();

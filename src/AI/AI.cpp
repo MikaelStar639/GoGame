@@ -66,7 +66,7 @@ int AI::getEvalScore(GameState &gameState){
 
 AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax, int depth){
 
-    if (depth == max_depth || getThinkingTime() > 4000){
+    if (depth == max_depth){
         return {getEvalScore(gameState), {-1, -1}};
     }
 

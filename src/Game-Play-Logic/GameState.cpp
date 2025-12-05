@@ -1,7 +1,8 @@
 #include "Game-Play-Logic/GameState.hpp"
 
 GameState::GameState(sf::Sound &_stoneCaptureSound, sf::Sound &_stoneSound) : 
-    stoneCaptureSound(_stoneCaptureSound), stoneSound(_stoneSound) {
+    stoneCaptureSound(_stoneCaptureSound), 
+    stoneSound(_stoneSound) {
     for (int y = 0; y < 19; ++y){
         for (int x = 0; x < 19; ++x){
             grid[y][x] = Stone::State::empty;
@@ -20,6 +21,10 @@ void GameState::addStone(int y, int x, Turn _turn){
 }
 
 void GameState::pass(){
+    if (lastMovePass){
+        isEnd = true;
+        return;
+    }
     lastMovePass = true;
     
     if (history.index + 1 == static_cast<int>(history.size()))
@@ -40,13 +45,13 @@ void GameState::pass(){
 }
 
 void GameState::addStoneMove(int y, int x){
-    lastMovePass = false;
-
+    
     if (x == -1){
         pass();
         return;
     }
 
+    lastMovePass = false;
     addStone(y, x, turn);
     
     // truncate history if we are not at the end
@@ -114,6 +119,8 @@ bool GameState::canCapture(){
     }
     return false;
 }
+
+#include <iostream>
 
 void GameState::RemoveCapturedStones(HistoryState& historyState) {
     // also construct captured stones list for history state
@@ -405,6 +412,8 @@ std::vector<Position> GameState::getPossibleMove(){
         return score;
     };
 
+    static std::mt19937 rng(time(0));
+    std::shuffle(goodPosition.begin(), goodPosition.end(), rng);
     std::sort(goodPosition.begin(), goodPosition.end(), 
         [&](const Position& a, const Position& b) {
             return heuristicScore(a) > heuristicScore(b);
@@ -473,20 +482,57 @@ void GameState::virtualUndo(){
     }
 }
 
+inline int getStrategicValue(int y, int x) {
+    int dy = (y < 9) ? y : 18 - y;
+    int dx = (x < 9) ? x : 18 - x;
+    if (dy == 0 || dx == 0) return -20;
+    if (2 <= dy && dy <= 3 && 2 <= dx && dx <= 3) return 120; 
+    if (dy + dx <= 6) return 70;
+    int dist = std::min(dy, dx);
+    if (dist == 2) return 60; 
+    if (dist == 3) return 50; 
+    if (dy == 9 && dx == 9) return 30;
+    return 15; 
+}
+
+inline int getHeuristicScore(int y, int x, int liberties, int stones){
+    int score = getStrategicValue(y, x) - 15;
+    int cappedLiberties = std::min(liberties, 8);
+    
+    score += (cappedLiberties * 50) + (stones * 5); 
+
+    if (liberties == 1) score -= 800;
+    else if (liberties == 2) score -= 200;
+    else if (liberties == 3) score -= 50;
+
+    if (stones >= 4 && liberties <= 5) {
+        score -= 200; 
+    }
+    else if (stones > liberties) {
+        score -= (stones - liberties) * 50;
+    }
+    if (stones == 1 && liberties <= 3) score -= 30;
+    if (liberties >= 6 && stones >= 4) score += 150;
+
+    return score;
+}
+
 int GameState::minimaxScore(){
     auto [blackScore, whiteScore] = getScore();
-    blackScore *= 50;
-    whiteScore *= 50;
+    blackScore *= 1000;
+    whiteScore *= 1000;
 
     bool visited[19][19] = {false};
     const int dy[4] = {-1, 1, 0, 0};
     const int dx[4] = {0, 0, -1, 1};
 
     static std::vector<Position> emptyPos;
+    if (emptyPos.capacity() < 400) emptyPos.reserve(400);
 
     auto dfs = 
-    [&](auto& self, int y, int x, int &liberty) -> void {
+    [&](auto& self, int y, int x, int &liberties, int &stones) -> void {
         visited[y][x] = true;
+        ++stones;
 
         for (int t = 0;  t < 4; ++t){
             int nx = x + dx[t], ny = y + dy[t];
@@ -497,13 +543,13 @@ int GameState::minimaxScore(){
             if (visited[ny][nx]) continue;
 
             if (grid[ny][nx] == Stone::State::empty){
-                ++liberty;
+                ++liberties;
                 visited[ny][nx] = true;
                 emptyPos.push_back({ny, nx});
             }
             else{
                 if (grid[ny][nx] == grid[y][x]){
-                    self(self, ny, nx, liberty);
+                    self(self, ny, nx, liberties, stones);
                 }
             }
         }
@@ -516,23 +562,17 @@ int GameState::minimaxScore(){
 
             emptyPos.clear();
 
-            int liberty = 0;
-            dfs(dfs, y, x, liberty);
-            
-            liberty = std::min(liberty, 4);
-            int currentScore = liberty * 40;
-
-            if (liberty == 1) currentScore -= 400;
-            if (liberty == 2) currentScore -= 50;
+            int liberties = 0;
+            int stones = 0;
+            dfs(dfs, y, x, liberties, stones);
+            for (auto [y, x]: emptyPos) visited[y][x] = false;
 
             if (grid[y][x] == Stone::State::black){
-                blackScore += currentScore;
+                blackScore += getHeuristicScore(y, x, liberties, stones);
             }
             else{
-                whiteScore += currentScore;
+                whiteScore += getHeuristicScore(y, x, liberties, stones);
             }
-
-            for (auto [y, x]: emptyPos) visited[y][x] = false;
         }
     }
 
