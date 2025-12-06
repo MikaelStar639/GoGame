@@ -67,6 +67,7 @@ void GameState::addStoneMove(int y, int x){
     else
         history[history.index].turn = HistoryState::Turn::white;
     
+    history[history.index].isPassed = false;
     history[history.index].newStone.y = y;
     history[history.index].newStone.x = x;
     RemoveCapturedStones(history[history.index]);
