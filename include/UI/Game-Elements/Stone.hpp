@@ -21,7 +21,7 @@ public:
 
     State state = State::empty;
     Color color = Color::black;
-    
+
     //empty state:
     bool isOver    = false;
     bool isPressed = false;
