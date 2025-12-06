@@ -2,8 +2,8 @@
 
 GameState::GameState(sf::Sound &_stoneCaptureSound, sf::Sound &_stoneSound) : 
     stoneCaptureSound(_stoneCaptureSound), stoneSound(_stoneSound) {
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y){
+        for (int x = 0; x < Size; ++x){
             grid[y][x] = Stone::State::empty;
         }
     }
@@ -66,7 +66,6 @@ void GameState::addStoneMove(int y, int x){
     history[history.index].newStone.x = x;
     RemoveCapturedStones(history[history.index]);
     history.undoCount = 0;
-
     swapTurn();
 }
 
@@ -90,7 +89,7 @@ int GameState::LibertiesCount(int y, int x) {
         for (int dir = 0; dir < 4; ++dir) {
             int ny = cy + dy[dir];
             int nx = cx + dx[dir];
-            if (ny < 0 || ny >= 19 || nx < 0 || nx >= 19) continue;
+            if (ny < 0 || ny >= Size || nx < 0 || nx >= Size) continue;
             if (visited[ny][nx]) continue;
             if (grid[ny][nx] == Stone::State::empty) {
                 ++liberties;
@@ -106,8 +105,8 @@ int GameState::LibertiesCount(int y, int x) {
 bool GameState::canCapture(){
     // Placeholder for capture logic
     Stone::State opponent = (turn == Turn::black) ? Stone::State::white : Stone::State::black;
-    for (int y = 0; y < 19; ++y) {
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y) {
+        for (int x = 0; x < Size; ++x){
             if (grid[y][x] != opponent) continue;
             if (LibertiesCount(y, x) == 0) return true;
         }
@@ -119,8 +118,8 @@ void GameState::RemoveCapturedStones(HistoryState& historyState) {
     // also construct captured stones list for history state
     Stone::State opponent = (turn == Turn::black) ? Stone::State::white : Stone::State::black;
     std::vector<std::pair<int, int>> toDelete;
-    for (int y = 0; y < 19; ++y) {
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y) {
+        for (int x = 0; x < Size; ++x){
             if (grid[y][x] != opponent) continue;
             if (LibertiesCount(y, x) == 0) {
                 toDelete.push_back({y, x});
@@ -198,7 +197,7 @@ void GameState::getScore(){
         ++count;
         for (int t = 0;  t < 4; ++t){
             int nx = x + dx[t], ny = y + dy[t];
-            if (ny < 0 || ny >= 19 || nx < 0 || nx >= 19){
+            if (ny < 0 || ny >= Size || nx < 0 || nx >= Size){
                 reachOutside = true;
                 continue;
             }
@@ -219,8 +218,8 @@ void GameState::getScore(){
         }
     };
 
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y){
+        for (int x = 0; x < Size; ++x){
             if (grid[y][x] == Stone::State::black) ++blackScore;
             if (grid[y][x] == Stone::State::white) ++whiteScore;
             if (grid[y][x] == Stone::State::empty){
@@ -247,8 +246,8 @@ void GameState::getScore(){
 
 //* reset
 void GameState::reset(){
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y){
+        for (int x = 0; x < Size; ++x){
             grid[y][x] = Stone::State::empty;
         }
     }
@@ -310,8 +309,8 @@ void GameState::load(std::string _address){
     bool _turn;
     fin >> Size >> _turn >> lastMovePass >> isEnd;
     turn = static_cast<Turn>(_turn);
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y){
+        for (int x = 0; x < Size; ++x){
             int tmp; fin >> tmp;
             grid[y][x] = static_cast<Stone::State>(tmp);
         }
@@ -345,8 +344,8 @@ void GameState::save(std::string _address){
     //* turn, lastmovePass, isEnd, grid
     fout << Size<<' ';
     fout << static_cast<int>(turn) << ' ' << lastMovePass << ' ' << isEnd << '\n';
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y){
+        for (int x = 0; x < Size; ++x){
             fout << static_cast<int>(grid[y][x]) << ' ';
         }
         fout << '\n';
@@ -379,8 +378,8 @@ void GameState::save(std::string _address){
 std::vector<Position> GameState::getPossibleMove(){
     std::vector<Position> goodPosition;
 
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y){
+        for (int x = 0; x < Size; ++x){
             if (grid[y][x] == Stone::State::empty && !isIllegal(y, x)){
                 goodPosition.push_back({y, x});
             }
@@ -396,7 +395,7 @@ std::vector<Position> GameState::getPossibleMove(){
                 int ny = p.y + dy;
                 int nx = p.x + dx;
 
-                if (ny >= 0 && ny < 19 && nx >= 0 && nx < 19) {
+                if (ny >= 0 && ny < Size && nx >= 0 && nx < Size) {
                     if (grid[ny][nx] != Stone::State::empty) {
                         int dist = std::abs(dy) + std::abs(dx); 
                         if (dist == 1) score += 10;

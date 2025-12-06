@@ -22,6 +22,9 @@ public:
     State state = State::empty;
     Color color = Color::black;
 
+    int gridNum = 19;
+    float scaleRate = 0.04f;
+    
     //empty state:
     bool isOver    = false;
     bool isPressed = false;
@@ -42,4 +45,5 @@ public:
     void setState(State state);
     void draw(sf::RenderWindow &window);
     void ChangeSprite(sf::Texture &newBlackTexure, sf::Texture &newWhiteTexture);
+    void Scale(float newscale);
 };
