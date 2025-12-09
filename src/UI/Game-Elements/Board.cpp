@@ -1,7 +1,8 @@
 #include "UI/Game-Elements/Board.hpp"
 
 // default constructor
-Board::Board(const sf::Font &font, TextureManager& _gameTexture) :
+Board::Board(sf::Font &_font, TextureManager& _gameTexture) :
+    font(_font),
     gridNum(19),
     thickness(2.f),
     position({50.f, 100.f}),
@@ -28,7 +29,7 @@ Board::Board(const sf::Font &font, TextureManager& _gameTexture) :
     // initialize grid coordinates
     gap = size.x / (gridNum - 1);
     
-    for (int i = 0; i<=19; i++)
+    for (int i = 0; i<=gridNum; i++)
     {
         gridX[i] = position.x + i * gap;
         gridY[i] = position.y + i * gap;
@@ -40,7 +41,7 @@ Board::Board(const sf::Font &font, TextureManager& _gameTexture) :
     labelnum.assign(gridNum, defaultText);
 
     // set up label properties
-    for (int i = 0; i < 19; ++i) {
+    for (int i = 0; i < gridNum; ++i) {
         labelnum[i].setFont(font);
         labelchar[i].setFont(font);
         labelnum[i].setCharacterSize(16);
@@ -52,7 +53,6 @@ Board::Board(const sf::Font &font, TextureManager& _gameTexture) :
         alignText(labelnum[i], 0.5f, 0.5f);
         alignText(labelchar[i], 0.5f, 0.5f);
     }
-
 }
 
 // set position of the board (top-left corner not including )
@@ -79,22 +79,39 @@ void Board::draw(sf::RenderWindow &window) {
     }
     // draw intersections
     
-    for (int i = 0; i<=2; i++)
+    if (gridNum == 19)
     {
-        for (int j = 0; j<=2; j++)
+        for (int i = 0; i<=2; i++)
         {
-            intersections.setPosition({position.x + 3*gap + 6*gap*i + 1.f, position.y + 3*gap + 6*gap*j + 1.f});
-            window.draw(intersections);
+            for (int j = 0; j<=2; j++)
+            {
+                intersections.setPosition({position.x + 3*gap + 6*gap*i + 1.f, position.y + 3*gap + 6*gap*j + 1.f});
+                window.draw(intersections);
+            }
         }
+    }
+    else
+    {
+        int dif = (gridNum - 1)/4;
+        for (int i = 0; i<=1; i++)
+        {
+            for (int j = 0; j<=1; j++)
+            {
+                intersections.setPosition({position.x + dif*gap + 2*dif*gap*i + 1.f, position.y + dif*gap + 2*dif*gap*j + 1.f});
+                window.draw(intersections);
+            }
+        }
+        intersections.setPosition({position.x + 2*dif*gap + 1.f, position.y + 2*dif*gap + 1.f});
+        window.draw(intersections);
     }
 
     // draw labels
     for (int i = 0; i < gridNum; ++i) {
         // number labels (left side)
-        labelchar[i].setPosition({gridX[i], gridY[0] - 28.f});
+        labelchar[i].setPosition({gridX[i], gridY[0] - (830.f - size.x)/3});
         window.draw(labelchar[i]);
         // character labels (top side)
-        labelnum[i].setPosition({gridX[0] - 28.f, gridY[gridNum - i - 1]});
+        labelnum[i].setPosition({gridX[0] - (830.f - size.y)/3, gridY[gridNum - i - 1]});
         window.draw(labelnum[i]);
     }
 
@@ -125,10 +142,33 @@ void Board::ChangeStyle(BoardStyle _state)
         verticalLines.  setFillColor(_color);
         horizontalLines.setFillColor(_color);
         intersections.  setFillColor(_color);
-        for (int i = 0; i<19; i++)
+        for (int i = 0; i<gridNum; i++)
         {
             // std::cout<<i<<'\n';
             labelchar[i].setFillColor(_color);
             labelnum[i]. setFillColor(_color);
         }
+}
+
+void Board::changeGridSize(int _gridNum)
+{
+    gridNum = _gridNum;
+
+    // change position
+    if (gridNum == 19) size = {730.f, 730.f};
+    else if (gridNum == 13) size = {700.f, 700.f};
+    else if (gridNum == 9) size = {670.f, 670.f};
+    position = {10.f + (830.f - size.x)/2, 60.f + (830.f - size.y)/2};
+    // initialize grid coordinates
+    gap = size.x / (gridNum - 1);
+    
+    for (int i = 0; i<gridNum; i++)
+    {
+        gridX[i] = position.x + i * gap;
+        gridY[i] = position.y + i * gap;
+    }
+
+    // verticle and horizontal lines size update
+    verticalLines.  setSize({thickness, size.y});
+    horizontalLines.setSize({size.x, thickness});
 }

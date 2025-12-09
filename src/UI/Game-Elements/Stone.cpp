@@ -11,8 +11,9 @@ Stone::Stone(sf::Texture &_BlackstoneTexture, sf::Texture &_WhitestoneTexture, s
     WhiteStoneSprite.setOrigin(bounds.size.componentWiseMul({0.5f, 0.5f}));
     BlackStoneSprite.setPosition(position);
     WhiteStoneSprite.setPosition(position);
-    BlackStoneSprite.setScale({0.04f, 0.04f});
     WhiteStoneSprite.setScale({0.04f, 0.04f});
+    BlackStoneSprite.setScale({0.04f, 0.04f});
+    Scale(0.04f);
 }
 
 void Stone::setPosition(sf::Vector2f _position){
@@ -25,7 +26,7 @@ bool Stone::isContain(sf::Vector2f _position){
     sf::Vector2f diff = position - _position;
     float dist2 = diff.x * diff.x + diff.y * diff.y;
 
-    float radius = 750.f/36.f;
+    float radius = (BlackStoneSprite.getGlobalBounds().position.x / 2.f);
     return dist2 <= radius * radius;
 }
 
@@ -103,8 +104,15 @@ void Stone::ChangeSprite(sf::Texture &newBlackTexture, sf::Texture &newWhiteText
     BlackStoneSprite.setTexture(newBlackTexture);
     WhiteStoneSprite.setTexture(newWhiteTexture);
     sf::FloatRect bounds = BlackStoneSprite.getLocalBounds();
-    BlackStoneSprite.setScale({0.04f, 0.04f});
-    WhiteStoneSprite.setScale({0.04f, 0.04f});
+    BlackStoneSprite.setScale({scaleRate, scaleRate});
+    WhiteStoneSprite.setScale({scaleRate, scaleRate});
     BlackStoneSprite.setOrigin(bounds.size.componentWiseMul({0.5f, 0.5f}));
     WhiteStoneSprite.setOrigin(bounds.size.componentWiseMul({0.5f, 0.5f}));
+}
+
+void Stone::Scale(float newscale)
+{
+    scaleRate = newscale;
+    BlackStoneSprite.setScale({scaleRate, scaleRate});
+    WhiteStoneSprite.setScale({scaleRate, scaleRate});
 }
