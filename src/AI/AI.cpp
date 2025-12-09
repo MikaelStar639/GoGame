@@ -66,7 +66,7 @@ int AI::getEvalScore(GameState &gameState){
 
 AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax, int depth){
 
-    if (depth == max_depth){
+    if (depth == max_depth || getThinkingTime() >= 3000){
         return {getEvalScore(gameState), {-1, -1}};
     }
 
@@ -74,9 +74,14 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
 
     Position bestMove = {-1, -1};
     int bestScore;
+
+    int count = 0;
     if (isMax){
         bestScore = -1000000000;
         for (auto [x, y]: possibleMove){
+            ++count;
+            if (count == max_think) break;
+
             if (x == -1 && gameState.lastMovePass){
                 int finalScore = getEvalScore(gameState);
                 if (finalScore > bestScore){
@@ -103,6 +108,9 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
     else{
         bestScore = +1000000000;
         for (auto [x, y]: possibleMove){
+            ++count;
+            if (count == max_think) break;
+
             if (x == -1 && gameState.lastMovePass){
                 int finalScore = getEvalScore(gameState); 
                 if (finalScore < bestScore){
@@ -133,6 +141,12 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
 //0: easy, 1: medium, 2: hard
 void AI::setDifficulty(int _difficulty){
     difficulty = _difficulty;
-    if (difficulty == 1) max_depth = 2;
-    if (difficulty == 2) max_depth = 3;
+    if (difficulty == 1){
+        max_depth = 2;
+        max_think = 200;
+    }
+    if (difficulty == 2){
+        max_depth = 3;
+        max_think = 69;
+    }
 }

@@ -334,7 +334,7 @@ void GameScreen::run(){
     //mouse
     Mouse mouse;
 
-    superBot.setDifficulty(1);
+    superBot.setDifficulty(2);
     while (window.isOpen()){
         handleEvent(window);
         update(mouse);

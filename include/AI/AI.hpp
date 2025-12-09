@@ -8,6 +8,7 @@ class AI{
 private:
     int difficulty = 1;
     int max_depth = 2;
+    int max_think = 200;
     bool isBlack = false;
     GameState &gameState;
     
