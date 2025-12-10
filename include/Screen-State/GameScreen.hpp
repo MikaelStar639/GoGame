@@ -35,6 +35,7 @@ public:
     void saveGame(std::string _address);
     
     //* Change Stone Style
+    StoneStyle currentStoneStyle = StoneStyle::Classic;
     void ChangeStoneStyle(StoneStyle style);
     void changeBoardSize(int _gridNum);
 

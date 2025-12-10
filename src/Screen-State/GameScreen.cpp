@@ -381,6 +381,7 @@ void GameScreen::changeBoardSize(int size)
     // resize stone grid
     grid.resize(size);
     Stone initStone(textures["BlackStone"], textures["WhiteStone"], sf::Vector2f(0.f, 0.f));
+    ChangeStoneStyle(currentStoneStyle);
     for (int y = 0; y < size; ++y){
         grid[y].clear();
     }
@@ -429,4 +430,8 @@ Position GameScreen::to_cord(sf::Vector2f position){
     }
 
     return {-1, -1};
+}
+
+void GameScreen::setAIDifficulty(int level){
+    superBot.setDifficulty(level);
 }
