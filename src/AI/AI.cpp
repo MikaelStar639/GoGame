@@ -41,7 +41,7 @@ bool AI::isReady(){
 
 Position AI::getMove(){
     thinking = false;
-    std::cout << "Bot played a move after " << getThinkingTime() << "ms\n";
+    std::cout << "Bot"<<difficulty<<" played a move after " << getThinkingTime() << "ms\n";
     return botFuture.get();
 }
 

@@ -46,6 +46,8 @@ public:
 
     //* AI
     bool isAIMode = false;
+    void setAIDifficulty(int level);
+
     
 private:
     //Buttons
