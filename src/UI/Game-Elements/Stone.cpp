@@ -26,7 +26,7 @@ bool Stone::isContain(sf::Vector2f _position){
     sf::Vector2f diff = position - _position;
     float dist2 = diff.x * diff.x + diff.y * diff.y;
 
-    float radius = (BlackStoneSprite.getGlobalBounds().position.x / 2.f);
+    float radius = (BlackStoneSprite.getGlobalBounds().position.x - position.x);
     return dist2 <= radius * radius;
 }
 

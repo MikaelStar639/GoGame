@@ -1,5 +1,4 @@
 #include "Screen-State/GameScreen.hpp"
-
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 TextureManager &_gameTexture, SoundManager &_gameSound,
                 Board &_board) : 
@@ -147,6 +146,8 @@ void GameScreen::updateStone(Mouse &mouse){
     
     Stone &overStone = grid[cy][cx];
     overStone.update(mouse);
+    std::cout<<overStone.onRelease<<'\n';
+    // std::cout<<cx<<' '<<cy<<'\n';
 
     if (overStone.onRelease == false){
         if (overStone.state == Stone::State::empty){
