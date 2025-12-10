@@ -146,8 +146,6 @@ void GameScreen::updateStone(Mouse &mouse){
     
     Stone &overStone = grid[cy][cx];
     overStone.update(mouse);
-    std::cout<<overStone.onRelease<<'\n';
-    // std::cout<<cx<<' '<<cy<<'\n';
 
     if (overStone.onRelease == false){
         if (overStone.state == Stone::State::empty){
