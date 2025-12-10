@@ -9,8 +9,10 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
     button9x9 (font),
     button13x13(font),
     button19x19(font),
+    selectLevelButton(font),
     chooseModeText(font),
     chooseSizeText(font),
+    difficultyBox(font),
     backgroundSprite(textures["Background"]),
     window(_window), 
     gameScreen(_gameScreen){
@@ -21,6 +23,10 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
         button13x13.setString("13 x 13");
         button19x19.setString("19 x 19");
         backButton. setString("Back");
+        selectLevelButton.setString("Change Level");
+
+        difficultyBox.setText("Level:");
+        difficultyBox.setState("Normal");
 
         pvpButton.setChosen();
         button19x19.setChosen();
@@ -49,13 +55,16 @@ void PlayOptions::updateButton(Mouse &mouse){
     //Buttons setPosition
     float space = 75.f;
     
-    pvpButton. setPosition({window_w/2, window_h/5});
-    pvbButton. setPosition({window_w/2, window_h/5 + 1.5f*space});
-    button9x9 .setPosition({window_w/2, window_h/5 + space * 4.5f});
-    button13x13.setPosition({window_w/2, window_h/5 + space * 6});
-    button19x19.setPosition({window_w/2, window_h/5 + space * 7.5f});
-    backButton.setPosition({105.f, 50.f});
-    playButton.setPosition({window_w - 150.f, window_h - 80.f});
+    pvpButton.  setPosition({window_w/2, window_h/5});
+    pvbButton.  setPosition({window_w/2, window_h/5 + 1.5f*space});
+    button9x9  .setPosition({window_w/2, window_h/5 + space * 5.5f});
+    button13x13.setPosition({window_w/2, window_h/5 + space * 7});
+    button19x19.setPosition({window_w/2, window_h/5 + space * 8.5f});
+    backButton. setPosition({105.f, 50.f});
+    playButton. setPosition({window_w - 150.f, window_h - 80.f});
+    difficultyBox.setPosition({window_w/2 - 650.f/4, window_h/5 + space*3});
+    selectLevelButton.setPosition({window_w/2 + 650.f/4, window_h/5 + space*3});
+    
 
     //Buttons setSize
     pvpButton. setSize({650.f, 75.f});
@@ -65,10 +74,12 @@ void PlayOptions::updateButton(Mouse &mouse){
     button9x9 .setSize({650.f, 75.f});
     button13x13.setSize({650.f, 75.f});
     button19x19.setSize({650.f, 75.f});
+    difficultyBox.setSize({650.f/2, 75.f});
+    selectLevelButton.setSize({650.f/2 - 20.f, 75.f});
 
     //Text setPosition
     chooseModeText.setPosition({window_w/2, window_h/5 - 70.f});
-    chooseSizeText.setPosition({window_w/2, window_h/5 + space*4.5f - 70.f});
+    chooseSizeText.setPosition({window_w/2, window_h/5 + space*5.5f - 70.f});
 
     //buttons update
     pvpButton. update(mouse);
@@ -78,6 +89,7 @@ void PlayOptions::updateButton(Mouse &mouse){
     button9x9 .update(mouse);
     button13x13.update(mouse);
     button19x19.update(mouse);
+    selectLevelButton.update(mouse);
 }
 
 void PlayOptions::updateScreenState(){
@@ -115,16 +127,33 @@ void PlayOptions::updateScreenState(){
         button13x13.setDefaultColor();
         gameScreen.changeBoardSize(19);
     }
+    if (selectLevelButton.onRelease){
+        if (difficultyBox.Info.getString() == "Easy"){
+            difficultyBox.setState("Normal");
+            gameScreen.setAIDifficulty(1);
+        }
+        else if (difficultyBox.Info.getString() == "Normal"){
+            difficultyBox.setState("Hard");
+            gameScreen.setAIDifficulty(2);
+        }
+        else{
+            difficultyBox.setState("Easy");
+            gameScreen.setAIDifficulty(0);
+        }
+    }
 }
 
 void PlayOptions::drawButton(){
-    pvpButton. draw(window);
-    pvbButton. draw(window);
-    backButton.draw(window);
-    playButton.draw(window);
-    button9x9 .draw(window);
-    button13x13.draw(window);
-    button19x19.draw(window);
+    pvpButton.    draw(window);
+    pvbButton.    draw(window);
+    backButton.   draw(window);
+    playButton.   draw(window);
+    button9x9.    draw(window);
+    button13x13.  draw(window);
+    button19x19.  draw(window);
+    difficultyBox.draw(window);
+    selectLevelButton.draw(window);
+
     window.draw(chooseModeText);
     window.draw(chooseSizeText);
 }
