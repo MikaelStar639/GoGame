@@ -26,12 +26,14 @@ target_link_libraries(${PROJECT_NAME}
         SFML::Audio
 )
 
-# Copy assets
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+add_custom_target(copy_assets ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_SOURCE_DIR}/assets"
-        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+        "${CMAKE_BINARY_DIR}/assets"
 )
+
+
+add_dependencies(${PROJECT_NAME} copy_assets)
 
 # Copy SFML DLLs
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
