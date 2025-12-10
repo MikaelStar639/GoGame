@@ -69,12 +69,14 @@ void SelectStone::updateStyle(){
     if (ClassicButton.onRelease)
     {
         gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Classic);
+        gamescreen.currentStoneStyle = GameScreen::StoneStyle::Classic;
         ClassicButton.setChosen();        
         CartoonButton.setDefaultColor();
     }
     if (CartoonButton.onRelease)
     {
         gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Cartoon);
+        gamescreen.currentStoneStyle = GameScreen::StoneStyle::Cartoon;
         CartoonButton.setChosen();
         ClassicButton.setDefaultColor();        
     }

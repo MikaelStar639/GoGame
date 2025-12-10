@@ -334,7 +334,6 @@ void GameScreen::run(){
     //mouse
     Mouse mouse;
 
-    superBot.setDifficulty(2);
     while (window.isOpen()){
         handleEvent(window);
         update(mouse);
@@ -381,7 +380,6 @@ void GameScreen::changeBoardSize(int size)
     // resize stone grid
     grid.resize(size);
     Stone initStone(textures["BlackStone"], textures["WhiteStone"], sf::Vector2f(0.f, 0.f));
-    ChangeStoneStyle(currentStoneStyle);
     for (int y = 0; y < size; ++y){
         grid[y].clear();
     }
@@ -392,6 +390,7 @@ void GameScreen::changeBoardSize(int size)
             grid[y].emplace_back(initStone);
         }
     }
+    ChangeStoneStyle(currentStoneStyle);
     // stone rescale
     float newscale;
     if (size == 19) newscale = 0.04f;

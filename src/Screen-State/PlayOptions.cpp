@@ -151,8 +151,11 @@ void PlayOptions::drawButton(){
     button9x9.    draw(window);
     button13x13.  draw(window);
     button19x19.  draw(window);
-    difficultyBox.draw(window);
-    selectLevelButton.draw(window);
+    if (gameScreen.isAIMode)
+    {
+        difficultyBox.draw(window);
+        selectLevelButton.draw(window);
+    }
 
     window.draw(chooseModeText);
     window.draw(chooseSizeText);
