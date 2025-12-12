@@ -20,6 +20,8 @@ void SoundManager::load(const std::string& path, const std::string& name){
 }
 
 SoundManager::SoundManager(){
+    buffers.reserve(10);
+
     load("assets/sounds/stoneMove.mp3",    "StoneMove");
     load("assets/sounds/stoneCapture.mp3", "StoneCapture");
     load("assets/sounds/boom.mp3",         "Boom");

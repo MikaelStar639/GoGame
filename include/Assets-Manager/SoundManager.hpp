@@ -11,7 +11,7 @@ private:
     std::vector<sf::Sound> sounds;
     
     void load(const std::string& path, const std::string& name);
-    public:
+public:
     SoundManager();
     sf::Sound& operator[](const std::string& name);
   
