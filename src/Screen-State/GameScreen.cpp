@@ -1,4 +1,5 @@
 #include "Screen-State/GameScreen.hpp"
+
 GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window, 
                 TextureManager &_gameTexture, SoundManager &_gameSound,
                 Board &_board) : 
@@ -15,8 +16,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     backgroundSprite(_gameTexture["Background"]),
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),
-    endGameSound(_gameSound["Boom"]),
-    gameState(_gameSound["StoneCapture"], _gameSound["StoneMove"]),
+    gameSound(_gameSound),
+    gameState(),
     endGame(_font),
     superBot(gameState)
     {
@@ -184,14 +185,9 @@ void GameScreen::updateScreenState(){
 
 void GameScreen::updateGameState(){
 
+    if (gameState.onEnd) gameState.onEnd = false;
     if (passButton.onRelease) {
-        if (gameState.lastMovePass == true) {
-            gameState.isEnd = true;
-            endGameSound.play();
-        }
-        else{
-            gameState.pass();
-        }
+        gameState.pass();
     }
 
     if (!gameState.isEnd) updateAI();
@@ -263,6 +259,24 @@ void GameScreen::updateScoreBoard(){
     }
 }
 
+void GameScreen::updateSound(){
+    if (gameState.onEnd){
+        gameSound["Boom"].play();
+        return;
+    }
+
+    if (!gameState.newMove) return;
+
+    if (gameState.lastMoveCaptured){
+        gameSound["StoneCapture"].play();
+    }
+    else{
+        gameSound["StoneMove"].play();
+    }
+
+    gameState.newMove = false;
+}
+
 void GameScreen::SyncStoneWithGameState(){
     for (int y = 0; y < board.gridNum; ++y){
         for (int x = 0; x < board.gridNum; ++x){
@@ -306,6 +320,7 @@ void GameScreen::update(Mouse &mouse){
     updateIndicator();
     updateScoreBoard();
     updateScreenState();
+    updateSound();
 }
 
 void GameScreen::drawEndGame(Mouse &mouse){

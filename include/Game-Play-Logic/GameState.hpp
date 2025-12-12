@@ -21,16 +21,20 @@ public:
         white
     };
 
-    GameState(sf::Sound &stoneCaptureSound, sf::Sound &stoneSound);
+    GameState();
     int Size = 19;
     Turn turn = Turn::black;
     void addStoneMove(int y, int x);
     void pass();
     bool lastMovePass = false;
+    bool lastMoveCaptured = false;
+    bool newMove = false;
+    
     Stone::State grid[19][19];
     
     //* End Game State
     bool isEnd = false;
+    bool onEnd = false;
     Score getScore();
     void reset();
     bool isIllegal(int y, int x);
@@ -47,14 +51,9 @@ public:
     //* AI support
     History virtualHistory;
     std::vector<Position> getPossibleMove();
-    void addVirtualMove(int y, int x);
-    void virtualUndo();
     int  minimaxScore();
 
 private:
-    sf::Sound &stoneCaptureSound;
-    sf::Sound &stoneSound;
-
     //* Game Elements
     History history;
 
@@ -65,7 +64,5 @@ private:
     int  LibertiesCount(int y, int x);
     void RemoveCapturedStones(HistoryState &historyState);
     void swapTurn();
-
-    Score getScore2();
 }; 
 

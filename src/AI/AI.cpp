@@ -90,9 +90,9 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
                 }
             }
             else{
-                gameState.addVirtualMove(x, y);
+                gameState.addStoneMove(x, y);
                 int curScore = minimax(gameState, alpha, beta, false, depth + 1).score;
-                gameState.virtualUndo();
+                gameState.undo();
                 if (curScore > bestScore){
                     bestScore = curScore;
                     bestMove = {x, y};
@@ -119,9 +119,9 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
                 }
             }
             else{
-                gameState.addVirtualMove(x, y);
+                gameState.addStoneMove(x, y);
                 int curScore = minimax(gameState, alpha, beta, true, depth + 1).score;
-                gameState.virtualUndo();
+                gameState.undo();
                 if (curScore < bestScore){
                     bestScore = curScore;
                     bestMove = {x, y};

@@ -72,7 +72,7 @@ private:
     //Sprite & Sound
     sf::Sprite backgroundSprite;
     TextureManager &textures;
-    sf::Sound &endGameSound;    
+    SoundManager &gameSound;
     
     //window
     sf::RenderWindow &window;
@@ -87,6 +87,7 @@ private:
     void updateScreenState();
     void updateGameState();
     void SyncStoneWithGameState();
+    void updateSound();
 
     //* Render
     void render(Mouse &mouse);

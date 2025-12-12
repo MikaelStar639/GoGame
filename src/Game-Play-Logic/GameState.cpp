@@ -1,7 +1,6 @@
 #include "Game-Play-Logic/GameState.hpp"
 
-GameState::GameState(sf::Sound &_stoneCaptureSound, sf::Sound &_stoneSound) : 
-    stoneCaptureSound(_stoneCaptureSound), stoneSound(_stoneSound) {
+GameState::GameState(){
     for (int y = 0; y < Size; ++y){
         for (int x = 0; x < Size; ++x){
             grid[y][x] = Stone::State::empty;
@@ -20,8 +19,10 @@ void GameState::addStone(int y, int x, Turn _turn){
 }
 
 void GameState::pass(){
+    newMove = true;
     if (lastMovePass){
         isEnd = true;
+        onEnd = true;
         return;
     }
     lastMovePass = true;
@@ -44,7 +45,7 @@ void GameState::pass(){
 }
 
 void GameState::addStoneMove(int y, int x){
-    
+    newMove = true;
     if (x == -1){
         pass();
         return;
@@ -137,11 +138,11 @@ void GameState::RemoveCapturedStones(HistoryState& historyState) {
         }
     }
 
-    if (!toDelete.empty()){
-        stoneCaptureSound.play();
+    if (toDelete.empty()){
+        lastMoveCaptured = false;
     }
     else{
-        stoneSound.play();
+        lastMoveCaptured = true;
     }
 
     for (auto &[y, x] : toDelete) {
@@ -428,62 +429,6 @@ std::vector<Position> GameState::getPossibleMove(){
     return goodPosition;
 }
 
-void GameState::addVirtualMove(int y, int x){
-
-    if (x != -1) addStone(y, x, turn);
-    
-    if (virtualHistory.index + 1 >= static_cast<int>(virtualHistory.data.size()))
-    {
-        virtualHistory.data.emplace_back(HistoryState());
-    }
-    
-    ++virtualHistory.index;
-    
-    HistoryState &currentState = virtualHistory[virtualHistory.index];
-
-    currentState.capturedStones.clear(); 
-    currentState.isPassed = false;       
-    
-    if (turn == Turn::black)
-        currentState.turn = HistoryState::Turn::black;
-    else
-        currentState.turn = HistoryState::Turn::white;
-    
-    if (x != -1){
-        currentState.newStone.y = y;
-        currentState.newStone.x = x;
-        currentState.isPassed = false; 
-        
-        RemoveCapturedStones(currentState); 
-    }
-    else{
-        currentState.isPassed = true;
-    }
-
-    virtualHistory.undoCount = 0;
-
-    swapTurn();
-}
-
-void GameState::virtualUndo(){
-    if (virtualHistory.index >= 0) {
-        HistoryState &state = virtualHistory[virtualHistory.index];
-        
-        if (!state.isPassed){
-            deleteStone(state.newStone.y, state.newStone.x);
-        }
-
-        Turn capturedTurn = (state.turn == HistoryState::Turn::black) ? Turn::white : Turn::black;
-        for (auto &[y, x] : state.capturedStones) {
-            addStone(y, x, capturedTurn);
-        }
-
-        --virtualHistory.index;
-        virtualHistory.undoCount++;
-        
-        swapTurn();
-    }
-}
 
 inline int getStrategicValue(int y, int x) {
     int dy = (y < 9) ? y : 18 - y;
