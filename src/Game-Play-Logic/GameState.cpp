@@ -269,6 +269,11 @@ void GameState::reset(){
 }
 
 //*  undo/redo
+
+bool GameState::inUndo(){
+    return history.undoCount > 0;
+}
+
 void GameState::undo() {
     if (history.index >= 0) {
         HistoryState &state = history[history.index];

@@ -22,24 +22,27 @@ public:
     };
 
     GameState();
+
     int Size = 19;
     Turn turn = Turn::black;
-    void addStoneMove(int y, int x);
-    void pass();
     bool lastMovePass = false;
     bool lastMoveCaptured = false;
     bool newMove = false;
-    
     Stone::State grid[19][19];
     
     //* End Game State
     bool isEnd = false;
     bool onEnd = false;
+    
+    //* Game func
+    void addStoneMove(int y, int x);
+    bool isIllegal(int y, int x);
     Score getScore();
     void reset();
-    bool isIllegal(int y, int x);
-    
+    void pass();
+
     //*  redo and undo
+    bool inUndo();
     void undo();
     void redo();
 
@@ -49,9 +52,8 @@ public:
     void save(std::string _address);
 
     //* AI support
-    History virtualHistory;
     std::vector<Position> getPossibleMove();
-    int  minimaxScore();
+    int minimaxScore();
 
 private:
     //* Game Elements

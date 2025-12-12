@@ -128,7 +128,7 @@ void GameScreen::updateGameButton(Mouse &mouse){
     resetButton.update(mouse);
 
     //Pass
-    if (superBot.isThinking()){
+    if (isAIMode && gameState.turn == GameState::Turn::white){
         passButton.setValid(false);
     }
     else{
@@ -216,12 +216,8 @@ void GameScreen::updateAIMove(){
 }
 
 void GameScreen::updateAI(){
-    if (!isAIMode) return;
-
+    if (!isAIMode || gameState.inUndo()) return;
     updateAIMove();
-
-    if (redoButton.onRelease) gameState.redo();
-    if (undoButton.onRelease) gameState.undo();
 }
 
 void GameScreen::updateIndicator(){
@@ -310,10 +306,12 @@ void GameScreen::update(Mouse &mouse){
         }
     }
 
-    if (!superBot.isThinking()){
-        updateStone(mouse);
+    if (!gameState.isEnd){
+        if (!isAIMode || gameState.turn == GameState::Turn::black){
+            updateStone(mouse);
+        }
     }
-    
+
     updateFeatureButton(mouse);
     updateGameButton(mouse);
     updateGameState();
