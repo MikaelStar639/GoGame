@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Game-Play-Logic/GameState.hpp"
 #include "future"
 #include "chrono"
