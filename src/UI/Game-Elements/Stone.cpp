@@ -31,7 +31,7 @@ bool Stone::isContain(sf::Vector2f _position){
 }
 
 void Stone::update(Mouse &mouse){
-        // reset states
+    // reset states
     onPress   = false;
     onRelease = false;
 

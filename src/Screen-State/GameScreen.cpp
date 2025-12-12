@@ -138,15 +138,14 @@ void GameScreen::updateGameButton(Mouse &mouse){
 
 void GameScreen::updateStone(Mouse &mouse){
     auto [cy, cx] = to_cord(mouse.position);
-    if (cy == -1) return;
+    if (cx == -1 || cy == -1) return;
     
     Stone &overStone = grid[cy][cx];
     overStone.update(mouse);
-
+    if (!overStone.isOver) return;
+    
     if (overStone.onRelease == false){
         if (overStone.state == Stone::State::empty){
-            overStone.isOver = true;
-
             if (gameState.turn == GameState::Turn::black){
                 overStone.color = Stone::Color::black;
             }
@@ -160,6 +159,7 @@ void GameScreen::updateStone(Mouse &mouse){
             if (gameState.isIllegal(cy, cx)){
                 return;
             }
+
             gameState.lastMovePass = false;
             if (gameState.turn == GameState::Turn::black){
                 overStone.setState(Stone::State::black);
