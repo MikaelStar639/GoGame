@@ -9,7 +9,7 @@ private:
     int difficulty = 1;
     int max_depth = 2;
     int max_think = 200;
-    bool isBlack = false;
+    GameState::Turn botTurn;
     GameState &gameState;
     
     struct moveScore{
@@ -35,4 +35,6 @@ public:
     bool isReady();
     Position getMove();
     long long getThinkingTime();
+    void swapPlayer();
+    GameState::Turn getTurn() const;
 };

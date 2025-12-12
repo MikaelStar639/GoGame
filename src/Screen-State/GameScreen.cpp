@@ -128,7 +128,7 @@ void GameScreen::updateGameButton(Mouse &mouse){
     resetButton.update(mouse);
 
     //Pass
-    if (isAIMode && gameState.turn == GameState::Turn::white){
+    if (isAIMode && gameState.turn == superBot.getTurn()){
         passButton.setValid(false);
     }
     else{
@@ -200,7 +200,6 @@ void GameScreen::updateGameState(){
 }
 
 void GameScreen::updateAIMove(){
-    if (gameState.turn != GameState::Turn::white) return;
     if (!superBot.isThinking()){
         superBot.think();    
     }
@@ -217,6 +216,7 @@ void GameScreen::updateAIMove(){
 
 void GameScreen::updateAI(){
     if (!isAIMode || gameState.inUndo()) return;
+    if (gameState.turn != superBot.getTurn()) return;
     updateAIMove();
 }
 
@@ -290,6 +290,7 @@ void GameScreen::reset(){
 
     if (isAIMode){
         superBot.stopThinking();
+        superBot.swapPlayer();
     }
 }
 
@@ -307,7 +308,7 @@ void GameScreen::update(Mouse &mouse){
     }
 
     if (!gameState.isEnd){
-        if (!isAIMode || gameState.turn == GameState::Turn::black){
+        if (!isAIMode || superBot.getTurn() != gameState.turn){
             updateStone(mouse);
         }
     }

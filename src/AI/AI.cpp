@@ -1,7 +1,10 @@
 #include <AI/AI.hpp>
 #include <iostream>
 
-AI::AI(GameState &_gameState) : gameState(_gameState) {}
+AI::AI(GameState &_gameState) : gameState(_gameState) {
+    static std::mt19937 rng(time(0)); 
+    botTurn = static_cast<GameState::Turn>(rng() & 1);
+}
 
 bool AI::isThinking(){
     return thinking;
@@ -60,7 +63,7 @@ Position AI::getRandomMove(GameState &gameState){
 
 int AI::getEvalScore(GameState &gameState){
     int score = gameState.minimaxScore();
-    if (!isBlack) score = -score;
+    if (static_cast<bool>(botTurn)) score = -score;
     return score;
 }
 
@@ -136,6 +139,19 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
     }
 
     return {bestScore, bestMove};
+}
+
+void AI::swapPlayer(){
+    if (botTurn == GameState::Turn::black){
+        botTurn = GameState::Turn::white;
+    }
+    else{
+        botTurn = GameState::Turn::black;
+    }
+}
+
+GameState::Turn AI::getTurn() const{
+    return botTurn;
 }
 
 //0: easy, 1: medium, 2: hard
