@@ -15,46 +15,48 @@ Settings::Settings(
     soundSlider(_font),
     musicSlider(_font),
     gameSound(_gameSound)
-    {}
+    {
+        float window_w = window.getSize().x;
+        float window_h = window.getSize().y;
 
+        //Buttons setPosition
+        stoneStyleButton.setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
+        boardStyleButton.setPosition({window_w/2, window_h/2 - space});
+        backButton.      setPosition({105.f, 50.f});
 
-void Settings::setBackground(){
+        //Buttons setSize
+        stoneStyleButton.setSize({650.f, 75.f});
+        boardStyleButton.setSize({650.f, 75.f});
+        backButton.      setSize({200.f, 60.f});
 
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
+        //Buttons setString
+        stoneStyleButton.setString("Stone Style");
+        boardStyleButton.setString("Board Style");
+        backButton      .setString("Back");
 
-    float scale = window_h/backgroundSprite.getTexture().getSize().y;
-    backgroundSprite.setScale({scale, scale});
+        //sliders setPosition
+        soundSlider.setPosition({window_w/2, window_h/2 + 2 * space + 75.f});
+        musicSlider.setPosition({window_w/2, window_h/2 + space});
 
-    float size_x = backgroundSprite.getTexture().getSize().x;
-    float size_y = backgroundSprite.getTexture().getSize().y;
-    
-    backgroundSprite.setOrigin({size_x/2, size_y/2});
-    backgroundSprite.setPosition({window_w/2, window_h/2});
+        //sliders setsize
+        soundSlider.setSize({650.f, 75.f});
+        musicSlider.setSize({650.f, 75.f});
 
-    window.draw(backgroundSprite);
-}
+        //setstring
+        soundSlider.setString("Sound");
+        musicSlider.setString("Music");
+        float scale = window_h/backgroundSprite.getTexture().getSize().y;
+        backgroundSprite.setScale({scale, scale});
+
+        float size_x = backgroundSprite.getTexture().getSize().x;
+        float size_y = backgroundSprite.getTexture().getSize().y;
+        
+        backgroundSprite.setOrigin({size_x/2, size_y/2});
+        backgroundSprite.setPosition({window_w/2, window_h/2});
+    }
+
 
 void Settings::updateButton(Mouse &mouse){
-    //window size
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    //Buttons setPosition
-    stoneStyleButton.setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
-    boardStyleButton.setPosition({window_w/2, window_h/2 - space});
-    backButton.      setPosition({105.f, 50.f});
-
-    //Buttons setSize
-    stoneStyleButton.setSize({650.f, 75.f});
-    boardStyleButton.setSize({650.f, 75.f});
-    backButton.      setSize({200.f, 60.f});
-
-    //Buttons setString
-    stoneStyleButton.setString("Stone Style");
-    boardStyleButton.setString("Board Style");
-    backButton      .setString("Back");
-
     //buttons update
     stoneStyleButton.update(mouse);
     boardStyleButton.update(mouse);
@@ -68,22 +70,6 @@ void Settings::updateScreenState(){
 }
 
 void Settings::updateSlider(Mouse &mouse){
-    //window size
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    //sliders setPosition
-    soundSlider.setPosition({window_w/2, window_h/2 + 2 * space + 75.f});
-    musicSlider.setPosition({window_w/2, window_h/2 + space});
-
-    //sliders setsize
-    soundSlider.setSize({650.f, 75.f});
-    musicSlider.setSize({650.f, 75.f});
-
-    //setstring
-    soundSlider.setString("Sound");
-    musicSlider.setString("Music");
-
     //update
     soundSlider.update(mouse);
     musicSlider.update(mouse);
@@ -95,6 +81,10 @@ void Settings::updateSounds(){
     gameSound["StoneMove"]   .setVolume(soundSlider.value);
     gameSound["StoneCapture"].setVolume(soundSlider.value);
     gameSound["Boom"]        .setVolume(soundSlider.value);
+}
+
+void Settings::setBackground(){
+    window.draw(backgroundSprite);
 }
 
 void Settings::draw(){

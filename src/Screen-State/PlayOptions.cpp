@@ -16,6 +16,10 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
     backgroundSprite(textures["Background"]),
     window(_window), 
     gameScreen(_gameScreen){
+        float window_w = window.getSize().x;
+        float window_h = window.getSize().y;
+        float space = 75.f;
+        
         pvpButton.  setString("Two Player - One Device");
         pvbButton.  setString("Player vs Bot  ");
         playButton. setString("Play");
@@ -45,42 +49,46 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
         chooseSizeText.setOutlineThickness(3.f);
         chooseSizeText.setOutlineColor(sf::Color::Black);
         alignText(chooseSizeText, 0.5f, 0.6f);
+
+        //setPosition
+        pvpButton.  setPosition({window_w/2, window_h/5});
+        pvbButton.  setPosition({window_w/2, window_h/5 + 1.5f*space});
+        button9x9  .setPosition({window_w/2, window_h/5 + space * 5.5f});
+        button13x13.setPosition({window_w/2, window_h/5 + space * 7});
+        button19x19.setPosition({window_w/2, window_h/5 + space * 8.5f});
+        backButton. setPosition({105.f, 50.f});
+        playButton. setPosition({window_w - 150.f, window_h - 80.f});
+
+        difficultyBox.setPosition({window_w/2 - 650.f/4, window_h/5 + space*3});
+        selectLevelButton.setPosition({window_w/2 + 650.f/4, window_h/5 + space*3});
+
+        chooseModeText.setPosition({window_w/2, window_h/5 - 70.f});
+        chooseSizeText.setPosition({window_w/2, window_h/5 + space*5.5f - 70.f});
+        
+
+        //Buttons setSize
+        pvpButton. setSize({650.f, 75.f});
+        pvbButton. setSize({650.f, 75.f});
+        backButton.setSize({200.f, 60.f});
+        playButton.setSize({200.f, 60.f});
+        button9x9 .setSize({650.f, 75.f});
+        button13x13.setSize({650.f, 75.f});
+        button19x19.setSize({650.f, 75.f});
+        difficultyBox.setSize({650.f/2, 75.f});
+        selectLevelButton.setSize({650.f/2 - 20.f, 75.f});
+
+        float scale = window_h/backgroundSprite.getTexture().getSize().y;
+        backgroundSprite.setScale({scale, scale});
+
+        float size_x = backgroundSprite.getTexture().getSize().x;
+        float size_y = backgroundSprite.getTexture().getSize().y;
+        
+        backgroundSprite.setOrigin({size_x/2, size_y/2});
+        backgroundSprite.setPosition({window_w/2, window_h/2});
+
     }
 
 void PlayOptions::updateButton(Mouse &mouse){
-    //window size
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    //Buttons setPosition
-    float space = 75.f;
-    
-    pvpButton.  setPosition({window_w/2, window_h/5});
-    pvbButton.  setPosition({window_w/2, window_h/5 + 1.5f*space});
-    button9x9  .setPosition({window_w/2, window_h/5 + space * 5.5f});
-    button13x13.setPosition({window_w/2, window_h/5 + space * 7});
-    button19x19.setPosition({window_w/2, window_h/5 + space * 8.5f});
-    backButton. setPosition({105.f, 50.f});
-    playButton. setPosition({window_w - 150.f, window_h - 80.f});
-    difficultyBox.setPosition({window_w/2 - 650.f/4, window_h/5 + space*3});
-    selectLevelButton.setPosition({window_w/2 + 650.f/4, window_h/5 + space*3});
-    
-
-    //Buttons setSize
-    pvpButton. setSize({650.f, 75.f});
-    pvbButton. setSize({650.f, 75.f});
-    backButton.setSize({200.f, 60.f});
-    playButton.setSize({200.f, 60.f});
-    button9x9 .setSize({650.f, 75.f});
-    button13x13.setSize({650.f, 75.f});
-    button19x19.setSize({650.f, 75.f});
-    difficultyBox.setSize({650.f/2, 75.f});
-    selectLevelButton.setSize({650.f/2 - 20.f, 75.f});
-
-    //Text setPosition
-    chooseModeText.setPosition({window_w/2, window_h/5 - 70.f});
-    chooseSizeText.setPosition({window_w/2, window_h/5 + space*5.5f - 70.f});
-
     //buttons update
     pvpButton. update(mouse);
     pvbButton. update(mouse);
@@ -162,20 +170,6 @@ void PlayOptions::drawButton(){
 }
 
 void PlayOptions::setBackground(){
-
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    float scale = window_h/backgroundSprite.getTexture().getSize().y;
-    backgroundSprite.setScale({scale, scale});
-
-    float size_x = backgroundSprite.getTexture().getSize().x;
-    float size_y = backgroundSprite.getTexture().getSize().y;
-    
-    backgroundSprite.setOrigin({size_x/2, size_y/2});
-    backgroundSprite.setPosition({window_w/2, window_h/2});
-
-    
     window.draw(backgroundSprite);
 }
 

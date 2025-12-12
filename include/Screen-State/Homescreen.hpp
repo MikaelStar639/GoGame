@@ -16,7 +16,6 @@ private:
     sf::Text         Gamename;
     sf::RenderWindow &window;
 
-    void UpdateGamenamePosition();
     void setBackground();
     void updateButton(Mouse &mouse);
     void updateScreenState();

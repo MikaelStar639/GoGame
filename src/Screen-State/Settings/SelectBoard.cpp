@@ -15,50 +15,40 @@ SelectBoard::SelectBoard(
     board(_board),
     backgroundSprite(_gameTexture["Background"])
     {
+        float window_w = window.getSize().x;
+        float window_h = window.getSize().y;
+        DarkWoodButton. setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
+        PlainWoodButton.setPosition({window_w/2, window_h/2 + space});
+        LightWoodButton.setPosition({window_w/2, window_h/2 - space});
+        backButton.     setPosition({105.f, 50.f});
+
+        DarkWoodButton.  setSize({650.f, 75.f});
+        LightWoodButton. setSize({650.f, 75.f});
+        PlainWoodButton. setSize({650.f, 75.f});
+        backButton.      setSize({200.f, 60.f});
+
+        DarkWoodButton. setString("Dark Wood");
+        LightWoodButton.setString("Light Wood");
+        PlainWoodButton.setString("Plain Wood");
+        backButton.     setString("Back");
+
+        float scale = window_h/backgroundSprite.getTexture().getSize().y;
+        backgroundSprite.setScale({scale, scale});
+
+        float size_x = backgroundSprite.getTexture().getSize().x;
+        float size_y = backgroundSprite.getTexture().getSize().y;
+        
+        backgroundSprite.setOrigin({size_x/2, size_y/2});
+        backgroundSprite.setPosition({window_w/2, window_h/2});
+
         PlainWoodButton.setChosen();
     }
 
-
 void SelectBoard::setBackground(){
-
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    float scale = window_h/backgroundSprite.getTexture().getSize().y;
-    backgroundSprite.setScale({scale, scale});
-
-    float size_x = backgroundSprite.getTexture().getSize().x;
-    float size_y = backgroundSprite.getTexture().getSize().y;
-    
-    backgroundSprite.setOrigin({size_x/2, size_y/2});
-    backgroundSprite.setPosition({window_w/2, window_h/2});
-
     window.draw(backgroundSprite);
 }
 
 void SelectBoard::updateButton(Mouse &mouse){
-    //window size
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    //Buttons setPosition
-    DarkWoodButton.setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
-    LightWoodButton.setPosition({window_w/2, window_h/2 - space});
-    PlainWoodButton.setPosition({window_w/2, window_h/2 + space});
-    backButton.      setPosition({105.f, 50.f});
-
-    //Buttons setSize
-    DarkWoodButton.  setSize({650.f, 75.f});
-    LightWoodButton. setSize({650.f, 75.f});
-    PlainWoodButton. setSize({650.f, 75.f});
-    backButton.      setSize({200.f, 60.f});
-
-    //Buttons setString
-    DarkWoodButton. setString("Dark Wood");
-    LightWoodButton.setString("Light Wood");
-    PlainWoodButton.setString("Plain Wood");
-    backButton      .setString("Back");
-
     //buttons update
     DarkWoodButton. update(mouse);
     LightWoodButton.update(mouse);

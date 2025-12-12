@@ -14,51 +14,45 @@ SelectStone::SelectStone(
     gamescreen(_gamescreen),
     backgroundSprite(_gameTexture["Background"])
     {
+        float window_w = window.getSize().x;
+        float window_h = window.getSize().y;
+
+        //Buttons setPosition
+        ClassicButton.setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
+        CartoonButton.setPosition({window_w/2, window_h/2 - space});
+        backButton.   setPosition({105.f, 50.f});
+
+        //Buttons setSize
+        ClassicButton.setSize({650.f, 75.f});
+        CartoonButton.setSize({650.f, 75.f});
+        backButton.   setSize({200.f, 60.f});
+
+        //Buttons setString
+        ClassicButton.  setString("Classic");
+        CartoonButton.  setString("Pixel");
+        backButton.     setString("Back");
+
         ClassicButton.setChosen();
+
+        float scale = window_h/backgroundSprite.getTexture().getSize().y;
+        backgroundSprite.setScale({scale, scale});
+
+        float size_x = backgroundSprite.getTexture().getSize().x;
+        float size_y = backgroundSprite.getTexture().getSize().y;
+        
+        backgroundSprite.setOrigin({size_x/2, size_y/2});
+        backgroundSprite.setPosition({window_w/2, window_h/2});
     }
 
-
 void SelectStone::setBackground(){
-
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    float scale = window_h/backgroundSprite.getTexture().getSize().y;
-    backgroundSprite.setScale({scale, scale});
-
-    float size_x = backgroundSprite.getTexture().getSize().x;
-    float size_y = backgroundSprite.getTexture().getSize().y;
-    
-    backgroundSprite.setOrigin({size_x/2, size_y/2});
-    backgroundSprite.setPosition({window_w/2, window_h/2});
-
     window.draw(backgroundSprite);
 }
 
 void SelectStone::updateButton(Mouse &mouse){
-    //window size
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    //Buttons setPosition
-    ClassicButton.setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
-    CartoonButton.setPosition({window_w/2, window_h/2 - space});
-    backButton.   setPosition({105.f, 50.f});
-
-    //Buttons setSize
-    ClassicButton.  setSize({650.f, 75.f});
-    CartoonButton. setSize({650.f, 75.f});
-    backButton.      setSize({200.f, 60.f});
-
-    //Buttons setString
-    ClassicButton.  setString("Classic");
-    CartoonButton.  setString("Pixel");
-    backButton.     setString("Back");
-
     //buttons update
-    ClassicButton. update(mouse);
+    ClassicButton.update(mouse);
     CartoonButton.update(mouse);
-    backButton.     update(mouse);
+    backButton.   update(mouse);
 }
 
 void SelectStone::updateScreenState(){

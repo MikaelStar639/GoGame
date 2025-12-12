@@ -1,11 +1,12 @@
 #include "UI/Game-Elements/Board.hpp"
+#include <iostream>
 
 // default constructor
 Board::Board(sf::Font &_font, TextureManager& _gameTexture) :
     font(_font),
     gridNum(19),
     thickness(2.f),
-    position({50.f, 100.f}),
+    position({240.f, 100.f}),
     size({750.f, 750.f}),
     textures(_gameTexture),
     boardSprite(_gameTexture["PlainWood"])
@@ -17,7 +18,7 @@ Board::Board(sf::Font &_font, TextureManager& _gameTexture) :
     horizontalLines.setSize({size.x, thickness});
     intersections.  setSize({10.f, 10.f});
 
-    boardSprite.    setPosition({10.f, 60.f});
+    boardSprite.    setPosition({200.f, 60.f});
 
     verticalLines.  setFillColor(sf::Color::Black);
     horizontalLines.setFillColor(sf::Color::Black);
@@ -53,14 +54,6 @@ Board::Board(sf::Font &_font, TextureManager& _gameTexture) :
         alignText(labelnum[i], 0.5f, 0.5f);
         alignText(labelchar[i], 0.5f, 0.5f);
     }
-}
-
-// set position of the board (top-left corner not including )
-void Board::setPosition(sf::Vector2f _position) {
-    _position.x-=40.f;
-    _position.y-=40.f;
-    position = _position;
-    boardSprite.setPosition(position);
 }
 
 // draw the board
@@ -130,7 +123,6 @@ void Board::ChangeStyle(BoardStyle _state)
     {
         boardSprite.setTexture(textures["DarkWood"]);
         _color = sf::Color(163,152,24);
-        // _color = sf::Color::Yellow;
     }
 
     if (_state == BoardStyle::PlainWood)
@@ -138,13 +130,11 @@ void Board::ChangeStyle(BoardStyle _state)
         boardSprite.setTexture(textures["PlainWood"]);
         _color = sf::Color::Black;
     }
-    boardSprite.setPosition({10.f, 60.f});
         verticalLines.  setFillColor(_color);
         horizontalLines.setFillColor(_color);
         intersections.  setFillColor(_color);
         for (int i = 0; i<gridNum; i++)
         {
-            // std::cout<<i<<'\n';
             labelchar[i].setFillColor(_color);
             labelnum[i]. setFillColor(_color);
         }
@@ -158,7 +148,7 @@ void Board::changeGridSize(int _gridNum)
     if (gridNum == 19) size = {730.f, 730.f};
     else if (gridNum == 13) size = {700.f, 700.f};
     else if (gridNum == 9) size = {670.f, 670.f};
-    position = {10.f + (830.f - size.x)/2, 60.f + (830.f - size.y)/2};
+    position = {200.f + (830.f - size.x)/2, 60.f + (830.f - size.y)/2};
     // initialize grid coordinates
     gap = size.x / (gridNum - 1);
     

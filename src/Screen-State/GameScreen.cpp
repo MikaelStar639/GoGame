@@ -20,7 +20,34 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     gameState(),
     endGame(_font),
     superBot(gameState)
-    {
+{
+
+    float window_w = window.getSize().x;
+    float window_h = window.getSize().y;
+    float space = 40.f + 75.f;
+    
+    //Buttons setPosition
+    passButton  .setPosition({window_w * 6/7, window_h/2});
+    undoButton  .setPosition({window_w * 6/7, window_h/2 + space});
+    redoButton  .setPosition({window_w * 6/7, window_h/2 + 2 * space});  
+    resetButton. setPosition({window_w * 6/7, window_h/2 + 3 * space});
+    turnIndicator.setPosition({window_w * 6/7, window_h/2 - 3 * space});
+    blackScoreBoard.setPosition({window_w * 6/7, window_h/2 - 2 * space});
+    whiteScoreBoard.setPosition({window_w * 6/7, window_h/2 - space});
+    backButton. setPosition({85.f, 30.f});
+
+    
+    
+    //Buttons setSize
+    redoButton  .setSize({300.f, 75.f});
+    undoButton  .setSize({300.f, 75.f});
+    passButton  .setSize({300.f, 75.f});
+    resetButton .setSize({300.f, 75.f});
+    turnIndicator.setSize({300.f, 75.f});
+    backButton.setSize({150.f, 50.f});
+    blackScoreBoard.setSize({300.f, 75.f});
+    whiteScoreBoard.setSize({300.f, 75.f});
+    
 
     //Button String
     backButton. setString("Menu");
@@ -28,6 +55,15 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     undoButton. setString("Undo");
     passButton. setString("Pass");
     resetButton.setString("Reset Game");
+
+    float scale = window_h/backgroundSprite.getTexture().getSize().y;
+    backgroundSprite.setScale({scale, scale});
+
+    float size_x = backgroundSprite.getTexture().getSize().x;
+    float size_y = backgroundSprite.getTexture().getSize().y;
+    
+    backgroundSprite.setOrigin({size_x/2, size_y/2});
+    backgroundSprite.setPosition({window_w/2, window_h/2});
 
     //vector:
     grid.resize(board.gridNum);
@@ -42,19 +78,6 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
 }
 
 void GameScreen::setBackground(){
-
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    float scale = window_h/backgroundSprite.getTexture().getSize().y;
-    backgroundSprite.setScale({scale, scale});
-
-    float size_x = backgroundSprite.getTexture().getSize().x;
-    float size_y = backgroundSprite.getTexture().getSize().y;
-    
-    backgroundSprite.setOrigin({size_x/2, size_y/2});
-    backgroundSprite.setPosition({window_w/2, window_h/2});
-
     window.draw(backgroundSprite);
 }
 
@@ -88,39 +111,11 @@ void GameScreen::drawScoreBoard(){
 }
 
 void GameScreen::updateFeatureButton(Mouse &mouse){
-    //window size
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    //Buttons setPosition
-    backButton.setPosition({85.f, 30.f});
-
-    //Buttons setSize
-    backButton.setSize({150.f, 50.f});
-
     //Buttons update
     backButton.update(mouse);
 }
 
 void GameScreen::updateGameButton(Mouse &mouse){
-    //window size
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    float space = 40.f + 75.f;
-
-    //Buttons setPosition
-    passButton  .setPosition({window_w * 6/7, window_h/2});
-    undoButton  .setPosition({window_w * 6/7, window_h/2 + space});
-    redoButton  .setPosition({window_w * 6/7, window_h/2 + 2 * space});  
-    resetButton. setPosition({window_w * 6/7, window_h/2 + 3 * space});
-    
-    //Buttons setSize
-    redoButton  .setSize({300.f, 75.f});
-    undoButton  .setSize({300.f, 75.f});
-    passButton  .setSize({300.f, 75.f});
-    resetButton .setSize({300.f, 75.f});
-
     //Buttons update
     redoButton .update(mouse);
     undoButton .update(mouse);
@@ -221,26 +216,10 @@ void GameScreen::updateAI(){
 }
 
 void GameScreen::updateIndicator(){
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-    float space = 40.f + 75.f;
-    turnIndicator.setSize({300.f, 75.f});
-    turnIndicator.setPosition({window_w * 6/7, window_h/2 - 3 * space});
     turnIndicator.updateTurn(gameState);
 }
 
 void GameScreen::updateScoreBoard(){
-
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-    float space = 40.f + 75.f;
-
-    blackScoreBoard.setSize({300.f, 75.f});
-    whiteScoreBoard.setSize({300.f, 75.f});
-
-    blackScoreBoard.setPosition({window_w * 6/7, window_h/2 - 2 * space});
-    whiteScoreBoard.setPosition({window_w * 6/7, window_h/2 - space});
-
     auto [blackScore, whiteScore] = gameState.getScore();
     blackScoreBoard.setScore(blackScore);
     whiteScoreBoard.setScore(whiteScore);
@@ -341,8 +320,8 @@ void GameScreen::render(Mouse &mouse){
 }
 
 void GameScreen::run(){
-
-    nextState = screenState::GameScreen;
+    
+    nextState = screenState::GameScreen;    
 
     //mouse
     Mouse mouse;

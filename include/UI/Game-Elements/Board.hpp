@@ -9,6 +9,7 @@ private:
     sf::Font &font;
     sf::Sprite boardSprite;
     TextureManager &textures;
+    sf::Vector2f position;
 
     sf::RectangleShape horizontalLines;
     sf::RectangleShape verticalLines;
@@ -24,7 +25,6 @@ public:
     };
     
     sf::Vector2f size;
-    sf::Vector2f position;
 
     float thickness;
     float gap;
@@ -34,7 +34,6 @@ public:
     // constructor 
     Board(sf::Font &font, TextureManager &_gameTexture);
     // set position of the board
-    void setPosition(sf::Vector2f _position);
     void draw(sf::RenderWindow &window);
     // Setting Board Style
     void changeGridSize(int _gridNum);

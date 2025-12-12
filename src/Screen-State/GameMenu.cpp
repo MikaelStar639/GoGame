@@ -15,29 +15,38 @@ GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, TextureManager &_g
         saveGameButton.setString("Save Game");
         loadGameButton.setString("Load Game");
         backButton.    setString("Back");
+
+        float window_w = window.getSize().x;
+        float window_h = window.getSize().y;
+
+        //Buttons setPosition
+        float space = 60.f;
+        
+        newGameButton. setPosition({window_w/2, window_h/2 - 3 * space});
+        continueButton.setPosition({window_w/2, window_h/2 - space});
+        saveGameButton.setPosition({window_w/2, window_h/2 + space});
+        loadGameButton.setPosition({window_w/2, window_h/2 + 3 * space});
+        backButton.    setPosition({105.f, 50.f});
+
+        //Buttons setSize
+        newGameButton. setSize({650.f, 75.f});
+        continueButton.setSize({650.f, 75.f});
+        saveGameButton.setSize({650.f, 75.f});
+        loadGameButton.setSize({650.f, 75.f});
+        backButton.    setSize({200.f, 60.f});
+
+        float scale = window_h/backgroundSprite.getTexture().getSize().y;
+        backgroundSprite.setScale({scale, scale});
+
+        float size_x = backgroundSprite.getTexture().getSize().x;
+        float size_y = backgroundSprite.getTexture().getSize().y;
+        
+        backgroundSprite.setOrigin({size_x/2, size_y/2});
+        backgroundSprite.setPosition({window_w/2, window_h/2});
+
 }
 
 void GameMenu::updateButton(Mouse &mouse){
-    //window size
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    //Buttons setPosition
-    float space = 60.f;
-    
-    newGameButton. setPosition({window_w/2, window_h/2 - 3 * space});
-    continueButton.setPosition({window_w/2, window_h/2 - space});
-    saveGameButton.setPosition({window_w/2, window_h/2 + space});
-    loadGameButton.setPosition({window_w/2, window_h/2 + 3 * space});
-    backButton.    setPosition({105.f, 50.f});
-
-    //Buttons setSize
-    newGameButton. setSize({650.f, 75.f});
-    continueButton.setSize({650.f, 75.f});
-    saveGameButton.setSize({650.f, 75.f});
-    loadGameButton.setSize({650.f, 75.f});
-    backButton.    setSize({200.f, 60.f});
-
     //buttons update
     newGameButton .update(mouse);
     continueButton.update(mouse);
@@ -67,21 +76,7 @@ void GameMenu::drawButton(){
     backButton    .draw(window);
 }
 
-void GameMenu::setBackground(){
-
-    float window_w = window.getSize().x;
-    float window_h = window.getSize().y;
-
-    float scale = window_h/backgroundSprite.getTexture().getSize().y;
-    backgroundSprite.setScale({scale, scale});
-
-    float size_x = backgroundSprite.getTexture().getSize().x;
-    float size_y = backgroundSprite.getTexture().getSize().y;
-    
-    backgroundSprite.setOrigin({size_x/2, size_y/2});
-    backgroundSprite.setPosition({window_w/2, window_h/2});
-
-    
+void GameMenu::setBackground(){  
     window.draw(backgroundSprite);
 }
 
@@ -95,7 +90,6 @@ void GameMenu::run(){
     while (window.isOpen()){
         handleEvent(window);
 
-        //Background
         window.clear();
         setBackground();
 
