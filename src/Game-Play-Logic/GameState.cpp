@@ -122,6 +122,9 @@ bool GameState::canCapture(){
 #include <iostream>
 
 void GameState::RemoveCapturedStones(HistoryState& historyState) {
+
+    historyState.capturedStones.clear();
+    
     // also construct captured stones list for history state
     Stone::State opponent = (turn == Turn::black) ? Stone::State::white : Stone::State::black;
     std::vector<std::pair<int, int>> toDelete;
@@ -449,7 +452,7 @@ void GameState::addVirtualMove(int y, int x){
     if (x != -1){
         currentState.newStone.y = y;
         currentState.newStone.x = x;
-        currentState.isPassed = false; // Đảm bảo chắc chắn
+        currentState.isPassed = false; 
         
         RemoveCapturedStones(currentState); 
     }

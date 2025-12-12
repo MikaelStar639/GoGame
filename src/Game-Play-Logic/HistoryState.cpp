@@ -1,6 +1,8 @@
 #include "Game-Play-Logic/HistoryState.hpp"
 
-HistoryState::HistoryState() {}
+HistoryState::HistoryState() {
+    capturedStones.clear();
+}
 
 HistoryState& History::operator[](int id) {
     return data[id];
@@ -17,4 +19,5 @@ HistoryState History::last(){
 void History::reset(){
     index = -1;
     undoCount = 0;
+    data.clear();
 }
