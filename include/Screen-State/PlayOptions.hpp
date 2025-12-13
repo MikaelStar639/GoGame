@@ -29,6 +29,7 @@ private:
     void updateButton(Mouse &mouse);
     void drawButton();
     void updateScreenState();
+    void ModeButtonReset();
 
 public:
     PlayOptions(sf::Font &font, sf::RenderWindow &window, TextureManager &textures, GameScreen &gameScreen);

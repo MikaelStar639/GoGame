@@ -320,7 +320,7 @@ bool GameState::isLoadGameValid(std::string _address){
     return true;
 }
 
-void GameState::load(std::string _address){
+void GameState::load(std::string _address, bool &isAIMode, int &level){
     std::ifstream fin(_address);
 
     if (fin.peek() == std::ifstream::traits_type::eof()){
@@ -335,7 +335,7 @@ void GameState::load(std::string _address){
     //* current state:
     //* turn, lastmovePass, isEnd, grid
     bool _turn;
-    fin >> Size >> _turn >> lastMovePass >> isEnd;
+    fin >> Size >> isAIMode >> level >> _turn >> lastMovePass >> isEnd;
     turn = static_cast<Turn>(_turn);
     for (int y = 0; y < Size; ++y){
         for (int x = 0; x < Size; ++x){
@@ -365,12 +365,12 @@ void GameState::load(std::string _address){
     fin.close();
 }
 
-void GameState::save(std::string _address){
+void GameState::save(std::string _address, bool isAIMode, int level){
     std::ofstream fout(_address);
 
     //* current state:
     //* turn, lastmovePass, isEnd, grid
-    fout << Size<<' ';
+    fout << Size<<' '<<isAIMode<<' '<<level<<'\n';
     fout << static_cast<int>(turn) << ' ' << lastMovePass << ' ' << isEnd << '\n';
     for (int y = 0; y < Size; ++y){
         for (int x = 0; x < Size; ++x){

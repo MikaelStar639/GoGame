@@ -78,6 +78,7 @@ void GameMenu::updateGameScreen(){
 void GameMenu::updateScreenState(){
     if (newGameButton. onRelease){
         nextState = screenState::PlayOptions;
+        gameScreen.isAIMode = false;
         gameScreen.reset();
     }
     if (continueButton.onRelease) nextState = screenState::GameScreen;

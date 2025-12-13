@@ -40,6 +40,9 @@ public:
     bool isPressed = false;
     bool onPress   = false;
     bool onRelease = false;
+    bool isChosen  = false;
+
+    bool isChosenButton() const { return isChosen; }
 
     void update(Mouse &mouse);
     void draw(sf::RenderWindow& window);

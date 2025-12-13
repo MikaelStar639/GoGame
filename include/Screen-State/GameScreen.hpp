@@ -6,6 +6,7 @@
 #include "UI/Game-Elements/Stone.hpp"
 #include "UI/Game-Elements/TurnIndicator.hpp"
 #include "UI/Game-Elements/ScoreBoard.hpp"
+#include "UI/InfoBox.hpp"
 
 #include "Screen-State/ScreenState.hpp"
 #include "Screen-State/EndGame.hpp"
@@ -47,6 +48,7 @@ public:
 
     //* AI
     bool isAIMode = false;
+    int level = 1;
     void setAIDifficulty(int level);
 
     
@@ -58,10 +60,11 @@ private:
     Button passButton;
     Button resetButton;
 
-    //Game indicator & Score Board:
+    //Game indicator & Score Board, Bot difficulty:
     TurnIndicator turnIndicator;
     ScoreBoard blackScoreBoard;
     ScoreBoard whiteScoreBoard;
+    InfoBox difficultyBox;
 
     //Game Elements
     int Size = 19;

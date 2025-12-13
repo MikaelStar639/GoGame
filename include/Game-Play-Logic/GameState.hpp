@@ -49,8 +49,8 @@ public:
     //* load/save game
     bool isFileEmpty = true;
     bool isLoadGameValid(std::string _address);
-    void load(std::string _address);
-    void save(std::string _address);
+    void load(std::string _address, bool &isAIMode, int &level);
+    void save(std::string _address, bool isAIMode, int level);
 
     //* AI support
     std::vector<Position> getPossibleMove();

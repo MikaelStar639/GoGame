@@ -13,6 +13,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     board       (_board),
     turnIndicator(_font),
     textures(_gameTexture),
+    difficultyBox(_font),
     backgroundSprite(_gameTexture["Background"]),
     blackScoreBoard(_font, ScoreBoard::Player::black),
     whiteScoreBoard(_font, ScoreBoard::Player::white),
@@ -31,9 +32,11 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     undoButton  .setPosition({1407.f, window_h/2 - 0.5f* space});
     redoButton  .setPosition({1407.f, window_h/2 + 0.5f* space});  
     resetButton. setPosition({1407.f, window_h/2 + 1.5f* space});
-    turnIndicator.setPosition({192.f, window_h/2 - space});
-    blackScoreBoard.setPosition({192.f, window_h/2});
-    whiteScoreBoard.setPosition({192.f, window_h/2 + space});
+    turnIndicator.setPosition({192.f, window_h/2 - 1.5f*space});
+    blackScoreBoard.setPosition({192.f, window_h/2 - 0.5f*space});
+    whiteScoreBoard.setPosition({192.f, window_h/2 + 0.5f*space});
+    difficultyBox.setPosition({192.f, window_h/2 + 1.5f*space});
+
     backButton.    setPosition({105.f, 50.f});
 
     
@@ -55,6 +58,8 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     undoButton. setString("Undo");
     passButton. setString("Pass");
     resetButton.setString("Reset Game");
+    difficultyBox.setText("Level:");
+    difficultyBox.setState("Normal");
 
     float scale = window_h/backgroundSprite.getTexture().getSize().y;
     backgroundSprite.setScale({scale, scale});
@@ -102,6 +107,7 @@ void GameScreen::drawStone(){
 }
 
 void GameScreen::drawIndicator(){
+    if (isAIMode) difficultyBox.draw(window);
     turnIndicator.draw(window);
 }
 
@@ -216,6 +222,15 @@ void GameScreen::updateAI(){
 }
 
 void GameScreen::updateIndicator(){
+    if (level == 0){
+        difficultyBox.setState("Easy");
+    }
+    else if (level == 1){
+        difficultyBox.setState("Normal");
+    }
+    else if (level == 2){
+        difficultyBox.setState("Hard");
+    }
     turnIndicator.updateTurn(gameState);
 }
 
@@ -337,13 +352,13 @@ void GameScreen::run(){
 }
 
 void GameScreen::loadGame(std::string _address){
-    gameState.load(_address);
+    gameState.load(_address, isAIMode, level);
     changeBoardSize(gameState.Size);
     SyncStoneWithGameState();
 }
 
 void GameScreen::saveGame(std::string _address){
-    gameState.save(_address);
+    gameState.save(_address, isAIMode, level);
 }
 
 bool GameScreen::isLoadGameValid(std::string _address){
@@ -427,6 +442,7 @@ Position GameScreen::to_cord(sf::Vector2f position){
     return {-1, -1};
 }
 
-void GameScreen::setAIDifficulty(int level){
-    superBot.setDifficulty(level);
+void GameScreen::setAIDifficulty(int _level){
+    level = _level;
+    superBot.setDifficulty(_level);
 }
