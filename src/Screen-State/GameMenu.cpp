@@ -66,9 +66,8 @@ void GameMenu::updateButton(Mouse &mouse){
 }
 
 void GameMenu::updateGameScreen(){
-    if (newGameButton. onRelease)
+    if (gameScreen.isLoaded)
     {
-        gameScreen.reset();
         saveGameButton.setValid(true);
         continueButton.setValid(true);
     }
@@ -77,9 +76,15 @@ void GameMenu::updateGameScreen(){
 }
 
 void GameMenu::updateScreenState(){
-    if (newGameButton. onRelease) nextState = screenState::PlayOptions;
+    if (newGameButton. onRelease){
+        nextState = screenState::PlayOptions;
+        gameScreen.reset();
+    }
     if (continueButton.onRelease) nextState = screenState::GameScreen;
-    if (loadGameButton.onRelease) nextState = screenState::GameScreen;
+    if (loadGameButton.onRelease){
+        nextState = screenState::GameScreen;
+        gameScreen.isLoaded = true;
+    }
     if (backButton.    onRelease) nextState = screenState::Exit;
 }
 

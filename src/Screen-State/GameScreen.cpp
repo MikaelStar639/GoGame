@@ -359,7 +359,7 @@ void GameScreen::ChangeStoneStyle(StoneStyle style)
             if (style == StoneStyle::Classic)
                 grid[y][x].ChangeSprite(textures["BlackStone"],  textures["WhiteStone"]);
 
-            if (style == StoneStyle::Cartoon) 
+            if (style == StoneStyle::Pixel) 
                 grid[y][x].ChangeSprite(textures["PixelatedBlackStone"], textures["PixelatedWhiteStone"]);
         }
     }

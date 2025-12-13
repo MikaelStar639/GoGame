@@ -20,7 +20,7 @@ class GameScreen : public Screen{
 public:
     enum class StoneStyle{
         Classic,
-        Cartoon
+        Pixel
     };
 
     GameScreen(sf::Font &_font, sf::RenderWindow &_window,
@@ -29,6 +29,7 @@ public:
                 Board &_board);
 
     //* Load/save Game
+    bool isLoaded = false;
     bool isLoadGameValid(std::string _address);
     void loadGame(std::string _address);
     void saveGame(std::string _address);

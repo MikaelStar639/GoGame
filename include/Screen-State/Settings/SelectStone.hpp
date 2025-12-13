@@ -8,7 +8,7 @@ class SelectStone: public Screen{
 private:
     Button backButton;
     Button ClassicButton;
-    Button CartoonButton;
+    Button PixelButton;
 
     GameScreen &gamescreen;
 
@@ -27,7 +27,7 @@ private:
 public:
     enum class SelectStoneState{
         Classic,
-        Cartoon,
+        Pixel,
     };
 
     SelectStone(sf::Font &font, sf::RenderWindow &window, 

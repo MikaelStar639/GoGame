@@ -102,8 +102,11 @@ void PlayOptions::updateButton(Mouse &mouse){
 
 void PlayOptions::updateScreenState(){
     if (backButton.onRelease) nextState = screenState::Exit;
-    if (playButton.onRelease) nextState = screenState::GameScreen;
-
+    if (playButton.onRelease)
+    {
+        nextState = screenState::GameScreen;
+        gameScreen.isLoaded = true;
+    }
     if (pvpButton .onRelease)
     {
         gameScreen.isAIMode = false;

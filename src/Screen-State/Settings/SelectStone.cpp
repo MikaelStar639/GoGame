@@ -9,7 +9,7 @@ SelectStone::SelectStone(
     
     backButton   (_font),
     ClassicButton(_font),
-    CartoonButton(_font),
+    PixelButton(_font),
     window(_window),
     gamescreen(_gamescreen),
     backgroundSprite(_gameTexture["Background"])
@@ -19,20 +19,22 @@ SelectStone::SelectStone(
 
         //Buttons setPosition
         ClassicButton.setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
-        CartoonButton.setPosition({window_w/2, window_h/2 - space});
+        PixelButton.setPosition({window_w/2, window_h/2 - space});
         backButton.   setPosition({105.f, 50.f});
 
         //Buttons setSize
         ClassicButton.setSize({650.f, 75.f});
-        CartoonButton.setSize({650.f, 75.f});
+        PixelButton.setSize({650.f, 75.f});
         backButton.   setSize({200.f, 60.f});
 
         //Buttons setString
         ClassicButton.  setString("Classic");
-        CartoonButton.  setString("Pixel");
+        PixelButton.  setString("Pixel");
         backButton.     setString("Back");
 
-        ClassicButton.setChosen();
+        PixelButton.setChosen();
+        gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Pixel);
+        gamescreen.currentStoneStyle = GameScreen::StoneStyle::Pixel;
 
         float scale = window_h/backgroundSprite.getTexture().getSize().y;
         backgroundSprite.setScale({scale, scale});
@@ -51,7 +53,7 @@ void SelectStone::setBackground(){
 void SelectStone::updateButton(Mouse &mouse){
     //buttons update
     ClassicButton.update(mouse);
-    CartoonButton.update(mouse);
+    PixelButton.update(mouse);
     backButton.   update(mouse);
 }
 
@@ -65,13 +67,13 @@ void SelectStone::updateStyle(){
         gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Classic);
         gamescreen.currentStoneStyle = GameScreen::StoneStyle::Classic;
         ClassicButton.setChosen();        
-        CartoonButton.setDefaultColor();
+        PixelButton.setDefaultColor();
     }
-    if (CartoonButton.onRelease)
+    if (PixelButton.onRelease)
     {
-        gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Cartoon);
-        gamescreen.currentStoneStyle = GameScreen::StoneStyle::Cartoon;
-        CartoonButton.setChosen();
+        gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Pixel);
+        gamescreen.currentStoneStyle = GameScreen::StoneStyle::Pixel;
+        PixelButton.setChosen();
         ClassicButton.setDefaultColor();        
     }
 }
@@ -79,7 +81,7 @@ void SelectStone::updateStyle(){
 void SelectStone::draw(){
     backButton   .draw(window);
     ClassicButton.draw(window);
-    CartoonButton.draw(window);
+    PixelButton.draw(window);
 }
 
 void SelectStone::run(){
