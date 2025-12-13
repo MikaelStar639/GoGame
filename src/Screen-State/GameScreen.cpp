@@ -27,14 +27,14 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     float space = 40.f + 75.f;
     
     //Buttons setPosition
-    passButton  .setPosition({window_w * 6/7, window_h/2});
-    undoButton  .setPosition({window_w * 6/7, window_h/2 + space});
-    redoButton  .setPosition({window_w * 6/7, window_h/2 + 2 * space});  
-    resetButton. setPosition({window_w * 6/7, window_h/2 + 3 * space});
-    turnIndicator.setPosition({window_w * 6/7, window_h/2 - 3 * space});
-    blackScoreBoard.setPosition({window_w * 6/7, window_h/2 - 2 * space});
-    whiteScoreBoard.setPosition({window_w * 6/7, window_h/2 - space});
-    backButton. setPosition({85.f, 30.f});
+    passButton  .setPosition({1407.f, window_h/2 - 1.5f*space});
+    undoButton  .setPosition({1407.f, window_h/2 - 0.5f* space});
+    redoButton  .setPosition({1407.f, window_h/2 + 0.5f* space});  
+    resetButton. setPosition({1407.f, window_h/2 + 1.5f* space});
+    turnIndicator.setPosition({192.f, window_h/2 - space});
+    blackScoreBoard.setPosition({192.f, window_h/2});
+    whiteScoreBoard.setPosition({192.f, window_h/2 + space});
+    backButton.    setPosition({105.f, 50.f});
 
     
     
@@ -44,7 +44,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     passButton  .setSize({300.f, 75.f});
     resetButton .setSize({300.f, 75.f});
     turnIndicator.setSize({300.f, 75.f});
-    backButton.setSize({150.f, 50.f});
+    backButton.setSize({200.f, 60.f});
     blackScoreBoard.setSize({300.f, 75.f});
     whiteScoreBoard.setSize({300.f, 75.f});
     
