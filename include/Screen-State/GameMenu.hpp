@@ -5,7 +5,7 @@
 #include "Screen-State/GameScreen.hpp"
 #include "Assets-Manager/TextureManager.hpp"
 
-class GameMenu{
+class GameMenu : public Screen{
 private:
     Button newGameButton; 
     Button continueButton;
@@ -27,6 +27,5 @@ private:
     
 public:
     GameMenu(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture, GameScreen &gameScreen);
-    screenState nextState = screenState::GameMenu;
     void run();
 };

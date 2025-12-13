@@ -6,7 +6,7 @@
 #include "Screen-State/ScreenState.hpp"
 #include "Assets-Manager/AssetsManager.hpp"
 
-class Settings{
+class Settings: public Screen{
 private:
     Button backButton;
     Button stoneStyleButton;
@@ -31,6 +31,5 @@ private:
 
 public:
     Settings(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture, SoundManager &gameSound);
-    screenState nextState = screenState::Settings;
     void run();
 };

@@ -26,6 +26,14 @@ Game::Game() : window(sf::VideoMode({1600, 900}), "GoGame", sf::Style::Default ^
     window.setIcon(icon);
     screenStateStack.push({screenState::Exit});
     screenStateStack.push({screenState::Homescreen});
+
+    screens[screenState::Homescreen]  = &homeScreen;
+    screens[screenState::GameMenu]    = &gameMenu;
+    screens[screenState::PlayOptions] = &playOptions;
+    screens[screenState::Settings]    = &settings;
+    screens[screenState::GameScreen]  = &gameScreen;
+    screens[screenState::SelectBoard] = &selectBoard;
+    screens[screenState::SelectStone] = &selectStone;
 }
 
 void Game::addState(screenState state){
@@ -35,51 +43,19 @@ void Game::addState(screenState state){
         screenStateStack.pop();
 }
 
-template<class currentScreen>
-void Game::updateScreen(currentScreen& screen){
-    screen.run();
-    screenState state = screen.nextState;
-    addState(state);
-}
-
 void Game::handleScreen(){
     screenState state = screenStateStack.top();
+    if (state == screenState::Exit){
+        window.close();
+        return;
+    }
 
-    switch (state){
-        case screenState::Exit:
-            window.close();
-            break;
-        
-        case screenState::Homescreen:
-            updateScreen(homeScreen);
-            break;
-
-        case screenState::GameMenu:
-            updateScreen(gameMenu);
-            break;
-
-        case screenState::PlayOptions:
-            updateScreen(playOptions);
-            break;
-
-
-        case screenState::GameScreen:
-            updateScreen(gameScreen);
-            if (screenStateStack.top() == screenState::PlayOptions){
-                addState(screenState::Exit);
-            }
-            break;
-
-        case screenState::Settings:
-            updateScreen(settings);
-            break;
-
-        case screenState::SelectBoard:
-            updateScreen(selectBoard);
-            break;
-
-        case screenState::SelectStone:
-            updateScreen(selectStone);
-            break; 
+    Screen* screen = screens[state];
+    screen->run();
+    if (state == screenState::PlayOptions){
+        if (screen->nextState == screenState::GameScreen){
+            addState(screenState::Exit);
         }
+    }
+    addState(screen->nextState);
 }

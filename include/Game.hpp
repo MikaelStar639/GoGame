@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <stack>
+#include <map>
 
 #include <Screen-State/ScreenState.hpp>
 #include <Screen-State/Homescreen.hpp>
@@ -35,12 +36,10 @@ private:
     SelectStone selectStone;
 
     std::stack<screenState> screenStateStack;
+    std::map<screenState, Screen*> screens;
 
     void addState(screenState state);
     void handleScreen();
-
-    template<class currentScreen>
-    void updateScreen(currentScreen& screen);
     
 public:
     Game();
