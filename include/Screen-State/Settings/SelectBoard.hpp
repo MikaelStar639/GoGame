@@ -6,7 +6,7 @@
 #include "SFML/Audio.hpp"
 #include "Assets-Manager/TextureManager.hpp"
 
-class SelectBoard{
+class SelectBoard: public Screen{
 private:
     Button backButton;
     Button LightWoodButton;
@@ -31,6 +31,5 @@ public:
     SelectBoard(sf::Font &font, sf::RenderWindow &window, 
         TextureManager& gameTexture, Board &board);
     
-    screenState nextState = screenState::SelectBoard;
     void run();
 };

@@ -4,7 +4,7 @@
 #include "Screen-State/ScreenState.hpp"
 #include "Screen-State/GameScreen.hpp"
 #include "Assets-Manager/TextureManager.hpp"
-class SelectStone{
+class SelectStone: public Screen{
 private:
     Button backButton;
     Button ClassicButton;
@@ -33,6 +33,5 @@ public:
     SelectStone(sf::Font &font, sf::RenderWindow &window, 
                 GameScreen &_gamescreen, TextureManager &_gameTexture);
     
-    screenState nextState = screenState::SelectStone;
     void run();
 };

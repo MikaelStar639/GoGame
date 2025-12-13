@@ -6,7 +6,7 @@
 #include "UI/Button.hpp"
 #include <Assets-Manager/AssetsManager.hpp>
 
-class PlayOptions{
+class PlayOptions: public Screen{
 private:
     Button pvbButton; //player vs bot
     Button pvpButton; //player vs player
@@ -32,6 +32,5 @@ private:
 
 public:
     PlayOptions(sf::Font &font, sf::RenderWindow &window, TextureManager &textures, GameScreen &gameScreen);
-    screenState nextState = screenState::PlayOptions;
     void run();
 };

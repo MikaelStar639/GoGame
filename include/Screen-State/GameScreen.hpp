@@ -16,7 +16,7 @@
 #include <cmath>
 #include <vector>
 
-class GameScreen{
+class GameScreen : public Screen{
 public:
     enum class StoneStyle{
         Classic,
@@ -28,8 +28,6 @@ public:
                 SoundManager &gameSound,
                 Board &_board);
 
-    screenState nextState = screenState::GameScreen;
-    
     //* Load/save Game
     void loadGame(std::string _address);
     void saveGame(std::string _address);

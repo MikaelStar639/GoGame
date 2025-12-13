@@ -5,7 +5,7 @@
 #include "Screen-State/ScreenState.hpp"
 #include "Assets-Manager/TextureManager.hpp"
 
-class Homescreen{
+class Homescreen : public Screen{
 private:
     Button playButton;
     Button settingButton;
@@ -25,6 +25,5 @@ private:
 public:
 
     Homescreen(sf::Font &font, sf::RenderWindow &window, TextureManager& textureManager);
-    screenState nextState = screenState::Homescreen;
     void run();
 };
