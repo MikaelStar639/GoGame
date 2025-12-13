@@ -308,6 +308,18 @@ void GameState::redo() {
 }
 
 //*  load/save game
+
+bool GameState::isLoadGameValid(std::string _address){
+    std::ifstream fin(_address);
+
+    if (fin.peek() == std::ifstream::traits_type::eof()){
+        fin.close();
+        return false;
+    }
+    fin.close();
+    return true;
+}
+
 void GameState::load(std::string _address){
     std::ifstream fin(_address);
 

@@ -346,6 +346,10 @@ void GameScreen::saveGame(std::string _address){
     gameState.save(_address);
 }
 
+bool GameScreen::isLoadGameValid(std::string _address){
+    return gameState.isLoadGameValid(_address);
+}
+
 void GameScreen::ChangeStoneStyle(StoneStyle style)
 {
     for (int y = 0; y<board.gridNum; y++)

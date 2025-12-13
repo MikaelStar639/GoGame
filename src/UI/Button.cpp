@@ -26,6 +26,8 @@ void Button::setColor(std::array<sf::Color, 6> colorList){
 }
 
 void Button::update(Mouse &mouse){
+    if (!isValid) return;
+    
     // reset states
     onPress   = false;
     onRelease = false;

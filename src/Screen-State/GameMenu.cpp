@@ -44,10 +44,20 @@ GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, TextureManager &_g
         backgroundSprite.setOrigin({size_x/2, size_y/2});
         backgroundSprite.setPosition({window_w/2, window_h/2});
 
+        saveGameButton.setValid(false);
+        continueButton.setValid(false);
+        loadGameButton.setValid(false);
+
 }
 
 void GameMenu::updateButton(Mouse &mouse){
     //buttons update
+    if (gameScreen.isLoadGameValid("game.saves")){
+        loadGameButton.setValid(true);
+    }
+    else{
+        loadGameButton.setValid(false);
+    }
     newGameButton .update(mouse);
     continueButton.update(mouse);
     saveGameButton.update(mouse);
@@ -56,7 +66,12 @@ void GameMenu::updateButton(Mouse &mouse){
 }
 
 void GameMenu::updateGameScreen(){
-    if (newGameButton. onRelease) gameScreen.reset();
+    if (newGameButton. onRelease)
+    {
+        gameScreen.reset();
+        saveGameButton.setValid(true);
+        continueButton.setValid(true);
+    }
     if (saveGameButton.onRelease) gameScreen.saveGame("game.saves");
     if (loadGameButton.onRelease) gameScreen.loadGame("game.saves");
 }
