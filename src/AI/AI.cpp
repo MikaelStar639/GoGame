@@ -21,6 +21,30 @@ void AI::think(){
 
     thinking = true;
     startTime = std::chrono::steady_clock::now();
+
+    if (gameState.lastMovePass){
+        auto [black, white] = gameState.getScore();
+        if (botTurn == GameState::Turn::black){
+            if (white < black){
+                botFuture = std::async(std::launch::async, [this]() mutable {
+                    return this->getPass();
+                });
+
+                return;
+            }
+        }
+        else{
+            if (black < white){
+                botFuture = std::async(std::launch::async, [this]() mutable {
+                    return this->getPass();
+                });
+
+                return;
+            }
+        }
+    }
+
+    node_visited = 0;
     GameState gameStateCopy = gameState;
     if (difficulty == 0){
         botFuture = std::async(std::launch::async, [this, gameStateCopy]() mutable {
@@ -44,13 +68,17 @@ bool AI::isReady(){
 
 Position AI::getMove(){
     thinking = false;
-    std::cout << "Bot"<<difficulty<<" played a move after " << getThinkingTime() << "ms\n";
+    std::cout << "Bot played a move after " << getThinkingTime() << "ms\n";
     return botFuture.get();
 }
 
 long long AI::getThinkingTime() {
     auto now = std::chrono::steady_clock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(now - startTime).count();
+}
+
+Position AI::getPass(){
+    return {-1, -1};
 }
 
 Position AI::getRandomMove(GameState &gameState){
@@ -69,7 +97,16 @@ int AI::getEvalScore(GameState &gameState){
 
 AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax, int depth){
 
-    if (depth == max_depth || getThinkingTime() >= 3000){
+    //to save CPU by avoiding check the time
+    ++node_visited;
+    if (node_visited >= 639){
+        node_visited = 0;
+        if (getThinkingTime() >= 3000){
+            return {getEvalScore(gameState), {-1, -1}};
+        }
+    }
+
+    if (depth == max_depth || gameState.isEnd){
         return {getEvalScore(gameState), {-1, -1}};
     }
 
@@ -85,21 +122,12 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
             ++count;
             if (count == max_think) break;
 
-            if (x == -1 && gameState.lastMovePass){
-                int finalScore = getEvalScore(gameState);
-                if (finalScore > bestScore){
-                    bestScore = finalScore; 
-                    bestMove = {-1, -1};
-                }
-            }
-            else{
-                gameState.addStoneMove(x, y);
-                int curScore = minimax(gameState, alpha, beta, false, depth + 1).score;
-                gameState.undo();
-                if (curScore > bestScore){
-                    bestScore = curScore;
-                    bestMove = {x, y};
-                }
+            gameState.addStoneMove(x, y);
+            int curScore = minimax(gameState, alpha, beta, false, depth + 1).score;
+            gameState.undo();
+            if (curScore > bestScore){
+                bestScore = curScore;
+                bestMove = {x, y};
             }
 
             alpha = std::max(alpha, bestScore);
@@ -114,21 +142,12 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
             ++count;
             if (count == max_think) break;
 
-            if (x == -1 && gameState.lastMovePass){
-                int finalScore = getEvalScore(gameState); 
-                if (finalScore < bestScore){
-                    bestScore = finalScore; 
-                    bestMove = {-1, -1};
-                }
-            }
-            else{
-                gameState.addStoneMove(x, y);
-                int curScore = minimax(gameState, alpha, beta, true, depth + 1).score;
-                gameState.undo();
-                if (curScore < bestScore){
-                    bestScore = curScore;
-                    bestMove = {x, y};
-                }
+            gameState.addStoneMove(x, y);
+            int curScore = minimax(gameState, alpha, beta, true, depth + 1).score;
+            gameState.undo();
+            if (curScore < bestScore){
+                bestScore = curScore;
+                bestMove = {x, y};
             }
 
             beta = std::min(beta, bestScore);
@@ -159,7 +178,7 @@ void AI::setDifficulty(int _difficulty){
     difficulty = _difficulty;
     if (difficulty == 1){
         max_depth = 2;
-        max_think = 200;
+        max_think = 150;
     }
     if (difficulty == 2){
         max_depth = 3;

@@ -11,6 +11,7 @@ private:
     int difficulty = 1;
     int max_depth = 2;
     int max_think = 200;
+    int node_visited = 0;
     GameState::Turn botTurn;
     GameState &gameState;
     
@@ -21,6 +22,7 @@ private:
     
     int getEvalScore(GameState &gameState);
     Position getRandomMove(GameState& _gameState);
+    Position getPass();
     moveScore minimax(GameState& _gameState, int alpha, int beta, bool isMax, int depth);
     std::future<Position> botFuture;
 

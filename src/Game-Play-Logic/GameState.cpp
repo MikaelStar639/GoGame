@@ -388,16 +388,14 @@ void GameState::save(std::string _address){
     fout.close();
 }
 
-std::vector<Position> GameState::getPossibleMove(){
-    std::vector<Position> goodPosition;
+struct ScoredMove {
+    Position pos;
+    int score;
+};
 
-    for (int y = 0; y < Size; ++y){
-        for (int x = 0; x < Size; ++x){
-            if (grid[y][x] == Stone::State::empty && !isIllegal(y, x)){
-                goodPosition.push_back({y, x});
-            }
-        }
-    }
+std::vector<Position> GameState::getPossibleMove(){
+    std::vector<ScoredMove> candidates;
+    candidates.reserve(Size * Size);
 
     auto heuristicScore = [&](const Position& p) -> int {
         int score = 0;
@@ -421,17 +419,30 @@ std::vector<Position> GameState::getPossibleMove(){
         return score;
     };
 
-    static std::mt19937 rng(time(0));
-    std::shuffle(goodPosition.begin(), goodPosition.end(), rng);
-    std::sort(goodPosition.begin(), goodPosition.end(), 
-        [&](const Position& a, const Position& b) {
-            return heuristicScore(a) > heuristicScore(b);
+    for (int y = 0; y < Size; ++y){
+        for (int x = 0; x < Size; ++x){
+            if (grid[y][x] == Stone::State::empty && !isIllegal(y, x)){
+                candidates.push_back({{y, x}, heuristicScore({y, x})});
+            }
         }
-    );
+    }
 
-    goodPosition.push_back({-1, -1});
+    static std::mt19937 rng(std::random_device{}());
+    std::shuffle(candidates.begin(), candidates.end(), rng);
+    std::sort(candidates.begin(), candidates.end(), 
+    [&](const ScoredMove& a, const ScoredMove& b) {
+        return a.score > b.score; 
+    });
 
-    return goodPosition;
+    std::vector<Position> goodMoves;
+    goodMoves.reserve(candidates.size() + 1);
+    for (const auto& moves: candidates){
+        goodMoves.push_back(moves.pos);
+    }
+    
+    goodMoves.push_back({-1, -1});
+
+    return goodMoves;
 }
 
 
