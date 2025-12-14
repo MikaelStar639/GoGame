@@ -520,7 +520,7 @@ int GameState::minimaxScore(){
 
         for (int t = 0;  t < 4; ++t){
             int nx = x + dx[t], ny = y + dy[t];
-            if (ny < 0 || ny >= 19 || nx < 0 || nx >= 19){
+            if (ny < 0 || ny >= Size || nx < 0 || nx >= Size){
                 continue;
             }
 
@@ -539,8 +539,8 @@ int GameState::minimaxScore(){
         }
     };
 
-    for (int y = 0; y < 19; ++y){
-        for (int x = 0; x < 19; ++x){
+    for (int y = 0; y < Size; ++y){
+        for (int x = 0; x < Size; ++x){
             if (grid[y][x] == Stone::State::empty) continue;
             if (visited[y][x]) continue;
 
