@@ -35,20 +35,23 @@ void EndGameWindow::update(GameState &gameState){
     alignText(text, 0.45f, text_align_v);
 }
 
-void EndGameWindow::run(sf::RenderWindow &window, Mouse &mouse){
-    blur.draw(window);
-    window.draw(shape);
-    window.draw(text);
+void EndGameWindow::updateButton(Mouse &mouse){
     replayButton.update(mouse);
-    backButton.update(mouse);
+    backButton  .update(mouse);
+
+    if (backButton  .onRelease) isClosed = true;
+    if (replayButton.onRelease) isReset = true;
+}
+
+void EndGameWindow::render(sf::RenderWindow &window){
+    blur        .draw(window);
+    window      .draw(shape);
+    window      .draw(text);
+    backButton  .draw(window);
     replayButton.draw(window);
-    backButton.draw(window);
+}
 
-    if (backButton.onRelease){
-        isClosed = true;
-    }
-
-    if (replayButton.onRelease){
-        isReset = true;
-    }
+void EndGameWindow::run(sf::RenderWindow &window, Mouse &mouse){
+    updateButton(mouse);
+    render(window);
 }

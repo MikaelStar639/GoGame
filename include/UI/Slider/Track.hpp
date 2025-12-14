@@ -7,8 +7,10 @@ class Track{
 private:
     sf::RectangleShape leftShape;
     sf::RectangleShape rightShape;
+    float value;
+
 public:
-    float value; //0 -> 1
+    
     float length;
     sf::Vector2f position;
 

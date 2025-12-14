@@ -14,20 +14,21 @@ public:
     sf::Text text;
     sf::Text score;
 
-    Player player = Player::white;
     bool isWin = false;
     
     ScoreBoard(sf::Font &font, Player _player);
-
-    sf::Vector2f position;
-    sf::Vector2f size = {300.f, 75.f};
-    
-    float text_scale   = 0.5f;
-    float text_align_v = 0.6f;
-    float radius       = 10.f;
 
     void setScore(int num);
     void setPosition(sf::Vector2f _position);
     void setSize(sf::Vector2f _size);
     void draw(sf::RenderWindow &window);
+
+private:
+    float text_scale   = 0.5f;
+    float text_align_v = 0.6f;
+    float radius       = 10.f;
+
+    Player player = Player::white;
+    sf::Vector2f position;
+    sf::Vector2f size = {300.f, 75.f};
 };

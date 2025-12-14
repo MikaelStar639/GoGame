@@ -17,22 +17,20 @@ SelectStone::SelectStone(
         float window_w = window.getSize().x;
         float window_h = window.getSize().y;
 
-        //Buttons setPosition
         ClassicButton.setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
-        PixelButton.setPosition({window_w/2, window_h/2 - space});
-        backButton.   setPosition({105.f, 50.f});
+        PixelButton  .setPosition({window_w/2, window_h/2 - space});
+        backButton   .setPosition({105.f, 50.f});
 
-        //Buttons setSize
         ClassicButton.setSize({650.f, 75.f});
-        PixelButton.setSize({650.f, 75.f});
-        backButton.   setSize({200.f, 60.f});
+        PixelButton  .setSize({650.f, 75.f});
+        backButton   .setSize({200.f, 60.f});
 
-        //Buttons setString
-        ClassicButton.  setString("Classic");
-        PixelButton.  setString("Pixel");
-        backButton.     setString("Back");
+        ClassicButton.setString("Classic");
+        PixelButton  .setString("Pixel");
+        backButton   .setString("Back");
 
         PixelButton.setChosen();
+
         gamescreen.ChangeStoneStyle(GameScreen::StoneStyle::Pixel);
         gamescreen.currentStoneStyle = GameScreen::StoneStyle::Pixel;
 
@@ -53,8 +51,8 @@ void SelectStone::setBackground(){
 void SelectStone::updateButton(Mouse &mouse){
     //buttons update
     ClassicButton.update(mouse);
-    PixelButton.update(mouse);
-    backButton.   update(mouse);
+    PixelButton  .update(mouse);
+    backButton   .update(mouse);
 }
 
 void SelectStone::updateScreenState(){
@@ -78,10 +76,22 @@ void SelectStone::updateStyle(){
     }
 }
 
-void SelectStone::draw(){
+void SelectStone::update(Mouse &mouse){
+    mouse.update(window);
+    updateButton(mouse);
+    updateScreenState();
+    updateStyle();
+}
+
+void SelectStone::render(){
+    window.clear(sf::Color(64, 64, 64));
+    setBackground();
+
     backButton   .draw(window);
     ClassicButton.draw(window);
-    PixelButton.draw(window);
+    PixelButton  .draw(window);
+
+    window.display();
 }
 
 void SelectStone::run(){
@@ -93,18 +103,8 @@ void SelectStone::run(){
     while (window.isOpen()){
         handleEvent(window);
 
-        window.clear(sf::Color(64, 64, 64));
-        setBackground();
-
-        mouse.update(window);
-
-        updateButton(mouse);
-        updateScreenState();
-        updateStyle();
-
-        draw();
-
-        window.display();
+        update(mouse);        
+        render();
 
         if (nextState != screenState::SelectStone){
             break;

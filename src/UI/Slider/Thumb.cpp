@@ -4,9 +4,11 @@ Thumb::Thumb() {}
 
 Thumb::Thumb(float _minX, float _y, float _length) : 
     length(_length),
-    space(_length/maxValue), 
-    minX(_minX), maxX(_minX + _length), 
-    x(_minX + value * space), y(_y)
+    space (_length/maxValue), 
+    minX  (_minX), 
+    maxX  (_minX + _length), 
+    x     (_minX + value * space), 
+    y     (_y)
 {
     thumbShape = RoundRectShape({10.f, 50.f}, 5.f, {x, _y}, sf::Color::White);
     bound      = sf::RectangleShape({_length + 12.f, 50.f});
@@ -15,14 +17,15 @@ Thumb::Thumb(float _minX, float _y, float _length) :
 
 void Thumb::setPosition(sf::Vector2f _position){
     minX = _position.x;
-    y = _position.y;
+    y    = _position.y;
 }
 
 void Thumb::setLength(float _length){
     length = _length;
-    space = _length/maxValue;
-    maxX = minX + _length;
-    x = minX + value * space;
+    space  = _length/maxValue;
+    maxX   = minX + _length;
+    x      = minX + value * space;
+
     thumbShape = RoundRectShape({10.f, 50.f}, 5.f, {x, y}, sf::Color::White);
     bound      = sf::RectangleShape({_length + 12.f, 50.f});
     bound.setPosition({minX - 6.f, y - 25.f});

@@ -14,6 +14,9 @@ private:
     Blur blur;
     float text_scale   = 0.5f;
     float text_align_v = 0.6f;
+
+    void updateButton(Mouse &mouse);
+    void render(sf::RenderWindow &window);
 public:
     bool isClosed = false;
     bool isReset = false;

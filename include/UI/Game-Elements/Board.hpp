@@ -31,11 +31,10 @@ public:
     int gridNum = 19;
     float gridX[20];
     float gridY[20];
-    // constructor 
+
     Board(sf::Font &font, TextureManager &_gameTexture);
-    // set position of the board
+    
     void draw(sf::RenderWindow &window);
-    // Setting Board Style
     void changeGridSize(int _gridNum);
     void ChangeStyle(BoardStyle state);
 };

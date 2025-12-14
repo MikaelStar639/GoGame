@@ -21,6 +21,8 @@ private:
     void updateScreenState();
     void drawButton();
     void drawGamename();
+    void update(Mouse &mouse);
+    void render();
 
 public:
 

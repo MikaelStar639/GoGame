@@ -25,8 +25,9 @@ private:
     void updateButton(Mouse &mouse);
     void updateScreenState();
     void updateStyle();
-    void draw();
 
+    void update(Mouse &mouse);
+    void render();
 public:
     SelectBoard(sf::Font &font, sf::RenderWindow &window, 
         TextureManager& gameTexture, Board &board);

@@ -14,17 +14,17 @@ Board::Board(sf::Font &_font, TextureManager& _gameTexture) :
 {
     // texture
     // intialize shapes
-    verticalLines.  setSize({thickness, size.y});
+    verticalLines  .setSize({thickness, size.y});
     horizontalLines.setSize({size.x, thickness});
-    intersections.  setSize({10.f, 10.f});
+    intersections  .setSize({10.f, 10.f});
 
-    boardSprite.    setPosition({385.f, 35.f});
+    boardSprite.setPosition({385.f, 35.f});
 
-    verticalLines.  setFillColor(sf::Color::Black);
+    verticalLines  .setFillColor(sf::Color::Black);
     horizontalLines.setFillColor(sf::Color::Black);
-    intersections.  setFillColor(sf::Color::Black);
+    intersections  .setFillColor(sf::Color::Black);
 
-    intersections.  setOrigin(intersections.getGeometricCenter());
+    intersections.setOrigin(intersections.getGeometricCenter());
 
     
     // initialize grid coordinates
@@ -43,13 +43,13 @@ Board::Board(sf::Font &_font, TextureManager& _gameTexture) :
 
     // set up label properties
     for (int i = 0; i < gridNum; ++i) {
-        labelnum[i].setFont(font);
+        labelnum[i] .setFont(font);
+        labelnum[i] .setCharacterSize(16);
+        labelnum[i] .setFillColor(sf::Color::Black);
+        labelnum[i] .setString(std::to_string(i + 1));
         labelchar[i].setFont(font);
-        labelnum[i].setCharacterSize(16);
-        labelnum[i].setFillColor(sf::Color::Black);
         labelchar[i].setCharacterSize(16);
         labelchar[i].setFillColor(sf::Color::Black);
-        labelnum[i].setString(std::to_string(i + 1));
         labelchar[i].setString(std::string(1, 'A' + i  + (i >= 8 ? 1 : 0))); // Skip 'I'
         alignText(labelnum[i], 0.5f, 0.5f);
         alignText(labelchar[i], 0.5f, 0.5f);
@@ -159,6 +159,6 @@ void Board::changeGridSize(int _gridNum)
     }
 
     // verticle and horizontal lines size update
-    verticalLines.  setSize({thickness, size.y});
+    verticalLines  .setSize({thickness, size.y});
     horizontalLines.setSize({size.x, thickness});
 }

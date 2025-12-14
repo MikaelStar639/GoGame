@@ -4,60 +4,54 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
                 TextureManager &_gameTexture, SoundManager &_gameSound,
                 Board &_board) : 
 
-    backButton  (_font),
-    redoButton  (_font),
-    undoButton  (_font),
-    passButton  (_font),
-    resetButton(_font),
-    window      (_window),
-    board       (_board),
+    backButton   (_font),
+    redoButton   (_font),
+    undoButton   (_font),
+    passButton   (_font),
+    resetButton  (_font),
+    window       (_window),
+    board        (_board),
     turnIndicator(_font),
-    textures(_gameTexture),
+    textures     (_gameTexture),
     difficultyBox(_font),
     backgroundSprite(_gameTexture["Background"]),
-    blackScoreBoard(_font, ScoreBoard::Player::black),
-    whiteScoreBoard(_font, ScoreBoard::Player::white),
+    blackScoreBoard (_font, ScoreBoard::Player::black),
+    whiteScoreBoard (_font, ScoreBoard::Player::white),
     gameSound(_gameSound),
-    gameState(),
-    endGame(_font),
-    superBot(gameState)
+    endGame  (_font),
+    superBot (gameState)
 {
 
     float window_w = window.getSize().x;
     float window_h = window.getSize().y;
     float space = 40.f + 75.f;
     
-    //Buttons setPosition
-    passButton  .setPosition({1407.f, window_h/2 - 1.5f*space});
-    undoButton  .setPosition({1407.f, window_h/2 - 0.5f* space});
-    redoButton  .setPosition({1407.f, window_h/2 + 0.5f* space});  
-    resetButton. setPosition({1407.f, window_h/2 + 1.5f* space});
-    turnIndicator.setPosition({192.f, window_h/2 - 1.5f*space});
+    passButton     .setPosition({1407.f, window_h/2 - 1.5f*space});
+    undoButton     .setPosition({1407.f, window_h/2 - 0.5f* space});
+    redoButton     .setPosition({1407.f, window_h/2 + 0.5f* space});  
+    resetButton    .setPosition({1407.f, window_h/2 + 1.5f* space});
+    turnIndicator  .setPosition({192.f, window_h/2 - 1.5f*space});
     blackScoreBoard.setPosition({192.f, window_h/2 - 0.5f*space});
     whiteScoreBoard.setPosition({192.f, window_h/2 + 0.5f*space});
-    difficultyBox.setPosition({192.f, window_h/2 + 1.5f*space});
+    difficultyBox  .setPosition({192.f, window_h/2 + 1.5f*space});
+    backButton     .setPosition({105.f, 50.f});
 
-    backButton.    setPosition({105.f, 50.f});
-
-    
-    
-    //Buttons setSize
-    redoButton  .setSize({300.f, 75.f});
-    undoButton  .setSize({300.f, 75.f});
-    passButton  .setSize({300.f, 75.f});
-    resetButton .setSize({300.f, 75.f});
-    turnIndicator.setSize({300.f, 75.f});
-    backButton.setSize({200.f, 60.f});
+    redoButton     .setSize({300.f, 75.f});
+    undoButton     .setSize({300.f, 75.f});
+    passButton     .setSize({300.f, 75.f});
+    resetButton    .setSize({300.f, 75.f});
+    turnIndicator  .setSize({300.f, 75.f});
+    backButton     .setSize({200.f, 60.f});
     blackScoreBoard.setSize({300.f, 75.f});
     whiteScoreBoard.setSize({300.f, 75.f});
     
 
-    //Button String
     backButton. setString("Menu");
     redoButton. setString("Redo");
     undoButton. setString("Undo");
     passButton. setString("Pass");
     resetButton.setString("Reset Game");
+    
     difficultyBox.setText("Level:");
     difficultyBox.setState("Normal");
 
@@ -76,7 +70,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     for (int y = 0; y < board.gridNum; ++y){
         grid[y].reserve(board.gridNum);
         for (int x = 0; x < board.gridNum; ++x){
-            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[board.gridNum - 1 - y]);
+            initStone.setPosition(sf::Vector2f(board.gridX[x], board.gridY[board.gridNum - 1 - y]));
             grid[y].emplace_back(initStone);
         }
     }
@@ -117,7 +111,6 @@ void GameScreen::drawScoreBoard(){
 }
 
 void GameScreen::updateFeatureButton(Mouse &mouse){
-    //Buttons update
     backButton.update(mouse);
 }
 
@@ -193,8 +186,8 @@ void GameScreen::updateGameState(){
 
     if (!gameState.isEnd) updateAI();
 
-    if (redoButton.onRelease)  gameState.redo();
-    if (undoButton.onRelease)  gameState.undo();
+    if (redoButton .onRelease) gameState.redo();
+    if (undoButton .onRelease) gameState.undo();
     if (resetButton.onRelease) reset();
     
     SyncStoneWithGameState();
@@ -208,9 +201,6 @@ void GameScreen::updateAIMove(){
         if (superBot.isReady()){
             Position botMove = superBot.getMove();
             gameState.addStoneMove(botMove.y, botMove.x);
-        }
-        else{
-            //...
         }
     }
 }
@@ -335,23 +325,6 @@ void GameScreen::render(Mouse &mouse){
     window.display();
 }
 
-void GameScreen::run(){
-    
-    nextState = screenState::GameScreen;    
-
-    //mouse
-    Mouse mouse;
-
-    while (window.isOpen()){
-        handleEvent(window);
-        update(mouse);
-        render(mouse);
-        if (nextState != screenState::GameScreen){
-            break;
-        }
-    }
-}
-
 void GameScreen::loadGame(std::string _address){
     gameState.load(_address, isAIMode, level);
     changeBoardSize(gameState.Size);
@@ -398,7 +371,7 @@ void GameScreen::changeBoardSize(int size)
     for(int y = 0; y < size; ++y){
         grid[y].reserve(size);
         for (int x = 0; x < size; ++x){
-            initStone.position = sf::Vector2f(board.gridX[x], board.gridY[board.gridNum - 1 - y]);
+            initStone.setPosition(sf::Vector2f(board.gridX[x], board.gridY[board.gridNum - 1 - y]));
             grid[y].emplace_back(initStone);
         }
     }
@@ -446,4 +419,21 @@ Position GameScreen::to_cord(sf::Vector2f position){
 void GameScreen::setAIDifficulty(int _level){
     level = _level;
     superBot.setDifficulty(_level);
+}
+
+void GameScreen::run(){
+    
+    nextState = screenState::GameScreen;    
+
+    //mouse
+    Mouse mouse;
+
+    while (window.isOpen()){
+        handleEvent(window);
+        update(mouse);
+        render(mouse);
+        if (nextState != screenState::GameScreen){
+            break;
+        }
+    }
 }

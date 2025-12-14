@@ -22,12 +22,12 @@ Settings::Settings(
         //Buttons setPosition
         stoneStyleButton.setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
         boardStyleButton.setPosition({window_w/2, window_h/2 - space});
-        backButton.      setPosition({105.f, 50.f});
+        backButton      .setPosition({105.f, 50.f});
 
         //Buttons setSize
         stoneStyleButton.setSize({650.f, 75.f});
         boardStyleButton.setSize({650.f, 75.f});
-        backButton.      setSize({200.f, 60.f});
+        backButton      .setSize({200.f, 60.f});
 
         //Buttons setString
         stoneStyleButton.setString("Stone Style");
@@ -60,13 +60,13 @@ void Settings::updateButton(Mouse &mouse){
     //buttons update
     stoneStyleButton.update(mouse);
     boardStyleButton.update(mouse);
-    backButton.update(mouse);
+    backButton      .update(mouse);
 }
 
 void Settings::updateScreenState(){
     if (stoneStyleButton.onRelease) nextState = screenState::SelectStone;
     if (boardStyleButton.onRelease) nextState = screenState::SelectBoard;
-    if (backButton.onRelease)       nextState = screenState::Exit;
+    if (backButton      .onRelease) nextState = screenState::Exit;
 }
 
 void Settings::updateSlider(Mouse &mouse){
@@ -87,12 +87,27 @@ void Settings::setBackground(){
     window.draw(backgroundSprite);
 }
 
-void Settings::draw(){
+void Settings::update(Mouse &mouse){
+    mouse.update(window);
+
+    updateButton(mouse);
+    updateSlider(mouse);
+
+    updateScreenState();
+    updateSounds();
+}
+
+void Settings::render(){
+    window.clear(sf::Color(64, 64, 64));
+    setBackground();
+
     backButton      .draw(window);
     stoneStyleButton.draw(window);
     boardStyleButton.draw(window);
     soundSlider     .draw(window);
     musicSlider     .draw(window);
+
+    window.display();
 }
 
 void Settings::run(){
@@ -104,20 +119,8 @@ void Settings::run(){
     while (window.isOpen()){
         handleEvent(window);
 
-        window.clear(sf::Color(64, 64, 64));
-        setBackground();
-
-        mouse.update(window);
-
-        updateButton(mouse);
-        updateSlider(mouse);
-
-        updateScreenState();
-        updateSounds();
-        
-        draw();
-
-        window.display();
+        update(mouse);
+        render();
 
         if (nextState != screenState::Settings){
             break;

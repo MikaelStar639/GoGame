@@ -24,6 +24,9 @@ private:
 
     void drawButton();
     void setBackground();
+
+    void update(Mouse &mouse);
+    void render();
     
 public:
     GameMenu(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture, GameScreen &gameScreen);

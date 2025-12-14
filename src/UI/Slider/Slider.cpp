@@ -1,12 +1,5 @@
 #include "UI/Slider/Slider.hpp"
 
-Slider::Slider(std::string _str, sf::Font &font, 
-               sf::Vector2f _size,sf::Vector2f _position) : 
-    size(_size), position(_position),
-    thumb(_position.x - 50.f, _position.y, _size.x/2),
-    track(thumb),
-    text(font, _str) {}
-
 Slider::Slider(sf::Font &font) : track(thumb), text(font){}
 
 void Slider::update(Mouse &mouse){

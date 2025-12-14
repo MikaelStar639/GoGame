@@ -10,11 +10,11 @@ GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, TextureManager &_g
     backgroundSprite(_gameTexture["Background"]),
     window(_window),
     gameScreen(_gameScreen){
-        newGameButton. setString("New Game");
+        newGameButton .setString("New Game");
         continueButton.setString("Continue");
         saveGameButton.setString("Save Game");
         loadGameButton.setString("Load Game");
-        backButton.    setString("Back");
+        backButton    .setString("Back");
 
         float window_w = window.getSize().x;
         float window_h = window.getSize().y;
@@ -22,18 +22,18 @@ GameMenu::GameMenu(sf::Font &font, sf::RenderWindow &_window, TextureManager &_g
         //Buttons setPosition
         float space = 60.f;
         
-        newGameButton. setPosition({window_w/2, window_h/2 - 3 * space});
+        newGameButton .setPosition({window_w/2, window_h/2 - 3 * space});
         continueButton.setPosition({window_w/2, window_h/2 - space});
         saveGameButton.setPosition({window_w/2, window_h/2 + space});
         loadGameButton.setPosition({window_w/2, window_h/2 + 3 * space});
-        backButton.    setPosition({105.f, 50.f});
+        backButton    .setPosition({105.f, 50.f});
 
         //Buttons setSize
-        newGameButton. setSize({650.f, 75.f});
+        newGameButton .setSize({650.f, 75.f});
         continueButton.setSize({650.f, 75.f});
         saveGameButton.setSize({650.f, 75.f});
         loadGameButton.setSize({650.f, 75.f});
-        backButton.    setSize({200.f, 60.f});
+        backButton    .setSize({200.f, 60.f});
 
         float scale = window_h/backgroundSprite.getTexture().getSize().y;
         backgroundSprite.setScale({scale, scale});
@@ -76,21 +76,24 @@ void GameMenu::updateGameScreen(){
 }
 
 void GameMenu::updateScreenState(){
-    if (newGameButton. onRelease){
+    if (newGameButton.onRelease){
         nextState = screenState::PlayOptions;
         gameScreen.isAIMode = false;
         gameScreen.reset();
     }
+
     if (continueButton.onRelease) nextState = screenState::GameScreen;
+    
     if (loadGameButton.onRelease){
         nextState = screenState::GameScreen;
         gameScreen.isLoaded = true;
     }
-    if (backButton.    onRelease) nextState = screenState::Exit;
+
+    if (backButton.onRelease) nextState = screenState::Exit;
 }
 
 void GameMenu::drawButton(){
-    newGameButton. draw(window);
+    newGameButton .draw(window);
     continueButton.draw(window);
     saveGameButton.draw(window);
     loadGameButton.draw(window);
@@ -99,6 +102,25 @@ void GameMenu::drawButton(){
 
 void GameMenu::setBackground(){  
     window.draw(backgroundSprite);
+}
+
+void GameMenu::update(Mouse &mouse){
+    //update button
+    mouse.update(window);
+    updateButton(mouse);
+
+    //update Screenstate & GameScreen
+    updateGameScreen();
+    updateScreenState();
+}
+
+void GameMenu::render(){
+    window.clear();
+
+    setBackground();
+    drawButton();
+    
+    window.display();
 }
 
 void GameMenu::run(){
@@ -110,22 +132,10 @@ void GameMenu::run(){
 
     while (window.isOpen()){
         handleEvent(window);
-
-        window.clear();
-        setBackground();
-
-        //update button
-        mouse.update(window);
-        updateButton(mouse);
-
-        //update Screenstate & GameScreen
-        updateGameScreen();
-        updateScreenState();
-
-        drawButton();
-        window.display();
         
-        //if the state is not GameMenu (some button was clicked)
+        update(mouse);
+        render();
+
         if (nextState != screenState::GameMenu){
             break;
         }

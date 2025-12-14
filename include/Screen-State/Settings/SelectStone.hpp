@@ -22,7 +22,8 @@ private:
     void updateButton(Mouse &mouse);
     void updateScreenState();
     void updateStyle();
-    void draw();
+    void update(Mouse &mouse);
+    void render();
 
 public:
     enum class SelectStoneState{

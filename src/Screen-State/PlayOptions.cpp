@@ -20,13 +20,13 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
         float window_h = window.getSize().y;
         float space = 75.f;
         
-        pvpButton.  setString("Two Player - One Device");
-        pvbButton.  setString("Player vs Bot  ");
-        playButton. setString("Play");
-        button9x9 . setString("9 x 9");
-        button13x13.setString("13 x 13");
-        button19x19.setString("19 x 19");
-        backButton. setString("Back");
+        pvpButton        .setString("Two Player - One Device");
+        pvbButton        .setString("Player vs Bot  ");
+        playButton       .setString("Play");
+        button9x9        .setString("9 x 9");
+        button13x13      .setString("13 x 13");
+        button19x19      .setString("19 x 19");
+        backButton       .setString("Back");
         selectLevelButton.setString("Change Level");
 
         difficultyBox.setText("Level:");
@@ -37,6 +37,7 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
         chooseModeText.setOutlineThickness(3.f);
         chooseModeText.setOutlineColor(sf::Color::Black);
         chooseModeText.setCharacterSize(60);
+
         alignText(chooseModeText, 0.5f, 0.6f);
 
         
@@ -48,15 +49,15 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
         alignText(chooseSizeText, 0.5f, 0.6f);
 
         //setPosition
-        pvpButton.  setPosition({window_w/2, window_h/5});
-        pvbButton.  setPosition({window_w/2, window_h/5 + 1.5f*space});
+        pvpButton  .setPosition({window_w/2, window_h/5});
+        pvbButton  .setPosition({window_w/2, window_h/5 + 1.5f*space});
         button9x9  .setPosition({window_w/2, window_h/5 + space * 5.5f});
         button13x13.setPosition({window_w/2, window_h/5 + space * 7});
         button19x19.setPosition({window_w/2, window_h/5 + space * 8.5f});
-        backButton. setPosition({105.f, 50.f});
-        playButton. setPosition({window_w - 150.f, window_h - 80.f});
+        backButton .setPosition({105.f, 50.f});
+        playButton .setPosition({window_w - 150.f, window_h - 80.f});
 
-        difficultyBox.setPosition({window_w/2 - 650.f/4, window_h/5 + space*3});
+        difficultyBox    .setPosition({window_w/2 - 650.f/4, window_h/5 + space*3});
         selectLevelButton.setPosition({window_w/2 + 650.f/4, window_h/5 + space*3});
 
         chooseModeText.setPosition({window_w/2, window_h/5 - 70.f});
@@ -64,14 +65,14 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
         
 
         //Buttons setSize
-        pvpButton. setSize({650.f, 75.f});
-        pvbButton. setSize({650.f, 75.f});
-        backButton.setSize({200.f, 60.f});
-        playButton.setSize({200.f, 60.f});
-        button9x9 .setSize({650.f, 75.f});
-        button13x13.setSize({650.f, 75.f});
-        button19x19.setSize({650.f, 75.f});
-        difficultyBox.setSize({650.f/2, 75.f});
+        pvpButton        .setSize({650.f, 75.f});
+        pvbButton        .setSize({650.f, 75.f});
+        backButton       .setSize({200.f, 60.f});
+        playButton       .setSize({200.f, 60.f});
+        button9x9        .setSize({650.f, 75.f});
+        button13x13      .setSize({650.f, 75.f});
+        button19x19      .setSize({650.f, 75.f});
+        difficultyBox    .setSize({650.f/2, 75.f});
         selectLevelButton.setSize({650.f/2 - 20.f, 75.f});
 
         float scale = window_h/backgroundSprite.getTexture().getSize().y;
@@ -82,18 +83,16 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
         
         backgroundSprite.setOrigin({size_x/2, size_y/2});
         backgroundSprite.setPosition({window_w/2, window_h/2});
-
     }
 
 void PlayOptions::updateButton(Mouse &mouse){
-    //buttons update
-    pvpButton. update(mouse);
-    pvbButton. update(mouse);
-    backButton.update(mouse);
-    playButton.update(mouse);
-    button9x9 .update(mouse);
-    button13x13.update(mouse);
-    button19x19.update(mouse);
+    pvpButton        .update(mouse);
+    pvbButton        .update(mouse);
+    backButton       .update(mouse);
+    playButton       .update(mouse);
+    button9x9        .update(mouse);
+    button13x13      .update(mouse);
+    button19x19      .update(mouse);
     selectLevelButton.update(mouse);
 }
 
@@ -104,36 +103,36 @@ void PlayOptions::updateScreenState(){
         nextState = screenState::GameScreen;
         gameScreen.isLoaded = true;
     }
-    if (pvpButton .onRelease)
+    if (pvpButton.onRelease)
     {
         gameScreen.isAIMode = false;
-        pvpButton.setChosen();
-        pvbButton.setDefaultColor();
+        pvpButton .setChosen();
+        pvbButton .setDefaultColor();
     }
-    if (pvbButton .onRelease)
+    if (pvbButton.onRelease)
     {
         gameScreen.isAIMode = true;
-        pvbButton.setChosen();
-        pvpButton.setDefaultColor();
+        pvbButton .setChosen();
+        pvpButton .setDefaultColor();
     }
     
-    if (button9x9 .onRelease){
-        button9x9 .setChosen();
+    if (button9x9.onRelease){
+        button9x9  .setChosen();
         button13x13.setDefaultColor();
         button19x19.setDefaultColor();
-        gameScreen.changeBoardSize(9);
+        gameScreen .changeBoardSize(9);
     }
     if (button13x13.onRelease){
         button13x13.setChosen();
-        button9x9 .setDefaultColor();
+        button9x9  .setDefaultColor();
         button19x19.setDefaultColor();
-        gameScreen.changeBoardSize(13);
+        gameScreen .changeBoardSize(13);
     }
     if (button19x19.onRelease){
         button19x19.setChosen();
-        button9x9 .setDefaultColor();
+        button9x9  .setDefaultColor();
         button13x13.setDefaultColor();
-        gameScreen.changeBoardSize(19);
+        gameScreen .changeBoardSize(19);
     }
     if (selectLevelButton.onRelease){
         if (difficultyBox.Info.getString() == "Easy"){
@@ -152,16 +151,16 @@ void PlayOptions::updateScreenState(){
 }
 
 void PlayOptions::drawButton(){
-    pvpButton.    draw(window);
-    pvbButton.    draw(window);
-    backButton.   draw(window);
-    playButton.   draw(window);
-    button9x9.    draw(window);
-    button13x13.  draw(window);
-    button19x19.  draw(window);
+    pvpButton  .draw(window);
+    pvbButton  .draw(window);
+    backButton .draw(window);
+    playButton .draw(window);
+    button9x9  .draw(window);
+    button13x13.draw(window);
+    button19x19.draw(window);
     if (gameScreen.isAIMode)
     {
-        difficultyBox.draw(window);
+        difficultyBox    .draw(window);
         selectLevelButton.draw(window);
     }
 
@@ -174,42 +173,44 @@ void PlayOptions::setBackground(){
 }
 
 void PlayOptions::SetDefaultMode(){
-    pvpButton.setChosen();
-    pvbButton.setDefaultColor();
+    pvpButton  .setChosen();
+    pvbButton  .setDefaultColor();
     button19x19.setChosen();
-    button9x9 .setDefaultColor();
+    button9x9  .setDefaultColor();
     button13x13.setDefaultColor();
-    gameScreen.isAIMode = false;
-    gameScreen.changeBoardSize(19);
+    gameScreen .isAIMode = false;
+    gameScreen .changeBoardSize(19);
+}
+
+void PlayOptions::update(Mouse &mouse){
+    mouse.update(window);
+    updateButton(mouse);
+    updateScreenState();
+}
+
+void PlayOptions::render(){
+    window.clear();
+
+    setBackground();
+    drawButton();
+
+    window.display();
 }
 
 void PlayOptions::run(){
 
     nextState = screenState::PlayOptions;
 
-    //mouse
     Mouse mouse;
 
-    //reset buttons
     SetDefaultMode();
-
+    
     while (window.isOpen()){
         handleEvent(window);
 
-        //Background
-        window.clear();
-        setBackground();
-
-        //update
-        mouse.update(window);
-        updateButton(mouse);
-        updateScreenState();
-
-        //just draw :v
-        drawButton();
-        window.display();
+        update(mouse);
+        render();        
         
-        //if the state is not PlayOptions (some button was clicked)
         if (nextState != screenState::PlayOptions){
             break;
         }

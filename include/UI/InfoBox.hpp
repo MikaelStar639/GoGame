@@ -4,13 +4,9 @@
 #include <Game-Play-Logic/GameState.hpp>
 
 class InfoBox{
-public:
-    RoundRectShape shape;
+private:
     sf::Text text;
-    sf::Text Info;
-
-    InfoBox(sf::Font &font);
-
+    RoundRectShape shape;
     sf::Vector2f position;
     sf::Vector2f size = {300.f, 75.f};
     
@@ -18,6 +14,9 @@ public:
     float text_align_v = 0.6f;
     float radius       = 10.f;
 
+public:
+    sf::Text Info;
+    InfoBox(sf::Font &font);
     void setPosition(sf::Vector2f _position);
     void setText(std::string str);
     void setState(std::string str);

@@ -16,8 +16,10 @@ private:
     Button button13x13;
     Button button19x19;
     Button selectLevelButton;
+
     sf::Text chooseModeText;
     sf::Text chooseSizeText;
+
     InfoBox difficultyBox;
 
     sf::Sprite backgroundSprite;
@@ -30,6 +32,9 @@ private:
     void drawButton();
     void updateScreenState();
     void SetDefaultMode();
+
+    void update(Mouse &mouse);
+    void render();
 
 public:
     PlayOptions(sf::Font &font, sf::RenderWindow &window, TextureManager &textures, GameScreen &gameScreen);

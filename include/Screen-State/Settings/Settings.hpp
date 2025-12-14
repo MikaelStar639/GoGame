@@ -27,7 +27,8 @@ private:
     void updateSlider(Mouse &mouse);
     void updateSounds();
     void updateScreenState();
-    void draw();
+    void update(Mouse &mouse);
+    void render();
 
 public:
     Settings(sf::Font &font, sf::RenderWindow &window, TextureManager &gameTexture, SoundManager &gameSound);

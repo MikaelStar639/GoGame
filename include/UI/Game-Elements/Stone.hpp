@@ -2,11 +2,13 @@
 #include <SFML/Graphics.hpp>
 
 #include <Input/Mouse.hpp>
-class Stone{    
-
+class Stone{  
 private:
     sf::Sprite BlackStoneSprite;
     sf::Sprite WhiteStoneSprite;
+
+    int gridNum = 19;
+    sf::Vector2f position;    
 
 public:
     enum class State{
@@ -19,31 +21,26 @@ public:
         white
     };
 
+    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture,
+          sf::Vector2f _position);
+
     State state = State::empty;
     Color color = Color::black;
 
-    int gridNum = 19;
     float scaleRate = 0.04f;
     
-    //empty state:
     bool isOver    = false;
     bool isPressed = false;
     bool onPress   = false;
     bool onRelease = false;
 
-    bool isContain(sf::Vector2f _position);
-    void update(Mouse &mouse);
-
-    Stone(sf::Texture &_blackStoneTexture, sf::Texture &_whiteStoneTexture,
-          sf::Vector2f _position);
-
     
-    void setPosition(sf::Vector2f pos);
 
-    // visual info
-    sf::Vector2f position;
-    void setState(State state);
+    void update(Mouse &mouse);
     void draw(sf::RenderWindow &window);
-    void ChangeSprite(sf::Texture &newBlackTexure, sf::Texture &newWhiteTexture);
+    bool isContain(sf::Vector2f _position);
+    void setPosition(sf::Vector2f pos);
+    void setState(State state);
     void Scale(float newscale);
+    void ChangeSprite(sf::Texture &newBlackTexure, sf::Texture &newWhiteTexture);
 };

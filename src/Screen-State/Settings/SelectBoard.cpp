@@ -17,15 +17,15 @@ SelectBoard::SelectBoard(
     {
         float window_w = window.getSize().x;
         float window_h = window.getSize().y;
-        DarkWoodButton. setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
+        DarkWoodButton .setPosition({window_w/2, window_h/2 - 2 * space - 75.f});
         PlainWoodButton.setPosition({window_w/2, window_h/2 + space});
         LightWoodButton.setPosition({window_w/2, window_h/2 - space});
-        backButton.     setPosition({105.f, 50.f});
+        backButton     .setPosition({105.f, 50.f});
 
-        DarkWoodButton.  setSize({650.f, 75.f});
-        LightWoodButton. setSize({650.f, 75.f});
-        PlainWoodButton. setSize({650.f, 75.f});
-        backButton.      setSize({200.f, 60.f});
+        DarkWoodButton .setSize({650.f, 75.f});
+        LightWoodButton.setSize({650.f, 75.f});
+        PlainWoodButton.setSize({650.f, 75.f});
+        backButton     .setSize({200.f, 60.f});
 
         DarkWoodButton. setString("Dark Wood");
         LightWoodButton.setString("Light Wood");
@@ -64,55 +64,58 @@ void SelectBoard::updateStyle(){
     if (DarkWoodButton.onRelease)
     {
         board.ChangeStyle(Board::BoardStyle::DarkWood);
-        DarkWoodButton.setChosen();        
+
+        DarkWoodButton .setChosen();        
         LightWoodButton.setDefaultColor();
         PlainWoodButton.setDefaultColor();
     }
     if (LightWoodButton.onRelease)
     {
         board.ChangeStyle(Board::BoardStyle::LightWood);
-        DarkWoodButton.setDefaultColor();        
+
+        DarkWoodButton .setDefaultColor();        
         LightWoodButton.setChosen();
         PlainWoodButton.setDefaultColor();
     }
     if (PlainWoodButton.onRelease)
     {
         board.ChangeStyle(Board::BoardStyle::PlainWood);
-        DarkWoodButton.setDefaultColor();        
+
+        DarkWoodButton .setDefaultColor();        
         LightWoodButton.setDefaultColor();
         PlainWoodButton.setChosen();
     }
 }
 
-void SelectBoard::draw(){
-    backButton      .draw(window);
-    DarkWoodButton.draw(window);
+void SelectBoard::update(Mouse& mouse){
+    mouse.update(window);
+    updateButton(mouse);
+    updateScreenState();
+    updateStyle();
+}
+
+void SelectBoard::render(){
+    window.clear(sf::Color(64, 64, 64));
+    setBackground();
+    
+    backButton     .draw(window);
+    DarkWoodButton .draw(window);
     LightWoodButton.draw(window);
     PlainWoodButton.draw(window);
+
+    window.display();
 }
 
 void SelectBoard::run(){
     
     nextState = screenState::SelectBoard;
-
     Mouse mouse;
 
     while (window.isOpen()){
         handleEvent(window);
 
-        window.clear(sf::Color(64, 64, 64));
-        setBackground();
-
-        mouse.update(window);
-
-        updateButton(mouse);
-        
-        updateScreenState();
-        updateStyle();
-
-        draw();
-
-        window.display();
+        update(mouse);
+        render();
 
         if (nextState != screenState::SelectBoard){
             break;

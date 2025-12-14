@@ -9,18 +9,16 @@ class Thumb{
 private:
     RoundRectShape thumbShape;
     sf::RectangleShape bound;
+
+    float space;
+
 public:
     int maxValue = 20;
-    
+    float length;
     float minX;
     float maxX;    
-    
-    float length;
-    float space;
-    
     float x, y;
 
-    //state
     bool isOver    = false;
     bool isPressed = false;
 
@@ -31,7 +29,6 @@ public:
     
     void setPosition(sf::Vector2f _position);
     void setLength(float length);
-    
     void update(Mouse &mouse);
     void draw(sf::RenderWindow &window);
 };

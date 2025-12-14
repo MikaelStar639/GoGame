@@ -70,8 +70,6 @@ void Stone::setState(State _nextState)
 }
 
 void Stone::draw(sf::RenderWindow &window){
-    BlackStoneSprite.setPosition(position);
-    WhiteStoneSprite.setPosition(position);
     if (state != State::empty){
         if (state == State::black){
             window.draw(BlackStoneSprite);
@@ -84,7 +82,6 @@ void Stone::draw(sf::RenderWindow &window){
 
     if (isOver == false) return;
     
-    //it should be at the update but this one is easier to maintain
     isOver = false;
     
     if (color == Color::black){
