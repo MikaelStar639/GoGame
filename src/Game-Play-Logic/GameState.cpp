@@ -120,8 +120,6 @@ bool GameState::canCapture(){
     return false;
 }
 
-#include <iostream>
-
 void GameState::RemoveCapturedStones(HistoryState& historyState) {
 
     historyState.capturedStones.clear();
