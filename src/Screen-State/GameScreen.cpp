@@ -256,7 +256,8 @@ void GameScreen::updateSound(){
     }
 
     if (!gameState.newMove) return;
-
+    if (gameState.lastMovePass) return;
+    
     if (gameState.lastMoveCaptured){
         gameSound["StoneCapture"].play();
     }
