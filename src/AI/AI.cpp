@@ -101,7 +101,7 @@ AI::moveScore AI::minimax(GameState &gameState, int alpha, int beta, bool isMax,
     ++node_visited;
     if (node_visited >= 639){
         node_visited = 0;
-        if (getThinkingTime() >= 3000){
+        if (getThinkingTime() >= 4000){
             return {getEvalScore(gameState), {-1, -1}};
         }
     }
