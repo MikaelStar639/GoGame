@@ -288,6 +288,13 @@ void GameState::undo() {
         --history.index;
         history.undoCount++;
         swapTurn();
+
+        if (history.index >= 0){
+            lastMovePass = history[history.index].isPassed;
+        }
+        else{
+            lastMovePass = false;
+        }
     }
 }
 
@@ -304,6 +311,8 @@ void GameState::redo() {
         }
         history.undoCount--;
         swapTurn();
+
+        lastMovePass = history[history.index].isPassed;
     }
 }
 
