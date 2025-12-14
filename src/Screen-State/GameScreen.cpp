@@ -404,7 +404,7 @@ void GameScreen::changeBoardSize(int size)
     ChangeStoneStyle(currentStoneStyle);
     // stone rescale
     float newscale;
-    if (size == 19) newscale = 0.04f;
+    if (size == 19) newscale = 0.037f;
     else if (size == 13) newscale = 0.055f;
     else newscale = 0.075f;
 
