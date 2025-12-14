@@ -87,16 +87,6 @@ PlayOptions::PlayOptions(sf::Font &font, sf::RenderWindow &_window, TextureManag
 
 void PlayOptions::updateButton(Mouse &mouse){
     //buttons update
-
-    if ((pvbButton.isChosenButton() || pvpButton.isChosenButton()) &&
-        (button9x9.isChosenButton() || button13x13.isChosenButton() || button19x19.isChosenButton()))
-    {
-        playButton.setValid(true);
-    }
-    else{
-        playButton.setValid(false);
-    }
-
     pvpButton. update(mouse);
     pvbButton. update(mouse);
     backButton.update(mouse);
@@ -183,12 +173,14 @@ void PlayOptions::setBackground(){
     window.draw(backgroundSprite);
 }
 
-void PlayOptions::ModeButtonReset(){
-    pvpButton. setDefaultColor();
-    pvbButton. setDefaultColor();
+void PlayOptions::SetDefaultMode(){
+    pvpButton.setChosen();
+    pvbButton.setDefaultColor();
+    button19x19.setChosen();
     button9x9 .setDefaultColor();
     button13x13.setDefaultColor();
-    button19x19.setDefaultColor();
+    gameScreen.isAIMode = false;
+    gameScreen.changeBoardSize(19);
 }
 
 void PlayOptions::run(){
@@ -199,7 +191,7 @@ void PlayOptions::run(){
     Mouse mouse;
 
     //reset buttons
-    ModeButtonReset();
+    SetDefaultMode();
 
     while (window.isOpen()){
         handleEvent(window);
