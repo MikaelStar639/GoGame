@@ -19,7 +19,7 @@ GameScreen::GameScreen(sf::Font &_font, sf::RenderWindow &_window,
     whiteScoreBoard (_font, ScoreBoard::Player::white),
     gameSound(_gameSound),
     endGame  (_font),
-    superBot (gameState)
+    bot (gameState)
 {
 
     float window_w = window.getSize().x;
@@ -122,7 +122,7 @@ void GameScreen::updateGameButton(Mouse &mouse){
     resetButton.update(mouse);
 
     //Pass
-    if (isAIMode && gameState.turn == superBot.getTurn()){
+    if (isAIMode && gameState.turn == bot.getTurn()){
         passButton.setValid(false);
     }
     else{
@@ -194,12 +194,12 @@ void GameScreen::updateGameState(){
 }
 
 void GameScreen::updateAIMove(){
-    if (!superBot.isThinking()){
-        superBot.think();    
+    if (!bot.isThinking()){
+        bot.think();    
     }
     else{
-        if (superBot.isReady()){
-            Position botMove = superBot.getMove();
+        if (bot.isReady()){
+            Position botMove = bot.getMove();
             gameState.addStoneMove(botMove.y, botMove.x);
         }
     }
@@ -207,7 +207,7 @@ void GameScreen::updateAIMove(){
 
 void GameScreen::updateAI(){
     if (!isAIMode || gameState.inUndo()) return;
-    if (gameState.turn != superBot.getTurn()) return;
+    if (gameState.turn != bot.getTurn()) return;
     updateAIMove();
 }
 
@@ -274,8 +274,8 @@ void GameScreen::reset(){
     passButton.setValid(true);
 
     if (isAIMode){
-        superBot.stopThinking();
-        superBot.swapPlayer();
+        bot.stopThinking();
+        bot.swapPlayer();
     }
 }
 
@@ -293,7 +293,7 @@ void GameScreen::update(Mouse &mouse){
     }
 
     if (!gameState.isEnd){
-        if (!isAIMode || superBot.getTurn() != gameState.turn){
+        if (!isAIMode || bot.getTurn() != gameState.turn){
             updateStone(mouse);
         }
     }
@@ -418,7 +418,7 @@ Position GameScreen::to_cord(sf::Vector2f position){
 
 void GameScreen::setAIDifficulty(int _level){
     level = _level;
-    superBot.setDifficulty(_level);
+    bot.setDifficulty(_level);
 }
 
 void GameScreen::run(){

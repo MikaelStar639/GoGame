@@ -111,5 +111,5 @@ private:
     //* AI
     void updateAI();
     void updateAIMove();
-    AI superBot;
+    AI bot;
 };
