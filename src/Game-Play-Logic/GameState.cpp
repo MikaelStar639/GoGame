@@ -465,21 +465,22 @@ std::vector<Position> GameState::getPossibleMove(){
 }
 
 
-inline int getStrategicValue(int y, int x) {
-    int dy = (y < 9) ? y : 18 - y;
-    int dx = (x < 9) ? x : 18 - x;
+inline int getStrategicValue(int y, int x, int size) {
+    int mid = size/2 + 1;
+    int dy = (y < mid) ? y : size - y - 1;
+    int dx = (x < mid) ? x : size - x - 1;
     if (dy == 0 || dx == 0) return -20;
     if (2 <= dy && dy <= 3 && 2 <= dx && dx <= 3) return 120; 
     if (dy + dx <= 6) return 70;
     int dist = std::min(dy, dx);
     if (dist == 2) return 60; 
     if (dist == 3) return 50; 
-    if (dy == 9 && dx == 9) return 30;
+    if (dy == mid && dx == mid) return 30;
     return 15; 
 }
 
-inline int getHeuristicScore(int y, int x, int liberties, int stones){
-    int score = getStrategicValue(y, x) - 15;
+inline int getHeuristicScore(int y, int x, int liberties, int stones, int size){
+    int score = getStrategicValue(y, x, size) - 15;
     int cappedLiberties = std::min(liberties, 8);
     
     score += (cappedLiberties * 50) + (stones * 5); 
@@ -551,10 +552,10 @@ int GameState::minimaxScore(){
             for (auto [y, x]: emptyPos) visited[y][x] = false;
 
             if (grid[y][x] == Stone::State::black){
-                blackScore += getHeuristicScore(y, x, liberties, stones);
+                blackScore += getHeuristicScore(y, x, liberties, stones, Size);
             }
             else{
-                whiteScore += getHeuristicScore(y, x, liberties, stones);
+                whiteScore += getHeuristicScore(y, x, liberties, stones, Size);
             }
         }
     }
