@@ -24,6 +24,8 @@ Game::Game() : window(sf::VideoMode({1600, 900}), "GoGame", sf::Style::Default ^
                selectStone(font, window, gameScreen, gameTexture){
 
     window.setIcon(icon);
+    window.setFramerateLimit(60);
+    
     screenStateStack.push({screenState::Exit});
     screenStateStack.push({screenState::Homescreen});
 
